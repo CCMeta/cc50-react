@@ -10,58 +10,63 @@ import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem } from 
 import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { styled } from "@mui/material/styles";
+
 
 export default _ => {
-  const fuck = Define(0)
-  const open = Define(false)
-  const anchor = Define(null)
 
-  const onClick = () => {
-    fuck.set(fuck.get() + 2)
-    console.log(fuck.get())
-  }
+  const menuActiveIndex = Define(0)
+  const menuOpenState = Define(false)
+  const menuAnchor = Define(null)
+
+  const onClick = _ => _
+
   const onChangeBottomNav = (event, newValue) => {
-    fuck.set(newValue)
-    open.set(true)
+    menuActiveIndex.set(newValue)
+    menuAnchor.set(_ => event.currentTarget)
+    menuOpenState.set(true)
 
-    anchor.set(_ => event.currentTarget)
-
-    console.log(fuck.get())
+    console.log(menuActiveIndex.get())
   }
 
-  const onMenuItemClose = _ => open.set(false)
+  const onMenuItemClose = _ => menuOpenState.set(false)
 
-  return useObserver(() => (
-    <div className="App">
+  const sx = {
+    "& .MuiBottomNavigationAction-root, svg": {
+      color: "#000"
+    },
+    "& .MuiBottomNavigationAction-root .Mui-selected,.Mui-selected svg": {
+      color: "#ba000d"
+    }, position: 'fixed', bottom: 0, left: 0, right: 0,
+  }
 
-      <Menu id="basic-menu" anchorEl={anchor.get()} open={open.get()}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-        transformOrigin={{ vertical: 'bottom', horizontal: 'center', }}  >
-        <MenuItem onClick={onMenuItemClose}>Profile</MenuItem>
-        <MenuItem onClick={onMenuItemClose}>My account</MenuItem>
-        <MenuItem onClick={onMenuItemClose}>Logout</MenuItem>
-      </Menu>
-
-
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p> {fuck.get()} </p>
-        <Button onClick={onClick} variant="contained">你好，世界</Button>
-      </header>
+  return useObserver(() => (<div className="App">
 
 
+    <Menu onBlur={onMenuItemClose} id="basic-menu" anchorEl={menuAnchor.get()} open={menuOpenState.get()}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+      transformOrigin={{ vertical: 'bottom', horizontal: 'center', }}  >
+      <MenuItem onClick={onMenuItemClose}>Profile</MenuItem>
+      <MenuItem onClick={onMenuItemClose}>My account</MenuItem>
+      <MenuItem onClick={onMenuItemClose}>Logout</MenuItem>
+    </Menu>
 
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation showLabels onChange={onChangeBottomNav}>
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />}>
 
-          </BottomNavigationAction>
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Archive" icon={<LocationOnIcon />} />
-        </BottomNavigation>
-      </Paper>
+    <header className="App-header">
+      <img src={logo} className="App-logo" alt="logo" />
+      <p> {menuActiveIndex.get()} </p>
+      <Button onClick={onClick} variant="contained">你好，世界</Button>
+    </header>
 
-    </div>)
-  )
+    <Paper sx={sx} elevation={3}>
+      <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>
+        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+        <BottomNavigationAction label="Archive" icon={<LocationOnIcon />} />
+      </BottomNavigation>
+    </Paper>
+
+
+  </div>))
 }
 
