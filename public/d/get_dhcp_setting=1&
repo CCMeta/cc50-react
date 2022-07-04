@@ -1,0 +1,9 @@
+{
+    "result": "ok",
+    "ipAddr": "192.168.1.1",
+    "startIP": "192.168.1.100",
+    "endIP": "192.168.1.200",
+    "gateway": "192.168.1.1",
+    "leaseTime": "24",
+    "dhcpStatus": "1"
+}

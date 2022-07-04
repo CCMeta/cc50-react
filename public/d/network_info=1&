@@ -1,0 +1,9 @@
+{
+    "result": "ok",
+    "networkName": "43.48.4e.2d.55.4e.49.43.4f.4d.",
+    "networkType": "4G",
+    "simStatus": "0",
+    "simStatusInfo": "SIM OK",
+    "gprsStatus": "1",
+    "signalStrength": "4"
+}

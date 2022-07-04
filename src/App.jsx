@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
 import React from 'react'
+import { Routes, Route } from "react-router-dom"
 import { useObserver } from 'react-solid-state'
 
 import { Define } from './utils'
+import logo from './logo.svg';
+import './App.css';
+import IndexPage from './p/Index';
+import AboutPage from './p/About';
+
 
 import Button from '@mui/material/Button'
-import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem } from '@mui/material'
+import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link } from '@mui/material'
 import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { styled } from "@mui/material/styles";
 
 
 export default _ => {
+  /*********constants**********/
 
-  const menuActiveIndex = Define(0)
+  const menuActiveIndex = Define(-1)
   const menuOpenState = Define(false)
   const menuAnchor = Define(null)
 
+  /*********functions**********/
   const onClick = _ => _
 
   const onChangeBottomNav = (event, newValue) => {
@@ -31,6 +36,7 @@ export default _ => {
 
   const onMenuItemClose = _ => menuOpenState.set(false)
 
+  /*********styles**********/
   const sx = {
     "& .MuiBottomNavigationAction-root, svg": {
       color: "#000"
@@ -40,6 +46,7 @@ export default _ => {
     }, position: 'fixed', bottom: 0, left: 0, right: 0,
   }
 
+  /*********component**********/
   return useObserver(() => (<div className="App">
 
 
@@ -52,11 +59,11 @@ export default _ => {
     </Menu>
 
 
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p> {menuActiveIndex.get()} </p>
-      <Button onClick={onClick} variant="contained">你好，世界</Button>
-    </header>
+    <Routes>
+      <Route path="/" element={<IndexPage />} />
+      <Route path="about" element={<AboutPage />} />
+    </Routes>
+
 
     <Paper sx={sx} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>

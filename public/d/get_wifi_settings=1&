@@ -1,0 +1,12 @@
+{
+    "result": "ok",
+    "status": 1,
+    "hideSSID": 0,
+    "SSIDName": "Mobiwire_a260",
+    "bandwidthMode": 0,
+    "channel": 11,
+    "security": 3,
+    "password": "12345678",
+    "autoSleep": 0,
+    "apIsolation": 0
+}
