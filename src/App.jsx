@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes, Route } from "react-router-dom"
 import { useObserver } from 'react-solid-state'
 
-import { Define } from './utils'
+import { Define } from './p/utils'
 import logo from './logo.svg';
 import './App.css';
 import IndexPage from './p/Index';

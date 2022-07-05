@@ -2,7 +2,7 @@ import { useObserver, createEffect, } from 'react-solid-state'
 import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Link } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../s/Index.css'
-import { fetching, Define } from '../utils'
+import { fetching, Define } from './utils'
 
 
 export default _ => {
