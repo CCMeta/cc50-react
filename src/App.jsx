@@ -12,6 +12,10 @@ import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link }
 import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LanguageIcon from '@mui/icons-material/Language';
+import WifiIcon from '@mui/icons-material/Wifi'
+import ShieldIcon from '@mui/icons-material/HealthAndSafety'
+import SettingsIcon from '@mui/icons-material/Settings'
 
 const AboutPage = React.lazy(() => import('./p/About'));
 
@@ -40,7 +44,7 @@ const App = () => {
       color: "#000"
     },
     "& .MuiBottomNavigationAction-root .Mui-selected,.Mui-selected svg": {
-      color: "#ba000d"
+      color: "#1976d2"
     }, position: 'fixed', bottom: 0, left: 0, right: 0,
   }
 
@@ -56,11 +60,14 @@ const App = () => {
 
     <Paper sx={sx} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>
-        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Archive" icon={<LocationOnIcon />} />
+        <BottomNavigationAction label="WAN" icon={<LanguageIcon />} />
+        <BottomNavigationAction label="LAN" icon={<WifiIcon />} />
+        <BottomNavigationAction label="Security" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="SMS" icon={<ShieldIcon />} />
+        <BottomNavigationAction label="System" icon={<SettingsIcon />} />
       </BottomNavigation>
     </Paper>
+
     <Menu onBlur={onMenuItemClose} id="basic-menu" anchorEl={menuAnchor.get()} open={menuOpenState.get()}
       anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
       transformOrigin={{ vertical: 'bottom', horizontal: 'center', }}  >

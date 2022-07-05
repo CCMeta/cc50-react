@@ -2,7 +2,7 @@ import { useObserver } from 'react-solid-state'
 import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline } from '@mui/material'
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import '../s/Index.css'
+import '../s/Index.module.css'
 import 'animate.css';
 
 export default () => {
@@ -28,7 +28,8 @@ export default () => {
     <CssBaseline />
     <Stack sx={{ pb: 7 }} spacing={2}>
       <Link to="/">Index</Link>
-      <Link to="about">About</Link>
+      <Link to="/about">About</Link>
+      <h1>fuck</h1>
     </Stack>
 
   </div>))

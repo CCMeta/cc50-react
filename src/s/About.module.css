@@ -1,14 +1,3 @@
-    .transition {
-        color: cadetblue;
-        animation: App-logo-spin 20s linear;
-    }
-
-    @keyframes App-logo-spin {
-        from {
-            height: 0;
-        }
-
-        to {
-            height: 100vh;
-        }
-    }
+.card {
+    flex-basis: 50%;
+}
