@@ -43,7 +43,7 @@ export default () => {
       </Toolbar>
     </AppBar>
 
-    <Stack sx={{ pb: 7 }} spacing={2} padding={2}>
+    <Stack sx={{ p: 2 }} spacing={2}>
       <Link to="/">Index</Link>
       <Link to="/about">About</Link>
 
@@ -96,7 +96,7 @@ export default () => {
 
     </Stack>
 
-    <Stack padding={2}>
+    <Stack sx={{ p: 2 }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -106,7 +106,7 @@ export default () => {
               <TableCell align="right">IP</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody >
+          <TableBody>
             {testData?.get?.devices?.map((row, index) => (
               <TableRow key={index}>
                 <TableCell component="th" scope="row">{row.hostName}</TableCell>
