@@ -1,11 +1,13 @@
 import { useObserver, createEffect, } from 'react-solid-state'
-import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Link } from '@mui/material'
+import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline } from '@mui/material'
+import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import '../s/Index.css'
+import css from '../s/About.module.css'
+import 'animate.css';
 import { fetching, Define } from './utils'
 
 
-export default _ => {
+export default () => {
   /*********constants**********/
   const testData = Define({})
   createEffect(async () => {
@@ -15,9 +17,9 @@ export default _ => {
   /*********functions**********/
 
   /*********styles**********/
-
+  console.log(css)
   /*********component**********/
-  return useObserver(() => (<div>
+  return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
     <AppBar position="sticky">
       <Toolbar>
@@ -30,9 +32,10 @@ export default _ => {
       </Toolbar>
     </AppBar>
     <CssBaseline />
+
     <Stack sx={{ pb: 7 }} spacing={2}>
-      <Link href="/">Index</Link>
-      <Link href="/about">About</Link>
+      <Link to="/">Index</Link>
+      <Link to="about">About</Link>
       {testData.get().devices?.map((item, index) => (<div key={index}>
         {item.hostName}{item.mac_addr}
       </div>))}

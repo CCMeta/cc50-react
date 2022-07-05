@@ -1,9 +1,11 @@
 import { useObserver } from 'react-solid-state'
-import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Link } from '@mui/material'
+import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline } from '@mui/material'
+import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../s/Index.css'
+import 'animate.css';
 
-export default _ => {
+export default () => {
   /*********constants**********/
 
   /*********functions**********/
@@ -11,7 +13,7 @@ export default _ => {
   /*********styles**********/
 
   /*********component**********/
-  return useObserver(() => (<div>
+  return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
     <AppBar position="sticky">
       <Toolbar>
@@ -25,8 +27,8 @@ export default _ => {
     </AppBar>
     <CssBaseline />
     <Stack sx={{ pb: 7 }} spacing={2}>
-      <Link href="/">Index</Link>
-      <Link href="/about">About</Link>
+      <Link to="/">Index</Link>
+      <Link to="about">About</Link>
     </Stack>
 
   </div>))
