@@ -5,7 +5,7 @@ import { useObserver } from 'react-solid-state'
 import { Define } from './p/utils'
 import './App.css';
 import IndexPage from './p/Index';
-// import AboutPage from './p/About';
+import AboutPage from './p/About';
 
 import Button from '@mui/material/Button'
 import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link, CssBaseline, ListItemText, ListItemIcon } from '@mui/material'
@@ -17,8 +17,6 @@ import WifiIcon from '@mui/icons-material/Wifi'
 import ShieldIcon from '@mui/icons-material/HealthAndSafety'
 import SettingsIcon from '@mui/icons-material/Settings'
 import CloudIcon from '@mui/icons-material/CloudOutlined'
-
-const AboutPage = React.lazy(() => import('./p/About'));
 
 const App = () => {
   /*********constants**********/
@@ -56,12 +54,11 @@ const App = () => {
   /*********component**********/
   return useObserver(() => (<div className="App">
     <CssBaseline />
-    <Suspense>
-      <Routes>
-        <Route path="/" element={<IndexPage />} />
-        <Route path="about" element={<AboutPage />} />
-      </Routes>
-    </Suspense>
+
+    <Routes>
+      <Route path="/" element={<IndexPage />} />
+      <Route path="about" element={<AboutPage />} />
+    </Routes>
 
     <Paper sx={sx} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>

@@ -1,8 +1,13 @@
 
-import { createSignal } from 'react-solid-state'
+import { createSignal, createStore } from 'react-solid-state'
 
 export function Define(value) {
   const [getValue, setValue] = createSignal(value)
+  return { get: getValue, set: setValue }
+}
+
+export function Store(value) {
+  const [getValue, setValue] = createStore(value)
   return { get: getValue, set: setValue }
 }
 

@@ -1,19 +1,30 @@
-import { useObserver, createEffect, } from 'react-solid-state'
+import { useObserver, createEffect, createStore, onCleanup, } from 'react-solid-state'
 import {
   Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Card, CardContent, Paper, List,
-  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider
+  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider,
 } from '@mui/material'
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'animate.css';
 import css from '../s/About.module.css'
-import { fetching, Define } from './utils'
+import { fetching, Define, Store } from './utils'
+import { Suspense } from 'react';
 
 
 export default () => {
   /*********constants**********/
-  const testData = Define({})
-  createEffect(async () => testData.set(await fetching(`connected_devices=1&`)))
+  const testData = Store(null)
+  createEffect(async () => {
+    testData.set(await fetching(`connected_devices=1&`))
+  })
   /*********functions**********/
 
   /*********styles**********/
@@ -83,6 +94,29 @@ export default () => {
         </List>
       </Paper>
 
+    </Stack>
+
+    <Stack padding={2}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Host</TableCell>
+              <TableCell align="right">MAC</TableCell>
+              <TableCell align="right">IP</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody >
+            {testData?.get?.devices?.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">{row.hostName}</TableCell>
+                <TableCell padding="none" align="right">{row.mac_addr}</TableCell>
+                <TableCell align="right">{row.ip_addr}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Stack>
 
   </div >))

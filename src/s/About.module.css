@@ -1,3 +1,6 @@
 .card {
     flex-basis: 50%;
 }
+.tableCell{
+    padding: 0;
+}

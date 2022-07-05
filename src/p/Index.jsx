@@ -25,11 +25,14 @@ export default () => {
         </Typography>
       </Toolbar>
     </AppBar>
+
     <Stack sx={{ pb: 7 }} spacing={2}>
       <Link to="/">Index</Link>
       <Link to="/about">About</Link>
       <h1>fuck</h1>
     </Stack>
+
+
 
   </div>))
 }
