@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useNavigate } from "react-router-dom"
 import { useObserver } from 'react-solid-state'
 
 import { Define } from './p/utils'
@@ -8,7 +8,7 @@ import IndexPage from './p/Index';
 // import AboutPage from './p/About';
 
 import Button from '@mui/material/Button'
-import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link } from '@mui/material'
+import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link, CssBaseline, ListItemText, ListItemIcon } from '@mui/material'
 import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -16,12 +16,13 @@ import LanguageIcon from '@mui/icons-material/Language';
 import WifiIcon from '@mui/icons-material/Wifi'
 import ShieldIcon from '@mui/icons-material/HealthAndSafety'
 import SettingsIcon from '@mui/icons-material/Settings'
+import CloudIcon from '@mui/icons-material/CloudOutlined'
 
 const AboutPage = React.lazy(() => import('./p/About'));
 
 const App = () => {
   /*********constants**********/
-
+  let navigate = useNavigate()
   const menuActiveIndex = Define(-1)
   const menuOpenState = Define(false)
   const menuAnchor = Define(null)
@@ -36,7 +37,11 @@ const App = () => {
 
   }
 
-  const onMenuItemClose = _ => menuOpenState.set(false)
+  const onMenuItemClose = (e, uri) => {
+    e && console.log(e.currentTarget)
+    uri && navigate(uri)
+    menuOpenState.set(false)
+  }
 
   /*********styles**********/
   const sx = {
@@ -50,7 +55,7 @@ const App = () => {
 
   /*********component**********/
   return useObserver(() => (<div className="App">
-
+    <CssBaseline />
     <Suspense>
       <Routes>
         <Route path="/" element={<IndexPage />} />
@@ -68,12 +73,33 @@ const App = () => {
       </BottomNavigation>
     </Paper>
 
-    <Menu onBlur={onMenuItemClose} id="basic-menu" anchorEl={menuAnchor.get()} open={menuOpenState.get()}
+    <Menu onBlur={() => onMenuItemClose()} id="basic-menu" anchorEl={menuAnchor.get()} open={menuOpenState.get()}
       anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
       transformOrigin={{ vertical: 'bottom', horizontal: 'center', }}  >
-      <MenuItem onClick={onMenuItemClose}>Profile</MenuItem>
-      <MenuItem onClick={onMenuItemClose}>My account</MenuItem>
-      <MenuItem onClick={onMenuItemClose}>Logout</MenuItem>
+      <MenuItem onClick={e => onMenuItemClose(e, `dhcp`)}>
+        <ListItemIcon>
+          <CloudIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>
+          DHCP
+        </ListItemText>
+      </MenuItem>
+      <MenuItem onClick={e => onMenuItemClose(e, `wifi`)}>
+        <ListItemIcon>
+          <CloudIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>
+          WiFi
+        </ListItemText>
+      </MenuItem>
+      <MenuItem onClick={e => onMenuItemClose(e, `sim`)}>
+        <ListItemIcon>
+          <CloudIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>
+          SIM
+        </ListItemText>
+      </MenuItem>
     </Menu>
 
   </div>))

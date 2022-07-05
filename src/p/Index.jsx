@@ -25,7 +25,6 @@ export default () => {
         </Typography>
       </Toolbar>
     </AppBar>
-    <CssBaseline />
     <Stack sx={{ pb: 7 }} spacing={2}>
       <Link to="/">Index</Link>
       <Link to="/about">About</Link>
