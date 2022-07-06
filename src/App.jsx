@@ -6,6 +6,7 @@ import { Define } from './p/utils'
 import './App.css';
 import IndexPage from './p/Index';
 import AboutPage from './p/About';
+import WiFiPage from './p/WiFi';
 
 import Button from '@mui/material/Button'
 import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link, CssBaseline, ListItemText, ListItemIcon } from '@mui/material'
@@ -58,6 +59,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<IndexPage />} />
       <Route path="about" element={<AboutPage />} />
+      <Route path="wifi" element={<WiFiPage />} />
     </Routes>
 
     <Paper sx={sx} elevation={3}>

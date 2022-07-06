@@ -44,11 +44,8 @@ export default () => {
     </AppBar>
 
     <Stack sx={{ p: 2 }} spacing={2}>
-      <Link to="/">Index</Link>
-      <Link to="/about">About</Link>
-
       <Stack direction="row" justifyContent="center" spacing={2}>
-        <Card className={css.card}>
+        <Card elevation={6} className={css.card}>
           <CardContent>
             <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
               <Typography>00.00</Typography>
@@ -59,7 +56,7 @@ export default () => {
             </Stack>
           </CardContent>
         </Card>
-        <Card className={css.card}>
+        <Card elevation={6} className={css.card}>
           <CardContent>
             <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
               <Typography>00.00</Typography>
@@ -72,52 +69,44 @@ export default () => {
         </Card>
       </Stack>
 
-      <Paper>
+      <Paper elevation={6}>
         <List>
-          <ListItem disablePadding divider={true}>
-            <ListItemButton>
-              <ListItemText primary="Session Flow" secondary="This Session Data" />
-            </ListItemButton>
+          <ListItem divider={true}>
+            <ListItemText primary="Session Flow" secondary="This Session Data" />
           </ListItem>
-
-          <ListItem disablePadding divider={true}>
-            <ListItemButton>
-              <ListItemText primary="Month Flow" secondary="This Month Data" />
-            </ListItemButton>
+          <ListItem divider={true}>
+            <ListItemText primary="Month Flow" secondary="This Month Data" />
           </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Total Flow" secondary="All Time Data" />
-            </ListItemButton>
+          <ListItem >
+            <ListItemText primary="Total Flow" secondary="All Time Data" />
           </ListItem>
         </List>
       </Paper>
 
+      <Paper elevation={6}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Host</TableCell>
+                <TableCell align="right">MAC</TableCell>
+                <TableCell align="right">IP</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {testData?.get?.devices?.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">{row.hostName}</TableCell>
+                  <TableCell padding="none" align="right">{row.mac_addr}</TableCell>
+                  <TableCell align="right">{row.ip_addr}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </Stack>
 
-    <Stack sx={{ p: 2 }}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Host</TableCell>
-              <TableCell align="right">MAC</TableCell>
-              <TableCell align="right">IP</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {testData?.get?.devices?.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell component="th" scope="row">{row.hostName}</TableCell>
-                <TableCell padding="none" align="right">{row.mac_addr}</TableCell>
-                <TableCell align="right">{row.ip_addr}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Stack>
 
   </div >))
 }
