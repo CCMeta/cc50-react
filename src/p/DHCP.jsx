@@ -1,5 +1,5 @@
 import { useObserver } from 'react-solid-state'
-import { Button, AppBar, Typography, Toolbar, IconButton, FormControl, TextField, InputLabel, Divider } from '@mui/material'
+import { Button, AppBar, Typography, Toolbar, IconButton, FormControl, TextField, Slider, Divider } from '@mui/material'
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 // import '../s/Index.module.css'
@@ -33,48 +33,33 @@ export default () => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          Wi-Fi Page
+          DHCP Page
         </Typography>
       </Toolbar>
     </AppBar>
 
 
-    <List sx={{ width: '100%', bgcolor: 'background.paper' }}
-    // subheader={<ListSubheader>Settings</ListSubheader>}
-    >
-      <ListItem>
-        <ListItemIcon>
-          <WifiIcon />
-        </ListItemIcon>
-        <ListItemText primary="Wi-Fi Status" />
-        <Switch edge="end" onChange={() => handleToggle('wifi')}
-          checked={checked.get().indexOf('wifi') !== -1} />
-      </ListItem>
-      <Divider variant="inset" component="li" />
+    <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
       <ListItem>
         <ListItemIcon>
           <BluetoothIcon />
         </ListItemIcon>
-        <ListItemText primary="SSID Hidden" />
-        <Switch edge="end" onChange={() => handleToggle('bluetooth')}
-          checked={checked.get().indexOf('bluetooth') !== -1} />
+        <ListItemText primary="DHCP ON" />
+        <Switch edge="end" onChange={() => handleToggle('DHCP')}
+          checked={checked.get().indexOf('DHCP') !== -1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
-        <TextField fullWidth label="SSID" variant="standard" />
+        <TextField fullWidth label="192.168.1." placeholder='DHCP Begin Address' variant="standard" />
       </ListItem>
       <ListItem>
-        <TextField fullWidth label="Password" variant="standard" />
+        <TextField fullWidth label="192.168.1." placeholder='DHCP End Address' variant="standard" />
       </ListItem>
       <ListItem>
-        <ListItemText sx={{ width: "50%" }} primary="Channel" />
-        <FormControl sx={{ width: "50%" }}>
-          <InputLabel>Channel</InputLabel>
-          <Select label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
-              <MenuItem key={i} dense>{v}</MenuItem>
-            ))}
-          </Select>
+
+        <ListItemText sx={{ width: "40%" }} primary="Lease Hour" />
+        <FormControl sx={{ width: "60%" }}>
+          <Slider defaultValue={1} min={1} max={24} valueLabelDisplay="on" />
         </FormControl>
       </ListItem>
     </List>

@@ -7,6 +7,9 @@ import './App.css';
 import IndexPage from './p/Index';
 import AboutPage from './p/About';
 import WiFiPage from './p/WiFi';
+import SIMPage from './p/SIM';
+import DHCPPage from './p/DHCP';
+import ProtectionPage from './p/Protection';
 
 import Button from '@mui/material/Button'
 import { Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Link, CssBaseline, ListItemText, ListItemIcon } from '@mui/material'
@@ -25,10 +28,40 @@ const App = () => {
   const menuActiveIndex = Define(-1)
   const menuOpenState = Define(false)
   const menuAnchor = Define(null)
+  const popverList = Define([])
 
   /*********functions**********/
-  const onChangeBottomNav = (event, newValue) => {
-    menuActiveIndex.set(newValue)
+  const onChangeBottomNav = (event, activeIndex) => {
+
+    const action1 = [
+      // { text: 'GPRS', value: "gprs", icon: "friends" },
+      // { text: 'APN', value: "apn", icon: "friends" },
+      { text: 'SIM', value: "sim", icon: "friends" },
+    ];
+    const action2 = [
+      { text: 'WIFI', value: "wifi", icon: "friends" },
+      { text: 'DHCP', value: "dhcp", icon: "friends" },
+      // { text: 'Client', value: "client", icon: "friends" },
+    ];
+    const action3 = [
+      { text: 'Protection', value: "protect", icon: "friends" },
+      { text: 'PIN', value: "pin", icon: "friends" },
+    ];
+    const action4 = [
+      { text: 'Inbox', value: "inbox", icon: "friends" },
+    ];
+    const action5 = [
+      { text: 'Device', value: "device", icon: "friends" },
+      { text: 'Manage', value: "manage", icon: "friends" },
+      // { text: 'Update', value: "update", icon: "friends" },
+      { text: 'Password', value: "password", icon: "friends" },
+    ];
+    const actions = [action1, action2, action3, action4, action5]
+    popverList.set(actions[activeIndex])
+
+
+
+    menuActiveIndex.set(activeIndex)
     menuAnchor.set(_ => event.currentTarget)
     menuOpenState.set(true)
 
@@ -60,6 +93,9 @@ const App = () => {
       <Route path="/" element={<IndexPage />} />
       <Route path="about" element={<AboutPage />} />
       <Route path="wifi" element={<WiFiPage />} />
+      <Route path="sim" element={<SIMPage />} />
+      <Route path="dhcp" element={<DHCPPage />} />
+      <Route path="protection" element={<ProtectionPage />} />
     </Routes>
 
     <Paper sx={sx} elevation={3}>
@@ -74,31 +110,17 @@ const App = () => {
 
     <Menu onBlur={() => onMenuItemClose()} id="basic-menu" anchorEl={menuAnchor.get()} open={menuOpenState.get()}
       anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-      transformOrigin={{ vertical: 'bottom', horizontal: 'center', }}  >
-      <MenuItem onClick={e => onMenuItemClose(e, `dhcp`)}>
-        <ListItemIcon>
-          <CloudIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>
-          DHCP
-        </ListItemText>
-      </MenuItem>
-      <MenuItem onClick={e => onMenuItemClose(e, `wifi`)}>
-        <ListItemIcon>
-          <CloudIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>
-          WiFi
-        </ListItemText>
-      </MenuItem>
-      <MenuItem onClick={e => onMenuItemClose(e, `sim`)}>
-        <ListItemIcon>
-          <CloudIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>
-          SIM
-        </ListItemText>
-      </MenuItem>
+      transformOrigin={{ vertical: 'bottom', horizontal: 'center', }}>
+      {popverList.get()?.map((item, index) => (
+        <MenuItem key={index} onClick={e => onMenuItemClose(e, item.value)}>
+          <ListItemIcon>
+            <CloudIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>
+            {item.text}
+          </ListItemText>
+        </MenuItem>
+      ))}
     </Menu>
 
   </div>))

@@ -33,7 +33,7 @@ export default () => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          Wi-Fi Page
+          SIM Page
         </Typography>
       </Toolbar>
     </AppBar>
@@ -46,32 +46,35 @@ export default () => {
         <ListItemIcon>
           <WifiIcon />
         </ListItemIcon>
-        <ListItemText primary="Wi-Fi Status" />
-        <Switch edge="end" onChange={() => handleToggle('wifi')}
-          checked={checked.get().indexOf('wifi') !== -1} />
+        <ListItemText primary="Network ON" />
+        <Switch edge="end" onChange={() => handleToggle('Network')}
+          checked={checked.get().indexOf('Network') !== -1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
           <BluetoothIcon />
         </ListItemIcon>
-        <ListItemText primary="SSID Hidden" />
-        <Switch edge="end" onChange={() => handleToggle('bluetooth')}
-          checked={checked.get().indexOf('bluetooth') !== -1} />
+        <ListItemText primary="Roaming" />
+        <Switch edge="end" onChange={() => handleToggle('Roaming')}
+          checked={checked.get().indexOf('Roaming') !== -1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
-        <TextField fullWidth label="SSID" variant="standard" />
+        <ListItemIcon>
+          <BluetoothIcon />
+        </ListItemIcon>
+        <ListItemText primary="Threshold" />
+        <Switch edge="end" onChange={() => handleToggle('Threshold')}
+          checked={checked.get().indexOf('Threshold') !== -1} />
       </ListItem>
+      <Divider variant="inset" component="li" />
       <ListItem>
-        <TextField fullWidth label="Password" variant="standard" />
-      </ListItem>
-      <ListItem>
-        <ListItemText sx={{ width: "50%" }} primary="Channel" />
+        <ListItemText sx={{ width: "50%" }} primary="Model" />
         <FormControl sx={{ width: "50%" }}>
-          <InputLabel>Channel</InputLabel>
+          <InputLabel>Model</InputLabel>
           <Select label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
+            {["Auto", "4G", "3G"].map((v, i) => (
               <MenuItem key={i} dense>{v}</MenuItem>
             ))}
           </Select>

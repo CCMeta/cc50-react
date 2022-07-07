@@ -33,7 +33,7 @@ export default () => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          Wi-Fi Page
+          Protection Page
         </Typography>
       </Toolbar>
     </AppBar>
@@ -46,36 +46,27 @@ export default () => {
         <ListItemIcon>
           <WifiIcon />
         </ListItemIcon>
-        <ListItemText primary="Wi-Fi Status" />
-        <Switch edge="end" onChange={() => handleToggle('wifi')}
-          checked={checked.get().indexOf('wifi') !== -1} />
+        <ListItemText primary="Firewall" />
+        <Switch edge="end" onChange={() => handleToggle('Firewall')}
+          checked={checked.get().indexOf('Firewall') !== -1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
           <BluetoothIcon />
         </ListItemIcon>
-        <ListItemText primary="SSID Hidden" />
-        <Switch edge="end" onChange={() => handleToggle('bluetooth')}
-          checked={checked.get().indexOf('bluetooth') !== -1} />
+        <ListItemText primary="Ping Allow" />
+        <Switch edge="end" onChange={() => handleToggle('Ping')}
+          checked={checked.get().indexOf('Ping') !== -1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
-        <TextField fullWidth label="SSID" variant="standard" />
-      </ListItem>
-      <ListItem>
-        <TextField fullWidth label="Password" variant="standard" />
-      </ListItem>
-      <ListItem>
-        <ListItemText sx={{ width: "50%" }} primary="Channel" />
-        <FormControl sx={{ width: "50%" }}>
-          <InputLabel>Channel</InputLabel>
-          <Select label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
-              <MenuItem key={i} dense>{v}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <ListItemIcon>
+          <BluetoothIcon />
+        </ListItemIcon>
+        <ListItemText primary="IP Filter" />
+        <Switch edge="end" onChange={() => handleToggle('Filter')}
+          checked={checked.get().indexOf('Filter') !== -1} />
       </ListItem>
     </List>
     <br />
