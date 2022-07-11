@@ -12,8 +12,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
-import WifiIcon from '@mui/icons-material/Wifi';
-import BluetoothIcon from '@mui/icons-material/Bluetooth';
+import PodcastsIcon from '@mui/icons-material/Podcasts';
+import MapIcon from '@mui/icons-material/Map';
+import ThresholdIcon from '@mui/icons-material/DataThresholding';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -44,7 +45,7 @@ export default () => {
     >
       <ListItem>
         <ListItemIcon>
-          <WifiIcon />
+          <PodcastsIcon />
         </ListItemIcon>
         <ListItemText primary="Network ON" />
         <Switch edge="end" onChange={() => handleToggle('Network')}
@@ -53,7 +54,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <MapIcon />
         </ListItemIcon>
         <ListItemText primary="Roaming" />
         <Switch edge="end" onChange={() => handleToggle('Roaming')}
@@ -62,7 +63,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <ThresholdIcon />
         </ListItemIcon>
         <ListItemText primary="Threshold" />
         <Switch edge="end" onChange={() => handleToggle('Threshold')}
@@ -73,7 +74,7 @@ export default () => {
         <ListItemText sx={{ width: "50%" }} primary="Model" />
         <FormControl sx={{ width: "50%" }}>
           <InputLabel>Model</InputLabel>
-          <Select label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
+          <Select variant="standard" label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
             {["Auto", "4G", "3G"].map((v, i) => (
               <MenuItem key={i} dense>{v}</MenuItem>
             ))}

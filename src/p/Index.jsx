@@ -38,7 +38,7 @@ export default () => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          AboutPage
+          IndexPage
         </Typography>
       </Toolbar>
     </AppBar>

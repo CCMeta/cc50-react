@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
 import WifiIcon from '@mui/icons-material/Wifi';
-import BluetoothIcon from '@mui/icons-material/Bluetooth';
+import WifiFindIcon from '@mui/icons-material/WifiFind';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -53,7 +53,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <WifiFindIcon />
         </ListItemIcon>
         <ListItemText primary="SSID Hidden" />
         <Switch edge="end" onChange={() => handleToggle('bluetooth')}
@@ -70,7 +70,7 @@ export default () => {
         <ListItemText sx={{ width: "50%" }} primary="Channel" />
         <FormControl sx={{ width: "50%" }}>
           <InputLabel>Channel</InputLabel>
-          <Select label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
+          <Select variant="standard" label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
               <MenuItem key={i} dense>{v}</MenuItem>
             ))}
