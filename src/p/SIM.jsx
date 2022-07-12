@@ -74,7 +74,7 @@ export default () => {
     >
       <ListItem>
         <ListItemIcon>
-          <PodcastsIcon />
+          <PodcastsIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Network ON" />
         <Switch edge="end" onChange={() => netWorkChecked.set(v => v === "1" ? "0" : "1")}
@@ -83,7 +83,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <MapIcon />
+          <MapIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Roaming" />
         <Switch edge="end" onChange={() => roamingChecked.set(v => v === "1" ? "0" : "1")}
@@ -91,7 +91,7 @@ export default () => {
       </ListItem>
       {/* <ListItem>
         <ListItemIcon>
-          <ThresholdIcon />
+          <ThresholdIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Threshold" />
         <Switch edge="end" onChange={() => thresholdChecked.set(v => v === "1" ? "0" : "1")}

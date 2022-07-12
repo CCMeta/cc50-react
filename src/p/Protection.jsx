@@ -70,7 +70,7 @@ export default () => {
     >
       <ListItem>
         <ListItemIcon>
-          <FireplaceIcon />
+          <FireplaceIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Firewall" />
         <Switch edge="end" onChange={() => firewall.set(v => v === 1 ? 0 : 1)}
@@ -79,7 +79,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <SendIcon />
+          <SendIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Ping Allow" />
         <Switch edge="end" onChange={() => pingDeactivation.set(v => v === 1 ? 0 : 1)}
@@ -88,7 +88,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <FilterOutlinedIcon />
+          <FilterOutlinedIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="IP Filter" />
         <Switch edge="end" onChange={() => IPFilterSwitch.set(v => v === 1 ? 0 : 1)}

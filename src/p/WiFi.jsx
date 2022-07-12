@@ -77,7 +77,7 @@ export default () => {
     >
       <ListItem>
         <ListItemIcon>
-          <WifiIcon />
+          <WifiIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Wi-Fi Status" />
         <Switch edge="end" onChange={() => wifiChecked.set(v => v === 1 ? 0 : 1)}
@@ -86,7 +86,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <WifiFindIcon />
+          <WifiFindIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="SSID Hidden" />
         <Switch edge="end" onChange={() => ssidChecked.set(v => v === 1 ? 0 : 1)}

@@ -81,7 +81,7 @@ export default () => {
     <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
       <ListItem>
         <ListItemIcon>
-          <SchemaIcon />
+          <SchemaIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="DHCP ON" />
         <Switch edge="end" onChange={() => dhcpStatus.set(v => v === "1" ? "0" : "1")}
