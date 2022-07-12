@@ -17,6 +17,7 @@ import PasswordPage from './p/Password';
 const App = () => {
 
   return <div className="App">
+    <CssBaseline />
 
     <Routes>
       <Route path="/" element={<IndexPage />} />
@@ -32,7 +33,6 @@ const App = () => {
     </Routes>
 
     <NavigateComponent />
-    <CssBaseline />
 
   </div>
 }

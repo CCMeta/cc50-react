@@ -68,6 +68,9 @@ export default () => {
 
   /*********styles**********/
   const sx = {
+    "& .MuiBottomNavigationAction-root": {
+      minWidth: "auto"
+    },
     "& .MuiBottomNavigationAction-root, svg": {
       color: "#000"
     },
@@ -79,7 +82,7 @@ export default () => {
   /*********component**********/
   return useObserver(() => <div>
 
-    <Paper sx={sx} elevation={3}>
+    <Paper className="cc-BottomNavigation" sx={sx} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>
         <BottomNavigationAction label="WAN" icon={<LanguageIcon />} />
         <BottomNavigationAction label="LAN" icon={<WifiIcon />} />
