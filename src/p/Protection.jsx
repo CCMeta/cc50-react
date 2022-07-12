@@ -1,4 +1,4 @@
-import { useObserver } from 'react-solid-state'
+import { useObserver, createEffect } from 'react-solid-state'
 import { Button, AppBar, Typography, Toolbar, IconButton, FormControl, TextField, InputLabel, Divider } from '@mui/material'
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,9 +19,34 @@ import Select from '@mui/material/Select';
 
 export default () => {
   /*********constants**********/
-  const checked = Define("")
+  const get_protection_setting = Define()
+  const firewall = Define()
+  const IPFilterSwitch = Define()
+  const pingDeactivation = Define()
+
   /*********functions**********/
-  const handleToggle = key => checked.set(key)
+  // const handleToggle = key => checked.set(key)
+
+  const onSubmit = async () => {
+    const form = {
+      "firewall": firewall.get(),
+      "IPFilterSwitch": IPFilterSwitch.get(),
+      "pingDeactivation": pingDeactivation.get(),
+    }
+    return console.log(form)
+    const result = await fetching('save_dhcp=' + JSON.stringify(form) + '&')
+    if (!result || result?.result != 'ok') {
+      return
+    }
+  }
+  /*********createEffect**********/
+  createEffect(async () => {
+    get_protection_setting.set(await fetching(`get_protection_setting=1&`))
+    firewall.set(get_protection_setting.get().firewall)
+    IPFilterSwitch.set(get_protection_setting.get().IPFilterSwitch)
+    pingDeactivation.set(get_protection_setting.get().pingDeactivation)
+  })
+
   /*********styles**********/
 
   /*********component**********/
@@ -47,8 +72,8 @@ export default () => {
           <WifiIcon />
         </ListItemIcon>
         <ListItemText primary="Firewall" />
-        <Switch edge="end" onChange={() => handleToggle('Firewall')}
-          checked={checked.get().indexOf('Firewall') !== -1} />
+        <Switch edge="end" onChange={() => firewall.set(v => v === 1 ? 0 : 1)}
+          checked={firewall.get() === 1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -56,8 +81,8 @@ export default () => {
           <BluetoothIcon />
         </ListItemIcon>
         <ListItemText primary="Ping Allow" />
-        <Switch edge="end" onChange={() => handleToggle('Ping')}
-          checked={checked.get().indexOf('Ping') !== -1} />
+        <Switch edge="end" onChange={() => pingDeactivation.set(v => v === 1 ? 0 : 1)}
+          checked={pingDeactivation.get() === 1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -65,12 +90,12 @@ export default () => {
           <BluetoothIcon />
         </ListItemIcon>
         <ListItemText primary="IP Filter" />
-        <Switch edge="end" onChange={() => handleToggle('Filter')}
-          checked={checked.get().indexOf('Filter') !== -1} />
+        <Switch edge="end" onChange={() => IPFilterSwitch.set(v => v === 1 ? 0 : 1)}
+          checked={IPFilterSwitch.get() === 1} />
       </ListItem>
     </List>
     <br />
-    <Button size='large' color="error" fullWidth variant="contained" disableElevation>Save</Button>
+    <Button onClick={onSubmit} size='large' color="error" fullWidth variant="contained" disableElevation>Save</Button>
 
 
   </div>))

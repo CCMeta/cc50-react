@@ -6,6 +6,19 @@ import '../s/Index.css'
 export default _ => {
   /*********constants**********/
 
+  /*********createEffect**********/
+  createEffect(async () => {
+  })
+
+  const onSubmit = async () => {
+    const form = {
+    }
+    return console.log(form)
+    const result = await fetching('save_dhcp=' + JSON.stringify(form) + '&')
+    if (!result || result?.result != 'ok') {
+      return
+    }
+  }
   /*********functions**********/
 
   /*********styles**********/

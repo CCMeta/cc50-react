@@ -41,6 +41,20 @@ export default () => {
   const onSsidChange = e => ssid.set(e.target.value)
   const onPasswordChange = e => password.set(e.target.value)
 
+  const onSubmit = async () => {
+    const form = {
+      "status": wifiChecked.get(),
+      "hideSSID": ssidChecked.get(),
+      "SSIDName": ssid.get(),
+      "password": password.get(),
+      "channel": channel.get(),
+    }
+    return console.log(form)
+    const result = await fetching('save_dhcp=' + JSON.stringify(form) + '&')
+    if (!result || result?.result != 'ok') {
+      return
+    }
+  }
   /*********styles**********/
 
   /*********component**********/
@@ -98,7 +112,7 @@ export default () => {
       </ListItem>
     </List>
     <br />
-    <Button size='large' color="error" fullWidth variant="contained" disableElevation>Save</Button>
+    <Button onClick={onSubmit} size='large' color="error" fullWidth variant="contained" disableElevation>Save</Button>
 
 
   </div>))

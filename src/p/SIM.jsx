@@ -39,6 +39,18 @@ export default () => {
   /*********functions**********/
   const onModelChange = e => modelChecked.set(e.target.value)
 
+  const onSubmit = async () => {
+    const form = {
+      "gprsStatus": netWorkChecked.get(),
+      "roamingStatus": roamingChecked.get(),
+      "networkMode": modelChecked.get(),
+    }
+    return console.log(form)
+    const result = await fetching('save_dhcp=' + JSON.stringify(form) + '&')
+    if (!result || result?.result != 'ok') {
+      return
+    }
+  }
   /*********styles**********/
 
 
@@ -92,14 +104,14 @@ export default () => {
           <InputLabel>Model</InputLabel>
           <Select value={modelChecked.get()} variant="standard" label="Channel" onChange={onModelChange} MenuProps={{ style: { height: "30%" } }} >
             {["4G", "3G"].map((v, i) => (
-              <MenuItem key={i} value={i} dense>{v}</MenuItem>
+              <MenuItem key={i} value={i.toString()} dense>{v}</MenuItem>
             ))}
           </Select>
         </FormControl>
       </ListItem>
     </List>
     <br />
-    <Button size='large' color="error" fullWidth variant="contained" disableElevation>Save</Button>
+    <Button onClick={onSubmit} size='large' color="error" fullWidth variant="contained" disableElevation>Save</Button>
 
 
   </div>))
