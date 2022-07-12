@@ -1,4 +1,4 @@
-import { useObserver } from 'react-solid-state'
+import { useObserver, createEffect } from 'react-solid-state'
 import { Button, AppBar, Typography, Toolbar, IconButton, FormControl, TextField, InputLabel, Divider } from '@mui/material'
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,17 +13,34 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
-import MapIcon from '@mui/icons-material/Map';
+import MapIcon from '@mui/icons-material/MapOutlined';
 import ThresholdIcon from '@mui/icons-material/DataThresholding';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 export default () => {
   /*********constants**********/
-  const checked = Define("")
+  const network_setting = Define({})
+  const netWorkChecked = Define("")
+  const roamingChecked = Define("")
+  // const thresholdChecked = Define("")
+  const modelChecked = Define("")
+
+
+  /*********createEffect**********/
+  createEffect(async () => {
+    network_setting.set(await fetching(`network_setting=1&`))
+    netWorkChecked.set(network_setting.get().gprsStatus)
+    roamingChecked.set(network_setting.get().roamingStatus)
+    // thresholdChecked.set(network_setting.get().networkMode)
+    modelChecked.set(network_setting.get().networkMode)
+  })
+
   /*********functions**********/
-  const handleToggle = key => checked.set(key)
+  const onModelChange = e => modelChecked.set(e.target.value)
+
   /*********styles**********/
+
 
   /*********component**********/
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
@@ -48,8 +65,8 @@ export default () => {
           <PodcastsIcon />
         </ListItemIcon>
         <ListItemText primary="Network ON" />
-        <Switch edge="end" onChange={() => handleToggle('Network')}
-          checked={checked.get().indexOf('Network') !== -1} />
+        <Switch edge="end" onChange={() => netWorkChecked.set(v => v === "1" ? "0" : "1")}
+          checked={netWorkChecked.get() === "1"} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -57,26 +74,25 @@ export default () => {
           <MapIcon />
         </ListItemIcon>
         <ListItemText primary="Roaming" />
-        <Switch edge="end" onChange={() => handleToggle('Roaming')}
-          checked={checked.get().indexOf('Roaming') !== -1} />
+        <Switch edge="end" onChange={() => roamingChecked.set(v => v === "1" ? "0" : "1")}
+          checked={roamingChecked.get() === "1"} />
       </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem>
+      {/* <ListItem>
         <ListItemIcon>
           <ThresholdIcon />
         </ListItemIcon>
         <ListItemText primary="Threshold" />
-        <Switch edge="end" onChange={() => handleToggle('Threshold')}
-          checked={checked.get().indexOf('Threshold') !== -1} />
-      </ListItem>
+        <Switch edge="end" onChange={() => thresholdChecked.set(v => v === "1" ? "0" : "1")}
+          checked={thresholdChecked.get() === "1"} />
+      </ListItem> */}
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemText sx={{ width: "50%" }} primary="Model" />
         <FormControl sx={{ width: "50%" }}>
           <InputLabel>Model</InputLabel>
-          <Select variant="standard" label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
-            {["Auto", "4G", "3G"].map((v, i) => (
-              <MenuItem key={i} dense>{v}</MenuItem>
+          <Select value={modelChecked.get()} variant="standard" label="Channel" onChange={onModelChange} MenuProps={{ style: { height: "30%" } }} >
+            {["4G", "3G"].map((v, i) => (
+              <MenuItem key={i} value={i} dense>{v}</MenuItem>
             ))}
           </Select>
         </FormControl>

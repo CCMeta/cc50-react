@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
 import WifiIcon from '@mui/icons-material/Wifi';
-import BluetoothIcon from '@mui/icons-material/Bluetooth';
+import SchemaIcon from '@mui/icons-material/SchemaOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -42,7 +42,7 @@ export default () => {
     <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
       <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <SchemaIcon />
         </ListItemIcon>
         <ListItemText primary="DHCP ON" />
         <Switch edge="end" onChange={() => handleToggle('DHCP')}
