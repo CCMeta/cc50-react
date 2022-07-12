@@ -9,6 +9,7 @@ import IndexPage from './p/Index';
 import ProtectionPage from './p/Protection';
 import SIMPage from './p/SIM';
 import WiFiPage from './p/WiFi';
+import DevicePage from './p/Device';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="sim" element={<SIMPage />} />
       <Route path="dhcp" element={<DHCPPage />} />
       <Route path="protection" element={<ProtectionPage />} />
+      <Route path="device" element={<DevicePage />} />
     </Routes>
 
     <NavigateComponent />
