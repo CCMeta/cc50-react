@@ -1,4 +1,4 @@
-import { useObserver } from 'react-solid-state'
+import { useObserver, createEffect } from 'react-solid-state'
 import { Button, AppBar, Typography, Toolbar, IconButton, FormControl, TextField, InputLabel, Divider } from '@mui/material'
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,9 +19,28 @@ import Select from '@mui/material/Select';
 
 export default () => {
   /*********constants**********/
-  const checked = Define("")
+  const get_wifi_settings = Define()
+  const wifiChecked = Define("")
+  const ssidChecked = Define("")
+  const ssid = Define("")
+  const password = Define("")
+  const channel = Define("")
+
+  /*********createEffect**********/
+  createEffect(async () => {
+    get_wifi_settings.set(await fetching(`get_wifi_settings=1&`))
+    wifiChecked.set(get_wifi_settings.get().status)
+    ssidChecked.set(get_wifi_settings.get().hideSSID)
+    ssid.set(get_wifi_settings.get().SSIDName)
+    password.set(get_wifi_settings.get().password)
+    channel.set(get_wifi_settings.get().channel)
+  })
+
   /*********functions**********/
-  const handleToggle = key => checked.set(key)
+  const onChannelChange = e => channel.set(e.target.value)
+  const onSsidChange = e => ssid.set(e.target.value)
+  const onPasswordChange = e => password.set(e.target.value)
+
   /*********styles**********/
 
   /*********component**********/
@@ -47,8 +66,8 @@ export default () => {
           <WifiIcon />
         </ListItemIcon>
         <ListItemText primary="Wi-Fi Status" />
-        <Switch edge="end" onChange={() => handleToggle('wifi')}
-          checked={checked.get().indexOf('wifi') !== -1} />
+        <Switch edge="end" onChange={() => wifiChecked.set(v => v === 1 ? 0 : 1)}
+          checked={wifiChecked.get() === 1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -56,23 +75,23 @@ export default () => {
           <WifiFindIcon />
         </ListItemIcon>
         <ListItemText primary="SSID Hidden" />
-        <Switch edge="end" onChange={() => handleToggle('bluetooth')}
-          checked={checked.get().indexOf('bluetooth') !== -1} />
+        <Switch edge="end" onChange={() => ssidChecked.set(v => v === 1 ? 0 : 1)}
+          checked={ssidChecked.get() === 1} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
-        <TextField fullWidth label="SSID" variant="standard" />
+        <TextField value={ssid.get()} onChange={onSsidChange} fullWidth label="SSID" variant="standard" />
       </ListItem>
       <ListItem>
-        <TextField fullWidth label="Password" variant="standard" />
+        <TextField value={password.get()} onChange={onPasswordChange} fullWidth label="Password" variant="standard" />
       </ListItem>
       <ListItem>
         <ListItemText sx={{ width: "50%" }} primary="Channel" />
         <FormControl sx={{ width: "50%" }}>
           <InputLabel>Channel</InputLabel>
-          <Select variant="standard" label="Channel" onChange={_ => _} MenuProps={{ style: { height: "30%" } }} >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => (
-              <MenuItem key={i} dense>{v}</MenuItem>
+          <Select value={channel.get()} variant="standard" label="Channel" onChange={onChannelChange} MenuProps={{ style: { height: "30%" } }} >
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((v, i) => (
+              <MenuItem key={i} value={i} dense>{v === 0 ? "Auto" : v}</MenuItem>
             ))}
           </Select>
         </FormControl>
