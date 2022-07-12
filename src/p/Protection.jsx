@@ -12,8 +12,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
-import WifiIcon from '@mui/icons-material/Wifi';
-import BluetoothIcon from '@mui/icons-material/Bluetooth';
+import SendIcon from '@mui/icons-material/Hearing';
+import FilterOutlinedIcon from '@mui/icons-material/FilterOutlined';
+import FireplaceIcon from '@mui/icons-material/Fireplace';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -69,7 +70,7 @@ export default () => {
     >
       <ListItem>
         <ListItemIcon>
-          <WifiIcon />
+          <FireplaceIcon />
         </ListItemIcon>
         <ListItemText primary="Firewall" />
         <Switch edge="end" onChange={() => firewall.set(v => v === 1 ? 0 : 1)}
@@ -78,7 +79,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <SendIcon />
         </ListItemIcon>
         <ListItemText primary="Ping Allow" />
         <Switch edge="end" onChange={() => pingDeactivation.set(v => v === 1 ? 0 : 1)}
@@ -87,7 +88,7 @@ export default () => {
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <FilterOutlinedIcon />
         </ListItemIcon>
         <ListItemText primary="IP Filter" />
         <Switch edge="end" onChange={() => IPFilterSwitch.set(v => v === 1 ? 0 : 1)}

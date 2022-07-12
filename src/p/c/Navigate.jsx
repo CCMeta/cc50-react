@@ -3,7 +3,14 @@ import { useObserver } from 'react-solid-state';
 
 import { Define } from '../utils';
 
-import CloudIcon from '@mui/icons-material/CloudOutlined';
+import SimCardIcon from '@mui/icons-material/SimCardOutlined';
+import PolylineIcon from '@mui/icons-material/Polyline';
+import RouteIcon from '@mui/icons-material/Route';
+import PinIcon from '@mui/icons-material/Pin';
+import PolicyIcon from '@mui/icons-material/Policy';
+import InfoIcon from '@mui/icons-material/Info';
+import MouseIcon from '@mui/icons-material/Mouse';
+import KeyIcon from '@mui/icons-material/Key';
 import ShieldIcon from '@mui/icons-material/HealthAndSafety';
 import LanguageIcon from '@mui/icons-material/Language';
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -14,25 +21,25 @@ import { BottomNavigation, BottomNavigationAction, ListItemIcon, ListItemText, M
 const subMenu1 = [
   // { text: 'GPRS', value: "gprs", icon: "friends" },
   // { text: 'APN', value: "apn", icon: "friends" },
-  { text: 'SIM', value: "sim", icon: "friends" },
+  { text: 'SIM', value: "sim", icon: <SimCardIcon color="primary" /> },
 ];
 const subMenu2 = [
-  { text: 'WIFI', value: "wifi", icon: "friends" },
-  { text: 'DHCP', value: "dhcp", icon: "friends" },
+  { text: 'WIFI', value: "wifi", icon: <RouteIcon color="primary" /> },
+  { text: 'DHCP', value: "dhcp", icon: <PolylineIcon color="primary" /> },
   // { text: 'Client', value: "client", icon: "friends" },
 ];
 const subMenu3 = [
-  { text: 'Protection', value: "protection", icon: "friends" },
-  { text: 'PIN', value: "pin", icon: "friends" },
+  { text: 'Protection', value: "protection", icon: <PolicyIcon color="primary" /> },
+  { text: 'PIN', value: "pin", icon: <PinIcon color="primary" /> },
 ];
 const subMenu4 = [
-  { text: 'Inbox', value: "inbox", icon: "friends" },
+  // { text: 'Inbox', value: "inbox", icon: "friends" },
 ];
 const subMenu5 = [
-  { text: 'Device', value: "device", icon: "friends" },
-  { text: 'Operation', value: "operation", icon: "friends" },
+  { text: 'Device', value: "device", icon: <InfoIcon color="primary" /> },
+  { text: 'Operation', value: "operation", icon: <MouseIcon color="primary" /> },
   // { text: 'Update', value: "update", icon: "friends" },
-  { text: 'Password', value: "password", icon: "friends" },
+  { text: 'Password', value: "password", icon: <KeyIcon color="primary" /> },
 ];
 const subMenusMap = [subMenu1, subMenu2, subMenu3, subMenu4, subMenu5]
 
@@ -88,7 +95,7 @@ export default () => {
       {subMenuList.get()?.map((item, index) => (
         <MenuItem key={index} onClick={e => onMenuItemClose(e, item.value)}>
           <ListItemIcon>
-            <CloudIcon fontSize="small" />
+            {item.icon}
           </ListItemIcon>
           <ListItemText>
             {item.text}
