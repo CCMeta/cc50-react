@@ -30,7 +30,7 @@ const subMenu4 = [
 ];
 const subMenu5 = [
   { text: 'Device', value: "device", icon: "friends" },
-  { text: 'Manage', value: "manage", icon: "friends" },
+  { text: 'Operation', value: "operation", icon: "friends" },
   // { text: 'Update', value: "update", icon: "friends" },
   { text: 'Password', value: "password", icon: "friends" },
 ];
