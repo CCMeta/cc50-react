@@ -1,4 +1,4 @@
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, Box } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 
 import './App.css';
@@ -17,22 +17,25 @@ import PasswordPage from './p/Password';
 const App = () => {
 
   return <div className="App">
-    <CssBaseline />
 
-    <Routes>
-      <Route path="/" element={<IndexPage />} />
-      <Route path="about" element={<AboutPage />} />
-      <Route path="wifi" element={<WiFiPage />} />
-      <Route path="sim" element={<SIMPage />} />
-      <Route path="dhcp" element={<DHCPPage />} />
-      <Route path="protection" element={<ProtectionPage />} />
-      <Route path="pin" element={<PinPage />} />
-      <Route path="device" element={<DevicePage />} />
-      <Route path="operation" element={<OperationPage />} />
-      <Route path="password" element={<PasswordPage />} />
-    </Routes>
-
-    <NavigateComponent />
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <div style={{ flexGrow: 1, order: 1 }}>
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="wifi" element={<WiFiPage />} />
+          <Route path="sim" element={<SIMPage />} />
+          <Route path="dhcp" element={<DHCPPage />} />
+          <Route path="protection" element={<ProtectionPage />} />
+          <Route path="pin" element={<PinPage />} />
+          <Route path="device" element={<DevicePage />} />
+          <Route path="operation" element={<OperationPage />} />
+          <Route path="password" element={<PasswordPage />} />
+        </Routes>
+      </div>
+      <NavigateComponent />
+    </Box>
 
   </div>
 }

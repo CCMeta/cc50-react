@@ -37,8 +37,8 @@ export default () => {
 
     <AppBar position="sticky">
       <Toolbar>
-        <IconButton onClick={_ => window.history.go(-1)} edge="start" color="inherit" sx={{ mr: 2 }}>
-          <ArrowBackIcon />
+        <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
+
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
           IndexPage

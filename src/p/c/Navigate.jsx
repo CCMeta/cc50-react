@@ -3,20 +3,36 @@ import { useObserver } from 'react-solid-state';
 
 import { Define } from '../utils';
 
-import SimCardIcon from '@mui/icons-material/SimCardOutlined';
-import PolylineIcon from '@mui/icons-material/Polyline';
-import RouteIcon from '@mui/icons-material/Route';
+import ShieldIcon from '@mui/icons-material/HealthAndSafety';
+import InfoIcon from '@mui/icons-material/Info';
+import KeyIcon from '@mui/icons-material/Key';
+import LanguageIcon from '@mui/icons-material/Language';
+import MouseIcon from '@mui/icons-material/Mouse';
 import PinIcon from '@mui/icons-material/Pin';
 import PolicyIcon from '@mui/icons-material/Policy';
-import InfoIcon from '@mui/icons-material/Info';
-import MouseIcon from '@mui/icons-material/Mouse';
-import KeyIcon from '@mui/icons-material/Key';
-import ShieldIcon from '@mui/icons-material/HealthAndSafety';
-import LanguageIcon from '@mui/icons-material/Language';
+import PolylineIcon from '@mui/icons-material/Polyline';
 import RestoreIcon from '@mui/icons-material/Restore';
+import RouteIcon from '@mui/icons-material/Route';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SimCardIcon from '@mui/icons-material/SimCardOutlined';
 import WifiIcon from '@mui/icons-material/Wifi';
-import { BottomNavigation, BottomNavigationAction, ListItemIcon, ListItemText, Menu, MenuItem, Paper } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, Paper } from '@mui/material';
+
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import StarBorder from '@mui/icons-material/StarBorder';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Toolbar from '@mui/material/Toolbar';
+import * as React from 'react';
+
 
 const subMenu1 = [
   // { text: 'GPRS', value: "gprs", icon: "friends" },
@@ -51,7 +67,23 @@ export default () => {
   const menuAnchor = Define(null)
   const subMenuList = Define([])
 
+  const isOpen1 = Define()
+  const isOpen2 = Define()
+  const isOpen3 = Define()
+  const isOpen4 = Define()
+  const isOpen5 = Define()
+  const subMenusOpenMap = [isOpen1, isOpen2, isOpen3, isOpen4, isOpen5]
+
+  const menuMetaData = [
+    { title: 'WAN', icon: <LanguageIcon color="primary" /> },
+    { title: 'LAN', icon: <WifiIcon color="primary" /> },
+    { title: 'SECURITY', icon: <ShieldIcon color="primary" /> },
+    { title: 'SMS', icon: <RestoreIcon color="primary" /> },
+    { title: 'SYSTEM', icon: <SettingsIcon color="primary" /> },
+  ]
   /*********functions**********/
+  const trick = () => eval("console.log(`shit`)")
+
   const onChangeBottomNav = (event, activeIndex) => {
 
     subMenuList.set(subMenusMap[activeIndex])
@@ -67,7 +99,7 @@ export default () => {
   }
 
   /*********styles**********/
-  const sx = {
+  const sx_bottom = {
     display: { md: "none" },
     "& .MuiBottomNavigationAction-root": {
       minWidth: "auto"
@@ -80,10 +112,55 @@ export default () => {
     }, position: 'fixed', bottom: 0, left: 0, right: 0,
   }
 
+  const sx_drawer = {
+    display: { xs: "none", md: "flex" },
+    width: 200,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+      width: 200,
+      boxSizing: 'border-box',
+    },
+  }
+
   /*********component**********/
   return useObserver(() => <div>
 
-    <Paper className="cc-BottomNavigation" sx={sx} elevation={3}>
+    <Drawer
+      sx={sx_drawer}
+      variant="permanent"
+      anchor="left"
+    >
+      <Toolbar />
+      {menuMetaData.map((itemMenu, index) => (
+        <List key={index}>
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => subMenusOpenMap[index].set(v => !v)}>
+              <ListItemIcon>
+                {itemMenu.icon}
+              </ListItemIcon>
+              <ListItemText primary={itemMenu.title} />
+              {subMenusOpenMap[index].get() ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+          </ListItem>
+          <Collapse in={subMenusOpenMap[index].get()} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {subMenusMap[index].map((item, item_index) => (
+                <ListItemButton onClick={e => onMenuItemClose(e, item.value)} key={item_index} sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              ))}
+            </List>
+          </Collapse>
+          <Divider />
+        </List>
+      ))}
+
+    </Drawer>
+
+    <Paper className="cc-BottomNavigation" sx={sx_bottom} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>
         <BottomNavigationAction label="WAN" icon={<LanguageIcon />} />
         <BottomNavigationAction label="LAN" icon={<WifiIcon />} />
