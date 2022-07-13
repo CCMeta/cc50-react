@@ -67,11 +67,11 @@ export default () => {
   const menuAnchor = Define(null)
   const subMenuList = Define([])
 
-  const isOpen1 = Define()
-  const isOpen2 = Define()
-  const isOpen3 = Define()
-  const isOpen4 = Define()
-  const isOpen5 = Define()
+  const isOpen1 = Define(false)
+  const isOpen2 = Define(false)
+  const isOpen3 = Define(false)
+  const isOpen4 = Define(false)
+  const isOpen5 = Define(false)
   const subMenusOpenMap = [isOpen1, isOpen2, isOpen3, isOpen4, isOpen5]
 
   const menuMetaData = [
