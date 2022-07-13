@@ -68,6 +68,7 @@ export default () => {
 
   /*********styles**********/
   const sx = {
+    display: { md: "none" },
     "& .MuiBottomNavigationAction-root": {
       minWidth: "auto"
     },

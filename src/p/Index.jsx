@@ -21,10 +21,13 @@ import { Suspense } from 'react';
 
 export default () => {
   /*********constants**********/
-  const testData = Store(null)
+  const connected_devices = Store()
+
+  /*********createEffect**********/
   createEffect(async () => {
-    testData.set(await fetching(`connected_devices=1&`))
+    connected_devices.set(await fetching(`connected_devices=1&`))
   })
+
   /*********functions**********/
 
   /*********styles**********/
@@ -94,7 +97,7 @@ export default () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {testData?.get?.devices?.map((row, index) => (
+              {connected_devices?.get?.devices?.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">{row.hostName}</TableCell>
                   <TableCell padding="none" align="right">{row.mac_addr}</TableCell>

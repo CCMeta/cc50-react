@@ -6,7 +6,7 @@ export function Define(value = '') {
   return { get: getValue, set: setValue }
 }
 
-export function Store(value) {
+export function Store(value = '') {
   const [getValue, setValue] = createStore(value)
   return { get: getValue, set: setValue }
 }
