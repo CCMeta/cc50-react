@@ -117,6 +117,7 @@ export default () => {
     width: 200,
     flexShrink: 0,
     '& .MuiDrawer-paper': {
+      backgroundColor: "rgba(255,255,255,0.6)",
       width: 200,
       boxSizing: 'border-box',
     },
@@ -142,6 +143,7 @@ export default () => {
               {subMenusOpenMap[index].get() ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
           </ListItem>
+
           <Collapse in={subMenusOpenMap[index].get()} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {subMenusMap[index].map((item, item_index) => (
@@ -154,7 +156,7 @@ export default () => {
               ))}
             </List>
           </Collapse>
-          <Divider />
+
         </List>
       ))}
 
