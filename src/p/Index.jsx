@@ -17,15 +17,30 @@ import 'animate.css';
 import css from '../s/About.module.css'
 import { fetching, Define, Store } from './utils'
 import { Suspense } from 'react';
+import $rpc from './rpc'
 
 
 export default () => {
   /*********constants**********/
   const connected_devices = Store()
-
+  console.log(document.cookie);
   /*********createEffect**********/
   createEffect(async () => {
-    connected_devices.set(await fetching(`connected_devices=1&`))
+    // connected_devices.set(await fetching(`connected_devices=1&`))
+    const formData = new FormData()
+    formData.append("luci_username", "root")
+    formData.append("luci_password", "123456")
+    let _ = await fetching(formData) // login 
+
+    const ubus_test = [
+      "40b2b3b1f0393ad869ff493be8eae93a",
+      "network.interface",
+      "dump",
+      {}
+    ]
+    await $rpc.request('call', ubus_test)
+
+
   })
 
   /*********functions**********/

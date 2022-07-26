@@ -16,13 +16,10 @@ export function Store(value = '') {
 
 export async function fetching(body) {
 
-  // const server = 'http://192.168.1.1/api'
-  const server = '/d/'
-  const method = 'post'
-  const mode = 'cors'// Access-Control-Allow-Origin: http://ccmeta.com:3000
-  const credentials = 'include'// Access-Control-Allow-Credentials: true 
 
-  if (true) {
+
+  if (false) {
+    const server = '/d/'
     const res = await fetch(server + body)
     if (body.indexOf("=1") === -1) {
       // window.location.href = '#'
@@ -30,6 +27,10 @@ export async function fetching(body) {
     return JSON.parse(await res.text())
   }
 
+  const server = '/cgi-bin/luci'
+  const method = 'post'
+  const mode = 'cors'// Access-Control-Allow-Origin: http://ccmeta.com:3000
+  const credentials = 'include'// Access-Control-Allow-Credentials: true 
   const options = {
     method,
     body,
@@ -38,7 +39,12 @@ export async function fetching(body) {
     // headers,
   }
   const res = await fetch(server, options)
-  return JSON.parse(await res.text())
+  try {
+    return JSON.parse(await res.text())
+  } catch (e) {
+    console.log(e)
+    return null
+  }
 }
 
 
