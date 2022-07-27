@@ -1,5 +1,6 @@
 
 import { createSignal, createStore } from 'react-solid-state'
+export { rpc } from './rpc'
 
 export function Define(value = '') {
   const [getValue, setValue] = createSignal(value)
@@ -10,8 +11,6 @@ export function Store(value = '') {
   const [getValue, setValue] = createStore(value)
   return { get: getValue, set: setValue }
 }
-
-
 
 
 export async function fetching(body) {

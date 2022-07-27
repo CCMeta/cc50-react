@@ -16,15 +16,14 @@ import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'animate.css';
 import css from '../s/About.module.css'
-import { fetching, Define, Store } from './utils'
+import { fetching, Define, rpc as $rpc } from './utils'
 import { Suspense } from 'react';
-import $rpc from './rpc'
 
 
 export default () => {
   /*********constants**********/
-  const connected_devices = Store()
   const network_interface_dump = Define([])
+  const luci_rpc_getHostHints = Define([])
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -32,19 +31,16 @@ export default () => {
     const formData = new FormData()
     formData.append("luci_username", "root")
     formData.append("luci_password", "123456")
-    let _ = await fetching(formData).then(async (header) => {
-      const ubus_test = [
-        cookie.parse(document.cookie).sysauth,//ubus session id the fuck
-        "network.interface", // target 
-        "dump", // action
-        {}
-      ]
-      network_interface_dump.set(
-        (await $rpc.request('call', ubus_test))?.[1]?.interface
-      )
-      console.log(network_interface_dump.get());
+    await fetching(formData).then(_ =>
+      sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth)) // login 
 
-    }) // login 
+    network_interface_dump.set(
+      (await $rpc.post("network.interface", "dump"))?.[1]?.interface
+    )
+    luci_rpc_getHostHints.set(
+      (await $rpc.post("luci-rpc", "getHostHints"))?.[1]?.interface
+    )
+
   })
 
   /*********functions**********/

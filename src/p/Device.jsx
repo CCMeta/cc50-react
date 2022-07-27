@@ -4,10 +4,12 @@ import {
   ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction,
 } from '@mui/material'
 import { createEffect, useObserver } from 'react-solid-state';
-import { fetching, Define } from './utils';
+import { fetching, Define, rpc as $rpc } from './utils'
 
 export default _ => {
   /*********constants**********/
+  const data_system_board = Define()
+
   const get_device_info = Define('')
   const serialNumber = Define('')
   const imei = Define('')
@@ -20,17 +22,12 @@ export default _ => {
   const wanIP = Define('')
   /*********createEffect**********/
   createEffect(async () => {
-    get_device_info.set(await fetching(`get_device_info=1&`))
-    serialNumber.set(get_device_info.get().serialNumber)
-    imei.set(get_device_info.get().imei)
-    imsi.set(get_device_info.get().imsi)
-    softwarewVersion.set(get_device_info.get().softwarewVersion)
-    hardwareVersion.set(get_device_info.get().hardwareVersion)
-    firmwarewVersion.set(get_device_info.get().firmwarewVersion)
-    webUIVersion.set(get_device_info.get().webUIVersion)
-    mac.set(get_device_info.get().mac)
-    wanIP.set(get_device_info.get().wanIP)
+
+    data_system_board.set((await $rpc.post(`system`, 'board'))?.[1])
+
   })
+
+  /*********functions**********/
 
   const onSubmit = async () => {
     const form = {
@@ -41,8 +38,6 @@ export default _ => {
       return
     }
   }
-  /*********functions**********/
-
   /*********styles**********/
 
   /*********component**********/
@@ -63,84 +58,83 @@ export default _ => {
       <Paper elevation={6}>
         <List>
 
-
           <ListItem divider>
-            <ListItemText primary="serialNumber" />
+            <ListItemText primary="board_name" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {serialNumber.get()}
+                {data_system_board.get()?.board_name}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="imei" />
+            <ListItemText primary="hostname" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {imei.get()}
+                {data_system_board.get()?.hostname}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="imsi" />
+            <ListItemText primary="model" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {imsi.get()}
+                {data_system_board.get()?.model}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="hardwareVersion" />
+            <ListItemText primary="kernel" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {hardwareVersion.get()}
+                {data_system_board.get()?.kernel}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="softwarewVersion" />
+            <ListItemText primary="system" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {softwarewVersion.get()}
+                {data_system_board.get()?.system}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="firmwarewVersion" />
+            <ListItemText primary="version" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {firmwarewVersion.get()}
+                {data_system_board.get()?.release?.version}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="webUIVersion" />
+            <ListItemText primary="target" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {webUIVersion.get()}
+                {data_system_board.get()?.release?.target}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="mac" />
+            <ListItemText primary="description" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {mac.get()}
+                {data_system_board.get()?.release?.description}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
 
           <ListItem divider>
-            <ListItemText primary="wanIP" />
+            <ListItemText primary="distribution" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                {wanIP.get()}
+                {data_system_board.get()?.release?.distribution}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>

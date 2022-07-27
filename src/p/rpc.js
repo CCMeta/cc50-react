@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const rpc = {}
 
-let RpcID = 1
+let RPC_ID = 1
 
 function sid() {
   return sessionStorage.getItem('sid') || ''
@@ -14,7 +14,7 @@ rpc.request = function (method, params, timeout) {
   return new Promise((resolve, reject) => {
     const req = {
       jsonrpc: '2.0',
-      id: RpcID++,
+      id: RPC_ID++,
       method,
       params
     }
@@ -38,28 +38,30 @@ rpc.request = function (method, params, timeout) {
   })
 }
 
-rpc.call = function (object, method, params, timeout) {
-  if (typeof params !== 'object') params = {}
-  return this.request('call', [sid(), object, method, params], timeout)
+rpc.post = function (target, action, object = {}) {
+  return this.request('call', [sid(), target, action, object])
 }
 
-rpc.ubus = function (object, method, params, timeout) {
-  return this.request('call', [sid(), 'ubus', 'call', { object, method, params }], timeout)
-}
+// rpc.call = function (object, method, params, timeout) {
+//   if (typeof params !== 'object') params = {}
+//   return this.request('call', [sid(), object, method, params], timeout)
+// }
 
-rpc.login = function (username, password) {
-  return this.request('login', {
-    username,
-    password
-  })
-}
+// rpc.ubus = function (object, method, params, timeout) {
+//   return this.request('call', [sid(), 'ubus', 'call', { object, method, params }], timeout)
+// }
 
-rpc.logout = function () {
-  return this.request('logout', { sid: sid() })
-}
+// rpc.login = function (username, password) {
+//   return this.request('login', {
+//     username,
+//     password
+//   })
+// }
 
-rpc.alive = function () {
-  return this.request('alive', { sid: sid() })
-}
+// rpc.logout = function () {
+//   return this.request('logout', { sid: sid() })
+// }
 
-export default rpc
+// rpc.alive = function () {
+//   return this.request('alive', { sid: sid() })
+// }
