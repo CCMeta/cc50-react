@@ -24,6 +24,7 @@ import $rpc from './rpc'
 export default () => {
   /*********constants**********/
   const connected_devices = Store()
+  const network_interface_dump = Define([])
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -32,16 +33,16 @@ export default () => {
     formData.append("luci_username", "root")
     formData.append("luci_password", "123456")
     let _ = await fetching(formData).then(async (header) => {
-      console.log(document.cookie)
-      console.log(cookie.parse(document.cookie))
-      console.log(header)
       const ubus_test = [
         cookie.parse(document.cookie).sysauth,//ubus session id the fuck
         "network.interface", // target 
         "dump", // action
         {}
       ]
-      await $rpc.request('call', ubus_test)
+      network_interface_dump.set(
+        (await $rpc.request('call', ubus_test))?.[1]?.interface
+      )
+      console.log(network_interface_dump.get());
 
     }) // login 
   })
@@ -109,17 +110,17 @@ export default () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Host</TableCell>
-                <TableCell align="right">MAC</TableCell>
-                <TableCell align="right">IP</TableCell>
+                <TableCell>l3_device</TableCell>
+                <TableCell align="right">proto</TableCell>
+                <TableCell align="right">interface</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {connected_devices?.get?.devices?.map((row, index) => (
+              {network_interface_dump?.get()?.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell component="th" scope="row">{row.hostName}</TableCell>
-                  <TableCell padding="none" align="right">{row.mac_addr}</TableCell>
-                  <TableCell align="right">{row.ip_addr}</TableCell>
+                  <TableCell component="th" scope="row">{row.l3_device}</TableCell>
+                  <TableCell padding="none" align="right">{row.proto}</TableCell>
+                  <TableCell align="right">{row.interface}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
