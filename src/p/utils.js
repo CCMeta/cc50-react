@@ -41,9 +41,9 @@ export async function fetching(body) {
   try {
     return JSON.parse(await res.text())
   } catch (e) {
-    console.log(e)
-    return res.headers
+    // console.log(e)
   }
+  return null
 }
 
 
