@@ -24,6 +24,7 @@ export default () => {
   /*********constants**********/
   const network_interface_dump = Define([])
   const luci_rpc_getHostHints = Define([])
+  const luci_rpc_getDHCPLeases = Define([])
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -41,6 +42,10 @@ export default () => {
 
     luci_rpc_getHostHints.set(
       (await $rpc.post("luci-rpc", "getHostHints"))?.[1]?.interface
+    )
+
+    luci_rpc_getDHCPLeases.set(
+      (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases
     )
 
 
@@ -65,6 +70,7 @@ export default () => {
     </AppBar>
 
     <Stack sx={{ p: 2 }} spacing={2}>
+
       <Stack direction="row" justifyContent="center" spacing={2}>
         <Card elevation={6} className={css.card}>
           <CardContent>
@@ -109,6 +115,31 @@ export default () => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>Host</TableCell>
+                <TableCell>IPv4</TableCell>
+                <TableCell>MAC</TableCell>
+                <TableCell>Leasetime</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {luci_rpc_getDHCPLeases?.get()?.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">{row.hostname}</TableCell>
+                  <TableCell>{row.ipaddr}</TableCell>
+                  <TableCell>{row.macaddr}</TableCell>
+                  <TableCell>{row.expires}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+
+      <Paper elevation={6}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
                 <TableCell>l3_device</TableCell>
                 <TableCell align="right">proto</TableCell>
                 <TableCell align="right">interface</TableCell>
@@ -126,6 +157,8 @@ export default () => {
           </Table>
         </TableContainer>
       </Paper>
+
+
     </Stack>
 
 

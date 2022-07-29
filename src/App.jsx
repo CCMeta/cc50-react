@@ -31,8 +31,8 @@ const App = () => {
           <Route path="dhcp" element={<DHCPPage />} />
           <Route path="protection" element={<ProtectionPage />} />
           <Route path="pin" element={<PinPage />} />
-          {/* <Route path="network_info" element={<NetworkInfoPage />} /> */}
-          {/* <Route path="sim_info" element={<SimInfoPage />} /> */}
+          <Route path="network_info" element={<NetworkInfoPage />} />
+          <Route path="sim_info" element={<SimInfoPage />} />
           <Route path="device_info" element={<DevicePage />} />
           <Route path="operation" element={<OperationPage />} />
           <Route path="password" element={<PasswordPage />} />

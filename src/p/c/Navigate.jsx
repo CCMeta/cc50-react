@@ -52,8 +52,8 @@ const subMenu4 = [
   // { text: 'Inbox', value: "inbox", icon: "friends" },
 ];
 const subMenu5 = [
-  { text: 'NetworkInfo', value: "network_info", icon: <InfoIcon color="primary" /> },
-  { text: 'SIM_Info', value: "sim_info", icon: <InfoIcon color="primary" /> },
+  // { text: 'NetworkInfo', value: "network_info", icon: <InfoIcon color="primary" /> },
+  // { text: 'SIM_Info', value: "sim_info", icon: <InfoIcon color="primary" /> },
   { text: 'DeviceInfo', value: "device_info", icon: <InfoIcon color="primary" /> },
   { text: 'Operation', value: "operation", icon: <MouseIcon color="primary" /> },
   // { text: 'Update', value: "update", icon: "friends" },
