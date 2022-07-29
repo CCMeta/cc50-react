@@ -4,30 +4,53 @@ import {
   ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction,
 } from '@mui/material'
 import { createEffect, useObserver } from 'react-solid-state';
-import { fetching, Define, rpc as $rpc } from './utils'
+import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './utils'
 
 export default _ => {
   /*********constants**********/
   const data_system_board = Define()
+  const data_device_info = Define({})
+  const data_network_info = Define({})
 
-  const get_device_info = Define('')
-  const serialNumber = Define('')
-  const imei = Define('')
-  const imsi = Define('')
-  const softwarewVersion = Define('')
-  const hardwareVersion = Define('')
-  const firmwarewVersion = Define('')
-  const webUIVersion = Define('')
-  const mac = Define('')
-  const wanIP = Define('')
   /*********createEffect**********/
   createEffect(async () => {
 
-    data_system_board.set((await $rpc.post(`system`, 'board'))?.[1])
 
-  })
+    data_system_board.set((await $rpc.post(`system`, 'board'))?.[1])
+    data_device_info.set(await fetching_device_info())
+    data_network_info.set(await fetching_sim_info())
+
+
+  })//end of createEffect
 
   /*********functions**********/
+  const fetching_device_info = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `( echo "0" && echo "2" && echo "3" && echo "4" && echo "-1") | sample_dm`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return {
+        firmware: CmdResultParser(res, 'version:'),
+        imei: CmdResultParser(res, 'imei:'),
+        software: CmdResultParser(res, 'software version:\n'),
+      }
+    })
+  }
+
+  const fetching_sim_info = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `( echo "0" && echo "4" && echo "5" && echo "-1") | sample_nw`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return {
+        pref_roaming: CmdResultParser(res, 'pref_roaming => '),
+        long_eons: CmdResultParser(res, 'long_eons = '),
+        short_eons: CmdResultParser(res, 'short_eons = '),
+      }
+    })
+  }
 
   const onSubmit = async () => {
     const form = {
@@ -139,6 +162,77 @@ export default _ => {
             </ListItemSecondaryAction>
           </ListItem>
 
+
+
+        </List>
+      </Paper>
+    </Stack>
+
+    <Stack sx={{ p: 2 }} spacing={2}>
+      <Paper elevation={6}>
+        <List>
+
+          <ListItem divider>
+            <ListItemText primary="firmware" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption">
+                {data_device_info.get()?.firmware}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+          <ListItem divider>
+            <ListItemText primary="imei" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption">
+                {data_device_info.get()?.imei}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+          <ListItem divider>
+            <ListItemText primary="software" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption">
+                {data_device_info.get()?.software}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+        </List>
+      </Paper>
+    </Stack>
+
+    <Stack sx={{ p: 2 }} spacing={2}>
+      <Paper elevation={6}>
+        <List>
+
+          <ListItem divider>
+            <ListItemText primary="pref_roaming" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption">
+                {data_network_info.get()?.pref_roaming}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+          <ListItem divider>
+            <ListItemText primary="long_eons" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption">
+                {data_network_info.get()?.long_eons}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+          <ListItem divider>
+            <ListItemText primary="short_eons" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption">
+                {data_network_info.get()?.short_eons}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
 
         </List>
       </Paper>

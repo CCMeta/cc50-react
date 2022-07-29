@@ -10,7 +10,9 @@ import ProtectionPage from './p/Protection';
 import PinPage from './p/Pin';
 import SIMPage from './p/SIM';
 import WiFiPage from './p/WiFi';
-import DevicePage from './p/Device';
+import SimInfoPage from './p/SimInfo';
+import NetworkInfoPage from './p/NetworkInfo';
+import DevicePage from './p/DeviceInfo';
 import OperationPage from './p/Operation';
 import PasswordPage from './p/Password';
 
@@ -29,7 +31,9 @@ const App = () => {
           <Route path="dhcp" element={<DHCPPage />} />
           <Route path="protection" element={<ProtectionPage />} />
           <Route path="pin" element={<PinPage />} />
-          <Route path="device" element={<DevicePage />} />
+          {/* <Route path="network_info" element={<NetworkInfoPage />} /> */}
+          {/* <Route path="sim_info" element={<SimInfoPage />} /> */}
+          <Route path="device_info" element={<DevicePage />} />
           <Route path="operation" element={<OperationPage />} />
           <Route path="password" element={<PasswordPage />} />
         </Routes>

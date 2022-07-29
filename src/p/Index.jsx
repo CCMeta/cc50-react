@@ -16,7 +16,7 @@ import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'animate.css';
 import css from '../s/About.module.css'
-import { fetching, Define, rpc as $rpc } from './utils'
+import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './utils'
 import { Suspense } from 'react';
 
 
@@ -27,19 +27,22 @@ export default () => {
 
   /*********createEffect**********/
   createEffect(async () => {
-    // connected_devices.set(await fetching(`connected_devices=1&`))
-    const formData = new FormData()
-    formData.append("luci_username", "root")
-    formData.append("luci_password", "123456")
-    await fetching(formData).then(_ =>
-      sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth)) // login 
+
+
+    await fetching(FormBuilder({
+      "luci_username": "root", "luci_password": "123456",
+    }), 'login'
+    ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
+
 
     network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface
     )
+
     luci_rpc_getHostHints.set(
       (await $rpc.post("luci-rpc", "getHostHints"))?.[1]?.interface
     )
+
 
   })
 
