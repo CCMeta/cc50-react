@@ -25,6 +25,7 @@ export default () => {
   const network_interface_dump = Define([])
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
+  const data_clients_info = Define([])
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -34,6 +35,9 @@ export default () => {
       "luci_username": "root", "luci_password": "123456",
     }), 'login'
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
+
+    // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
+    // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
 
 
     network_interface_dump.set(
@@ -46,6 +50,10 @@ export default () => {
 
     luci_rpc_getDHCPLeases.set(
       (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases
+    )
+
+    data_clients_info.set(
+      await fetching(``, 'wifi', `/sta_info/rai0`)
     )
 
 
@@ -108,6 +116,31 @@ export default () => {
             <ListItemText primary="Total Flow" secondary="All Time Data" />
           </ListItem>
         </List>
+      </Paper>
+
+      <Paper elevation={6}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>MacAddr</TableCell>
+                <TableCell>PhyMode</TableCell>
+                <TableCell>AvgRssi0</TableCell>
+                <TableCell>StreamSnr1</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data_clients_info?.get()?.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">{row.MacAddr}</TableCell>
+                  <TableCell>{row.PhyMode}</TableCell>
+                  <TableCell>{row.AvgRssi0}</TableCell>
+                  <TableCell>{row.StreamSnr1}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Paper>
 
       <Paper elevation={6}>

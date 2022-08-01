@@ -13,8 +13,9 @@ export function Store(value = '') {
 }
 
 
-export async function fetching(body, type = `login`) {
-  let path = null
+export async function fetching(body, type = `login`, subpath = ``) {
+  let path = ''
+  let method = 'post'
   switch (type) {
     case 'login':
       path = `/cgi-bin/luci`
@@ -22,12 +23,17 @@ export async function fetching(body, type = `login`) {
     case 'webcmd':
       path = `/cgi-bin/luci/admin/mtk/webcmd`
       break;
+    case 'wifi':
+      path = `/cgi-bin/luci/admin/mtk/wifi${subpath}`
+      method = 'get'
+      body = null
+      break;
     default:
       break;
   }
 
   const options = {
-    method: 'post', body, mode: 'cors', credentials: 'include', // headers,
+    method, body, mode: 'cors', credentials: 'include', // headers,
   }
 
   const res = await fetch(path, options)
