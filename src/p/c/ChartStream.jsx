@@ -79,14 +79,7 @@ const localData = [
 export const MyResponsiveStream = ({ data }) => (
   <ResponsiveStream
     data={data}
-    keys={[
-      'Raoul',
-      'Josiane',
-      'Marcel',
-      'René',
-      'Paul',
-      'Jacques'
-    ]}
+    keys={['cpu', 'mem']}
     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
     axisTop={null}
     axisRight={null}

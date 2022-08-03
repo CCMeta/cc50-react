@@ -28,93 +28,17 @@ export default () => {
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info = Define([])
-  const data_MyResponsiveStream = Define([
-    {
-      "Raoul": 159,
-      "Josiane": 30,
-      "Marcel": 13,
-      "René": 16,
-      "Paul": 167,
-      "Jacques": 23
-    },
-    {
-      "Raoul": 89,
-      "Josiane": 153,
-      "Marcel": 69,
-      "René": 83,
-      "Paul": 119,
-      "Jacques": 114
-    },
-    {
-      "Raoul": 116,
-      "Josiane": 80,
-      "Marcel": 105,
-      "René": 177,
-      "Paul": 147,
-      "Jacques": 10
-    },
-    {
-      "Raoul": 134,
-      "Josiane": 28,
-      "Marcel": 112,
-      "René": 37,
-      "Paul": 154,
-      "Jacques": 28
-    },
-    {
-      "Raoul": 169,
-      "Josiane": 143,
-      "Marcel": 116,
-      "René": 142,
-      "Paul": 58,
-      "Jacques": 25
-    },
-    {
-      "Raoul": 106,
-      "Josiane": 197,
-      "Marcel": 13,
-      "René": 106,
-      "Paul": 74,
-      "Jacques": 169
-    },
-    {
-      "Raoul": 155,
-      "Josiane": 47,
-      "Marcel": 79,
-      "René": 197,
-      "Paul": 121,
-      "Jacques": 45
-    },
-    {
-      "Raoul": 64,
-      "Josiane": 102,
-      "Marcel": 105,
-      "René": 142,
-      "Paul": 170,
-      "Jacques": 121
-    },
-    {
-      "Raoul": 126,
-      "Josiane": 66,
-      "Marcel": 27,
-      "René": 153,
-      "Paul": 137,
-      "Jacques": 77
-    }
-  ])
+  const data_MyResponsiveStream = Define([{ cpu: 0, mem: 0 }])
 
   /*********createEffect**********/
   createEffect(async () => {
-    setInterval(() => {
-      data_MyResponsiveStream.set(data_MyResponsiveStream.get().concat([{
-        "Raoul": 159,
-        "Josiane": 30,
-        "Marcel": 13,
-        "René": 16,
-        "Paul": 167,
-        "Jacques": 23
-      }]))
-    }, 1000);
+
+
+    setInterval(async () => {
+      data_MyResponsiveStream.set(data_MyResponsiveStream.get().concat([
+        await fetching_MyResponsiveStream()
+      ]))
+    }, 5000);
 
 
     await fetching(FormBuilder({
@@ -146,7 +70,23 @@ export default () => {
   })
 
   /*********functions**********/
-
+  const fetching_MyResponsiveStream = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `top -n 1 -b | head -2`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      const localCmdResultParser = (res) => {
+        let cpu_idle = parseInt(CmdResultParser(res, `nic `, `% idle`))
+        let mem_used = parseInt(CmdResultParser(res, `Mem:`, `used, `))
+        let mem_free = parseInt(CmdResultParser(res, `used, `, `free, `))
+        let cpu = 100 - cpu_idle
+        let mem = 100 * mem_used / (mem_free + mem_used)
+        return { cpu, mem, }
+      }
+      return localCmdResultParser(res)
+    })
+  }
   /*********styles**********/
 
   /*********component**********/

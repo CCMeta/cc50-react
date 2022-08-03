@@ -47,9 +47,9 @@ export async function fetching(body, type = `login`, subpath = ``) {
   return res_text
 }
 
-export function CmdResultParser(raw, keyword) {
+export function CmdResultParser(raw, keyword, endword = '\n') {
   let slice_on = raw.indexOf(keyword) + keyword.length
-  let slice_off = raw.indexOf('\n', slice_on)
+  let slice_off = raw.indexOf(endword, slice_on)
   const result = raw.slice(slice_on, slice_off)
   return result
 }
