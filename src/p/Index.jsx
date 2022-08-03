@@ -18,6 +18,8 @@ import 'animate.css';
 import css from '../s/About.module.css'
 import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './utils'
 import { Suspense } from 'react';
+import { MyResponsiveBar } from "./c/ChartBar";
+import { MyResponsiveStream } from "./c/ChartStream";
 
 
 export default () => {
@@ -26,9 +28,93 @@ export default () => {
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info = Define([])
+  const data_MyResponsiveStream = Define([
+    {
+      "Raoul": 159,
+      "Josiane": 30,
+      "Marcel": 13,
+      "René": 16,
+      "Paul": 167,
+      "Jacques": 23
+    },
+    {
+      "Raoul": 89,
+      "Josiane": 153,
+      "Marcel": 69,
+      "René": 83,
+      "Paul": 119,
+      "Jacques": 114
+    },
+    {
+      "Raoul": 116,
+      "Josiane": 80,
+      "Marcel": 105,
+      "René": 177,
+      "Paul": 147,
+      "Jacques": 10
+    },
+    {
+      "Raoul": 134,
+      "Josiane": 28,
+      "Marcel": 112,
+      "René": 37,
+      "Paul": 154,
+      "Jacques": 28
+    },
+    {
+      "Raoul": 169,
+      "Josiane": 143,
+      "Marcel": 116,
+      "René": 142,
+      "Paul": 58,
+      "Jacques": 25
+    },
+    {
+      "Raoul": 106,
+      "Josiane": 197,
+      "Marcel": 13,
+      "René": 106,
+      "Paul": 74,
+      "Jacques": 169
+    },
+    {
+      "Raoul": 155,
+      "Josiane": 47,
+      "Marcel": 79,
+      "René": 197,
+      "Paul": 121,
+      "Jacques": 45
+    },
+    {
+      "Raoul": 64,
+      "Josiane": 102,
+      "Marcel": 105,
+      "René": 142,
+      "Paul": 170,
+      "Jacques": 121
+    },
+    {
+      "Raoul": 126,
+      "Josiane": 66,
+      "Marcel": 27,
+      "René": 153,
+      "Paul": 137,
+      "Jacques": 77
+    }
+  ])
 
   /*********createEffect**********/
   createEffect(async () => {
+    setInterval(() => {
+      data_MyResponsiveStream.set(data_MyResponsiveStream.get().concat([{
+        "Raoul": 159,
+        "Josiane": 30,
+        "Marcel": 13,
+        "René": 16,
+        "Paul": 167,
+        "Jacques": 23
+      }]))
+    }, 1000);
 
 
     await fetching(FormBuilder({
@@ -78,6 +164,14 @@ export default () => {
     </AppBar>
 
     <Stack sx={{ p: 2 }} spacing={2}>
+
+      <Stack style={{ height: '500px' }} direction="row" justifyContent="center" spacing={2}>
+        <MyResponsiveStream data={data_MyResponsiveStream.get()} />
+      </Stack>
+
+      <Stack style={{ height: '500px' }} direction="row" justifyContent="center" spacing={2}>
+        <MyResponsiveBar />
+      </Stack>
 
       <Stack direction="row" justifyContent="center" spacing={2}>
         <Card elevation={6} className={css.card}>
