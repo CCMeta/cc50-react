@@ -34,11 +34,11 @@ export default () => {
   createEffect(async () => {
 
 
-    setInterval(async () => {
-      data_MyResponsiveStream.set(data_MyResponsiveStream.get().concat([
-        await fetching_MyResponsiveStream()
-      ]))
-    }, 5000);
+    // setInterval(async () => {
+    //   data_MyResponsiveStream.set(data_MyResponsiveStream.get().concat([
+    //     await fetching_MyResponsiveStream()
+    //   ]))
+    // }, 5000);
 
 
     await fetching(FormBuilder({
