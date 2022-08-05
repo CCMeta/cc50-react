@@ -16,12 +16,12 @@ import RouteIcon from '@mui/icons-material/Route';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SimCardIcon from '@mui/icons-material/SimCardOutlined';
 import WifiIcon from '@mui/icons-material/Wifi';
-import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, Paper } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, IconButton, Menu, MenuItem, Paper } from '@mui/material';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import StarBorder from '@mui/icons-material/StarBorder';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -68,6 +68,7 @@ export default () => {
   const menuOpenState = Define(false)
   const menuAnchor = Define(null)
   const subMenuList = Define([])
+  const mainMenuOpen = Define(false)
 
   const isOpen1 = Define(false)
   const isOpen2 = Define(false)
@@ -116,51 +117,53 @@ export default () => {
 
   const sx_drawer = {
     display: { xs: "none", md: "flex" },
-    width: 200,
+    width: '4rem',
     flexShrink: 0,
+    overflowX: 'hidden',
+    transition: 'width 225ms ease-in-out 0ms',
     '& .MuiDrawer-paper': {
+      overflowX: 'hidden',
       backgroundColor: "rgba(255,255,255,0.6)",
-      width: 200,
-      boxSizing: 'border-box',
+      // boxSizing: 'border-box',
+      width: '4rem',
+      transition: 'width 225ms ease-in-out 0ms',
+      ...(mainMenuOpen.get() && {
+        width: '12rem',
+      }),
+      ...(!mainMenuOpen.get() && {
+        width: '4rem',
+      })
     },
+    ...(mainMenuOpen.get() && {
+      width: '12rem',
+    }),
+    ...(!mainMenuOpen.get() && {
+      width: '4rem',
+    })
   }
 
   /*********component**********/
   return useObserver(() => <div>
 
-    <Drawer
-      sx={sx_drawer}
-      variant="permanent"
-      anchor="left"
-    >
-      <Toolbar />
-      {menuMetaData.map((itemMenu, index) => (
-        <List key={index}>
-          <ListItem disablePadding>
+    <Drawer sx={sx_drawer} variant='permanent' anchor="left" open={mainMenuOpen.get()}>
+      <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+        <IconButton onClick={() => { mainMenuOpen.set(!mainMenuOpen.get()) }}>
+          {mainMenuOpen.get() ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
+      </Toolbar>
+      <Divider />
+      <List>
+        {menuMetaData.map((itemMenu, index) => (
+          <ListItem key={index} disablePadding>
             <ListItemButton onClick={() => subMenusOpenMap[index].set(v => !v)}>
               <ListItemIcon>
                 {itemMenu.icon}
               </ListItemIcon>
               <ListItemText primary={itemMenu.title} />
-              {subMenusOpenMap[index].get() ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
           </ListItem>
-
-          <Collapse in={subMenusOpenMap[index].get()} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {subMenusMap[index].map((item, item_index) => (
-                <ListItemButton onClick={e => onMenuItemClose(e, item.value)} key={item_index} sx={{ pl: 4 }}>
-                  <ListItemIcon>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              ))}
-            </List>
-          </Collapse>
-
-        </List>
-      ))}
+        ))}
+      </List>
 
     </Drawer>
 
