@@ -110,129 +110,139 @@ export default () => {
       <Stack style={{ flexBasis: 0, flexGrow: 1 }}>
         <div>motherfucker</div>
       </Stack>
+      {/* end of left side content */}
 
       <Stack style={{ flexBasis: 0, flexGrow: 4 }} spacing={2}>
 
-        <Stack style={{ height: '500px' }} direction="row" justifyContent="center" spacing={2}>
-          <MyResponsiveStream data={data_MyResponsiveStream.get()} />
+        <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
+          <Stack style={{ height: '30vh' }} direction="row" justifyContent="center" spacing={2}>
+            <MyResponsiveStream data={data_MyResponsiveStream.get()} />
+          </Stack>
         </Stack>
 
-        <Stack style={{ height: '500px' }} direction="row" justifyContent="center" spacing={2}>
-          <MyResponsiveBar />
+        <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
+          <Stack style={{ height: '30vh' }} direction="row" justifyContent="center" spacing={2}>
+            <MyResponsiveBar />
+          </Stack>
         </Stack>
 
-        <Stack direction="row" justifyContent="center" spacing={2}>
-          <Card elevation={6} className={css.card}>
-            <CardContent>
-              <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
-                <Typography>00.00</Typography>
-                <Stack>
-                  <Typography>up</Typography>
-                  <Typography>mb/s</Typography>
+        <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
+
+          <Stack direction="row" justifyContent="center" spacing={2}>
+            <Card elevation={6} className={css.card}>
+              <CardContent>
+                <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
+                  <Typography>00.00</Typography>
+                  <Stack>
+                    <Typography>up</Typography>
+                    <Typography>mb/s</Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </CardContent>
-          </Card>
-          <Card elevation={6} className={css.card}>
-            <CardContent>
-              <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
-                <Typography>00.00</Typography>
-                <Stack>
-                  <Typography>up</Typography>
-                  <Typography>mb/s</Typography>
+              </CardContent>
+            </Card>
+            <Card elevation={6} className={css.card}>
+              <CardContent>
+                <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
+                  <Typography>00.00</Typography>
+                  <Stack>
+                    <Typography>up</Typography>
+                    <Typography>mb/s</Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Stack>
+
+          <Paper elevation={6}>
+            <List>
+              <ListItem divider={true}>
+                <ListItemText primary="Session Flow" secondary="This Session Data" />
+              </ListItem>
+              <ListItem divider={true}>
+                <ListItemText primary="Month Flow" secondary="This Month Data" />
+              </ListItem>
+              <ListItem >
+                <ListItemText primary="Total Flow" secondary="All Time Data" />
+              </ListItem>
+            </List>
+          </Paper>
+
+          <Paper elevation={6}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>MacAddr</TableCell>
+                    <TableCell>PhyMode</TableCell>
+                    <TableCell>AvgRssi0</TableCell>
+                    <TableCell>StreamSnr1</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data_clients_info?.get()?.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell component="th" scope="row">{row.MacAddr}</TableCell>
+                      <TableCell>{row.PhyMode}</TableCell>
+                      <TableCell>{row.AvgRssi0}</TableCell>
+                      <TableCell>{row.StreamSnr1}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+
+          <Paper elevation={6}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Host</TableCell>
+                    <TableCell>IPv4</TableCell>
+                    <TableCell>MAC</TableCell>
+                    <TableCell>Leasetime</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {luci_rpc_getDHCPLeases?.get()?.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell component="th" scope="row">{row.hostname}</TableCell>
+                      <TableCell>{row.ipaddr}</TableCell>
+                      <TableCell>{row.macaddr}</TableCell>
+                      <TableCell>{row.expires}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+
+          <Paper elevation={6}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>l3_device</TableCell>
+                    <TableCell align="right">proto</TableCell>
+                    <TableCell align="right">interface</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {network_interface_dump?.get()?.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell component="th" scope="row">{row.l3_device}</TableCell>
+                      <TableCell padding="none" align="right">{row.proto}</TableCell>
+                      <TableCell align="right">{row.interface}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
         </Stack>
 
-        <Paper elevation={6}>
-          <List>
-            <ListItem divider={true}>
-              <ListItemText primary="Session Flow" secondary="This Session Data" />
-            </ListItem>
-            <ListItem divider={true}>
-              <ListItemText primary="Month Flow" secondary="This Month Data" />
-            </ListItem>
-            <ListItem >
-              <ListItemText primary="Total Flow" secondary="All Time Data" />
-            </ListItem>
-          </List>
-        </Paper>
-
-        <Paper elevation={6}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>MacAddr</TableCell>
-                  <TableCell>PhyMode</TableCell>
-                  <TableCell>AvgRssi0</TableCell>
-                  <TableCell>StreamSnr1</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data_clients_info?.get()?.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell component="th" scope="row">{row.MacAddr}</TableCell>
-                    <TableCell>{row.PhyMode}</TableCell>
-                    <TableCell>{row.AvgRssi0}</TableCell>
-                    <TableCell>{row.StreamSnr1}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-
-        <Paper elevation={6}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Host</TableCell>
-                  <TableCell>IPv4</TableCell>
-                  <TableCell>MAC</TableCell>
-                  <TableCell>Leasetime</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {luci_rpc_getDHCPLeases?.get()?.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell component="th" scope="row">{row.hostname}</TableCell>
-                    <TableCell>{row.ipaddr}</TableCell>
-                    <TableCell>{row.macaddr}</TableCell>
-                    <TableCell>{row.expires}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-
-        <Paper elevation={6}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>l3_device</TableCell>
-                  <TableCell align="right">proto</TableCell>
-                  <TableCell align="right">interface</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {network_interface_dump?.get()?.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell component="th" scope="row">{row.l3_device}</TableCell>
-                    <TableCell padding="none" align="right">{row.proto}</TableCell>
-                    <TableCell align="right">{row.interface}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
       </Stack>
+      {/* end of right side content */}
 
 
     </Stack>
