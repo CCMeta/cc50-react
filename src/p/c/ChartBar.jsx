@@ -120,6 +120,7 @@ export const MyResponsiveBar = ({ data }) => (
       'fries',
       'donut'
     ]}
+    layers={['grid', 'axes', 'bars', 'markers', 'annotations']}
     indexBy="country"
     margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
     padding={0.3}
@@ -187,6 +188,7 @@ export const MyResponsiveBar = ({ data }) => (
       legendPosition: 'middle',
       legendOffset: -40
     }}
+    enableLabel={false}
     labelSkipWidth={12}
     labelSkipHeight={12}
     labelTextColor={{
@@ -211,7 +213,7 @@ export const MyResponsiveBar = ({ data }) => (
         itemHeight: 20,
         itemDirection: 'left-to-right',
         itemOpacity: 0.85,
-        symbolSize: 20,
+        symbolSize: 2,
         effects: [
           {
             on: 'hover',

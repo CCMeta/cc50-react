@@ -1,7 +1,7 @@
 import { useObserver, createEffect, createStore, onCleanup, } from 'react-solid-state'
 import {
   Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Card, CardContent, Paper, List,
-  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction, LinearProgress, Box, Switch, styled
+  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction, LinearProgress, Box, Switch, styled, CircularProgress
 } from '@mui/material'
 import cookie from 'cookie'
 
@@ -20,6 +20,7 @@ import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './u
 import { Suspense } from 'react';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveStream } from "./c/ChartStream";
+import { MyResponsiveLine } from "./c/SpeedLineArea";
 
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,
@@ -294,17 +295,45 @@ export default () => {
       </Stack>
       {/* end of left side content */}
 
-      <Stack style={{ flexBasis: 0, flexGrow: 4 }} spacing={2}>
+      <Stack style={{ flexBasis: 0, flexGrow: 4 }} spacing={2}
+        divider={<Divider orientation="horizontal" flexItem />}>
 
-        <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
-          <Stack style={{ height: '30vh' }} direction="row" justifyContent="center" spacing={2}>
-            <MyResponsiveStream data={data_MyResponsiveStream.get()} />
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
+          divider={<Divider orientation="vertical" flexItem />}>
+
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} spacing={2}>
+            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+              <CircularProgress sx={{ w: "100%", h: "100%" }} variant="determinate" value={30} />
+              <Box
+                sx={{
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  position: 'absolute',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="caption" component="div" color="text.secondary">
+                  {`33%`}
+                </Typography>
+              </Box>
+            </Box>
           </Stack>
+
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} spacing={2}>
+            <MyResponsiveBar />
+
+          </Stack>
+
         </Stack>
 
         <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
           <Stack style={{ height: '30vh' }} direction="row" justifyContent="center" spacing={2}>
-            <MyResponsiveBar />
+            {/* <MyResponsiveStream data={data_MyResponsiveStream.get()} /> */}
+            <MyResponsiveLine />
           </Stack>
         </Stack>
 
