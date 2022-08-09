@@ -139,7 +139,7 @@ export default () => {
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
     <AppBar position="sticky">
-      <Toolbar>
+      <Toolbar variant="dense">
         <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
 
         </IconButton>
