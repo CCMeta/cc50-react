@@ -4,6 +4,7 @@ html body {
   background-size: 400% 400%;
   -webkit-animation: gradient 10s ease-in-out infinite;
   animation: gradient 10s ease-in-out infinite;
+  /* animation: App-logo-spin 10s linear infinite; */
 }
 
 body .MuiList-root {

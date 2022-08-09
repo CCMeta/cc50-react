@@ -145,7 +145,7 @@ export default () => {
 
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          IndexPage
+          Dashboard
         </Typography>
       </Toolbar>
     </AppBar>
@@ -295,13 +295,15 @@ export default () => {
       </Stack>
       {/* end of left side content */}
 
-      <Stack style={{ flexBasis: 0, flexGrow: 4 }} spacing={2}
+
+      <Stack style={{ flexBasis: 0, flexGrow: 4 }}
         divider={<Divider orientation="horizontal" flexItem />}>
 
         <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
+          justifyContent="center"
           divider={<Divider orientation="vertical" flexItem />}>
 
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} spacing={2}>
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
               <CircularProgress sx={{ w: "100%", h: "100%" }} variant="determinate" value={30} />
               <Box
@@ -323,21 +325,33 @@ export default () => {
             </Box>
           </Stack>
 
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} spacing={2}>
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
             <MyResponsiveBar />
-
           </Stack>
 
         </Stack>
+        {/* end of right side 1 */}
 
-        <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
-          <Stack style={{ height: '30vh' }} direction="row" justifyContent="center" spacing={2}>
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
+          divider={<Divider orientation="vertical" flexItem />}>
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
+            <MyResponsiveBar />
+          </Stack>
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
+            <MyResponsiveBar />
+          </Stack>
+        </Stack>
+        {/* end of right side 2 */}
+
+        <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
+          <Stack style={{ height: '25vh' }} direction="row" justifyContent="center" spacing={2}>
             {/* <MyResponsiveStream data={data_MyResponsiveStream.get()} /> */}
             <MyResponsiveLine />
           </Stack>
         </Stack>
+        {/* end of right side 3 */}
 
-        <Stack style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}>
+        <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
 
           <Stack direction="row" justifyContent="center" spacing={2}>
             <Card elevation={6} className={css.card}>
@@ -451,14 +465,11 @@ export default () => {
             </TableContainer>
           </Paper>
         </Stack>
+        {/* end of right side 4 */}
 
       </Stack>
       {/* end of right side content */}
-
-
     </Stack>
-
-
 
   </div >))
 }

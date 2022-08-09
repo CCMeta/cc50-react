@@ -122,7 +122,7 @@ export const MyResponsiveBar = ({ data }) => (
     ]}
     layers={['grid', 'axes', 'bars', 'markers', 'annotations']}
     indexBy="country"
-    margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+    margin={{ top: 20, right: 5, bottom: 5, left: 50 }}
     padding={0.3}
     valueScale={{ type: 'linear' }}
     indexScale={{ type: 'band', round: true }}
