@@ -299,6 +299,18 @@ export default () => {
       <Stack style={{ flexBasis: 0, flexGrow: 4 }}
         divider={<Divider orientation="horizontal" flexItem />}>
 
+
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
+          divider={<Divider orientation="vertical" flexItem />}>
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
+            <MyResponsiveBar />
+          </Stack>
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
+            <MyResponsiveBar />
+          </Stack>
+        </Stack>
+        {/* end of right side 1 */}
+
         <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
           divider={<Divider orientation="vertical" flexItem />}>
 
@@ -311,24 +323,17 @@ export default () => {
             <Box sx={{
               top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
             }}>
-              <Typography variant="caption" component="div" color="text.secondary">
-                {`33%`}
+
+              <Typography variant={`subtitle2`} component="div">
+                <Typography variant={`caption`} component="div" color={`#AAA`}>
+                  {`Clients Counting`}
+                </Typography>
+                {`33% (36)`}<br />{`Total 185`}
               </Typography>
             </Box>
 
           </Stack>
 
-        </Stack>
-        {/* end of right side 1 */}
-
-        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
-          divider={<Divider orientation="vertical" flexItem />}>
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
-            <MyResponsiveBar />
-          </Stack>
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
-            <MyResponsiveBar />
-          </Stack>
         </Stack>
         {/* end of right side 2 */}
 
