@@ -19,7 +19,7 @@ import css from '../s/About.module.css'
 import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './utils'
 import { Suspense } from 'react';
 import { MyResponsiveBar } from "./c/ChartBar";
-import { MyResponsiveStream } from "./c/ChartStream";
+import { MyResponsivePie } from "./c/ChartPie";
 import { MyResponsiveLine } from "./c/SpeedLineArea";
 
 const MaterialUISwitch = styled(Switch)(() => ({
@@ -300,33 +300,22 @@ export default () => {
         divider={<Divider orientation="horizontal" flexItem />}>
 
         <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
-          justifyContent="center"
           divider={<Divider orientation="vertical" flexItem />}>
 
           <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
-            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-              <CircularProgress sx={{ w: "100%", h: "100%" }} variant="determinate" value={30} />
-              <Box
-                sx={{
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  right: 0,
-                  position: 'absolute',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="caption" component="div" color="text.secondary">
-                  {`33%`}
-                </Typography>
-              </Box>
-            </Box>
           </Stack>
 
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
-            <MyResponsiveBar />
+          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, position: 'relative' }} p={2}>
+            <MyResponsivePie />
+
+            <Box sx={{
+              top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+            }}>
+              <Typography variant="caption" component="div" color="text.secondary">
+                {`33%`}
+              </Typography>
+            </Box>
+
           </Stack>
 
         </Stack>
