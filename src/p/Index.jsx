@@ -1,7 +1,7 @@
 import { useObserver, createEffect, createStore, onCleanup, } from 'react-solid-state'
 import {
   Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Card, CardContent, Paper, List,
-  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction, LinearProgress, Box, Switch, styled, CircularProgress
+  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction, LinearProgress, Box, Switch, styled, CircularProgress, Chip, Badge
 } from '@mui/material'
 import cookie from 'cookie'
 
@@ -11,6 +11,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+
 
 import { Link } from "react-router-dom"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -300,38 +302,127 @@ export default () => {
         divider={<Divider orientation="horizontal" flexItem />}>
 
 
-        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
           divider={<Divider orientation="vertical" flexItem />}>
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
-            <MyResponsiveBar />
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+            <Stack style={{ height: '25vh' }}>
+              <MyResponsiveBar />
+            </Stack>
           </Stack>
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
-            <MyResponsiveBar />
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+            <Stack style={{ height: '25vh' }}>
+              <MyResponsiveBar />
+            </Stack>
           </Stack>
         </Stack>
         {/* end of right side 1 */}
 
-        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2}
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
           divider={<Divider orientation="vertical" flexItem />}>
 
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, }} p={2}>
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`WiFi Overview 5G`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={`row`}>
+
+              <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <MyResponsivePie />
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div" color={`#AAA`}>
+                      {`Clients`}
+                    </Typography>
+                    {`33% (36)`}<br />{`Total 185`}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ m: 1 }} />
+                  <ListItemText primary="ON / OFF" />
+                  <ListItemSecondaryAction>
+                    <MaterialUISwitch />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ m: 1 }} />
+                  <ListItemText primary="SSID" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      Bad Motherfucker
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ m: 1 }} />
+                  <ListItemText primary="Channel" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      12
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ m: 1 }} />
+                  <ListItemText primary="Signal" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
+                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>Weak</Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+
           </Stack>
 
-          <Stack style={{ height: '30vh', flexBasis: 0, flexGrow: 1, position: 'relative' }} p={2}>
-            <MyResponsivePie />
-
-            <Box sx={{
-              top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
-            }}>
-
-              <Typography variant={`subtitle2`} component="div">
-                <Typography variant={`caption`} component="div" color={`#AAA`}>
-                  {`Clients Counting`}
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+            <Stack style={{ height: '20vh', position: 'relative' }}>
+              <MyResponsivePie />
+              <Box sx={{
+                top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+              }}>
+                <Typography variant={`subtitle2`} component="div">
+                  <Typography variant={`caption`} component="div" color={`#AAA`}>
+                    {`Clients`}
+                  </Typography>
+                  {`33% (36)`}<br />{`Total 185`}
                 </Typography>
-                {`33% (36)`}<br />{`Total 185`}
-              </Typography>
-            </Box>
-
+              </Box>
+            </Stack>
           </Stack>
 
         </Stack>
