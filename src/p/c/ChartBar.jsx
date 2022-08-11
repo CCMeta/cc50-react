@@ -3,7 +3,7 @@ import { ResponsiveBar } from '@nivo/bar'
 
 const localData = [
   {
-    "country": "AD",
+    "country": "MON",
     "hot dog": 192,
     "hot dogColor": "hsl(319, 70%, 50%)",
     "burger": 192,
@@ -18,7 +18,7 @@ const localData = [
     "donutColor": "hsl(53, 70%, 50%)"
   },
   {
-    "country": "AE",
+    "country": "TUR",
     "hot dog": 30,
     "hot dogColor": "hsl(89, 70%, 50%)",
     "burger": 200,
@@ -33,7 +33,7 @@ const localData = [
     "donutColor": "hsl(45, 70%, 50%)"
   },
   {
-    "country": "AF",
+    "country": "THR",
     "hot dog": 61,
     "hot dogColor": "hsl(215, 70%, 50%)",
     "burger": 127,
@@ -48,7 +48,7 @@ const localData = [
     "donutColor": "hsl(326, 70%, 50%)"
   },
   {
-    "country": "AG",
+    "country": "WES",
     "hot dog": 17,
     "hot dogColor": "hsl(262, 70%, 50%)",
     "burger": 54,
@@ -63,7 +63,7 @@ const localData = [
     "donutColor": "hsl(157, 70%, 50%)"
   },
   {
-    "country": "AI",
+    "country": "FRI",
     "hot dog": 13,
     "hot dogColor": "hsl(177, 70%, 50%)",
     "burger": 126,
@@ -78,7 +78,7 @@ const localData = [
     "donutColor": "hsl(341, 70%, 50%)"
   },
   {
-    "country": "AL",
+    "country": "SAT",
     "hot dog": 28,
     "hot dogColor": "hsl(174, 70%, 50%)",
     "burger": 13,
@@ -93,7 +93,7 @@ const localData = [
     "donutColor": "hsl(195, 70%, 50%)"
   },
   {
-    "country": "AM",
+    "country": "SUN",
     "hot dog": 111,
     "hot dogColor": "hsl(360, 70%, 50%)",
     "burger": 7,
@@ -122,11 +122,11 @@ export const MyResponsiveBar = ({ data }) => (
     ]}
     layers={['grid', 'axes', 'bars', 'markers', 'annotations']}
     indexBy="country"
-    margin={{ top: 10, right: 5, bottom: 5, left: 50 }}
+    margin={{ top: 0, right: 5, bottom: 30, left: 50 }}
     padding={0.3}
     valueScale={{ type: 'linear' }}
     indexScale={{ type: 'band', round: true }}
-    colors={{ scheme: 'nivo' }}
+    colors={{ scheme: 'pastel1' }}
     defs={[
       {
         id: 'dots',
@@ -179,14 +179,6 @@ export const MyResponsiveBar = ({ data }) => (
       legend: 'country',
       legendPosition: 'middle',
       legendOffset: 32
-    }}
-    axisLeft={{
-      tickSize: 5,
-      tickPadding: 5,
-      tickRotation: 0,
-      legend: 'food',
-      legendPosition: 'middle',
-      legendOffset: -40
     }}
     enableLabel={false}
     labelSkipWidth={12}

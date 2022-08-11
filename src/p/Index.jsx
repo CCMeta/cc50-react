@@ -165,7 +165,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="Uptime" />
             <ListItemSecondaryAction>
-              <Typography variant="caption">
+              <Typography variant='caption' color='secondary'>
                 1y 2m 1w 2d
               </Typography>
             </ListItemSecondaryAction>
@@ -228,7 +228,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="Servicer" />
             <ListItemSecondaryAction>
-              <Typography variant='caption'>
+              <Typography variant='caption' color='secondary'>
                 Orange France
               </Typography>
             </ListItemSecondaryAction>
@@ -236,7 +236,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="Net Mode" />
             <ListItemSecondaryAction>
-              <Typography variant='caption'>
+              <Typography variant='caption' color='secondary'>
                 5G / LTE
               </Typography>
             </ListItemSecondaryAction>
@@ -244,7 +244,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="PIN LOCK" />
             <ListItemSecondaryAction>
-              <Typography variant='caption'>
+              <Typography variant='caption' color='secondary'>
                 FUCKED
               </Typography>
             </ListItemSecondaryAction>
@@ -252,7 +252,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="Roaming" />
             <ListItemSecondaryAction>
-              <Typography variant='caption'>
+              <Typography variant='caption' color='secondary'>
                 OPEN
               </Typography>
             </ListItemSecondaryAction>
@@ -269,7 +269,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="WAN IP" />
             <ListItemSecondaryAction>
-              <Typography variant='caption'>
+              <Typography variant='caption' color='secondary'>
                 202.10.120.45
               </Typography>
             </ListItemSecondaryAction>
@@ -277,7 +277,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="Gateway" />
             <ListItemSecondaryAction>
-              <Typography variant='caption'>
+              <Typography variant='caption' color='secondary'>
                 111.231.120.45
               </Typography>
             </ListItemSecondaryAction>
@@ -303,34 +303,6 @@ export default () => {
       <Stack style={{ flexBasis: 0, flexGrow: 4 }}
         divider={<Divider orientation="horizontal" flexItem />}>
 
-
-        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
-          divider={<Divider orientation="vertical" flexItem />}>
-          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
-            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
-              <IconButton variant="outlined" color='info' size="small">
-                <ChevronRightRoundedIcon />
-              </IconButton>
-            </Stack>
-            <Stack style={{ height: '25vh' }}>
-              <MyResponsiveBar />
-            </Stack>
-          </Stack>
-          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
-            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
-              <IconButton variant="outlined" color='info' size="small">
-                <ChevronRightRoundedIcon />
-              </IconButton>
-            </Stack>
-            <Stack style={{ height: '25vh' }}>
-              <MyResponsiveBar />
-            </Stack>
-          </Stack>
-        </Stack>
-        {/* end of right side 1 */}
-
         <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
           divider={<Divider orientation="vertical" flexItem />}>
 
@@ -355,7 +327,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
                       {`Clients`}
                     </Typography>
-                    {`33% (36)`}<br />{`Total 185`}
+                    {`66% (104)`}<br />{`Total 185`}
                   </Typography>
                 </Box>
               </Stack>
@@ -388,7 +360,8 @@ export default () => {
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
-                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} fullWidth size='small' variant='outlined'>More Detail</Button>
+                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
+                    color={'secondary'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
 
                   <Popover
                     onClose={e => wifiPopoverOpen.set(null)}
@@ -398,7 +371,7 @@ export default () => {
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
                     <List sx={{ width: `20vw` }} dense>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Auth" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -407,7 +380,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Encryption" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -416,7 +389,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Password" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -426,7 +399,7 @@ export default () => {
                       </ListItem>
                       <Divider variant="middle" />
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Bandwidth" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -435,7 +408,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Channel" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -444,7 +417,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Mode" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -519,7 +492,8 @@ export default () => {
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
-                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} fullWidth size='small' variant='outlined'>More Detail</Button>
+                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
+                    color={'secondary'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
 
                   <Popover
                     onClose={e => wifiPopoverOpen.set(null)}
@@ -529,7 +503,7 @@ export default () => {
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
                     <List sx={{ width: `20vw` }} dense>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Auth" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -538,7 +512,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Encryption" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -547,7 +521,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Password" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -557,7 +531,7 @@ export default () => {
                       </ListItem>
                       <Divider variant="middle" />
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Bandwidth" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -566,7 +540,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Channel" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -575,7 +549,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="success" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Mode" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>
@@ -597,7 +571,55 @@ export default () => {
           </Stack>
 
         </Stack>
+        {/* end of right side 1 */}
+
+
+
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
+          divider={<Divider orientation="vertical" flexItem />}>
+
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`} p={2}>
+              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+            <Stack direction={'row'}>
+
+              <Stack style={{ height: '25vh', width: "60%" }}>
+                <MyResponsiveBar />
+              </Stack>
+              <Stack style={{ width: "40%" }}>
+                <Box p={2}>
+                  <Paper variant="outlined" square>
+                    <div>bad Motherfucker</div>
+                  </Paper>
+                </Box>
+                <Box p={2}>
+                  <Paper variant="outlined" square>
+                    <div>bad Motherfucker</div>
+                  </Paper>
+                </Box>
+              </Stack>
+            </Stack>
+          </Stack>
+
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>{`Restriction Traffic`}</Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+            <Stack style={{ height: '25vh' }}>
+              <MyResponsiveBar />
+            </Stack>
+          </Stack>
+        </Stack>
         {/* end of right side 2 */}
+
+
 
         <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
           <Stack style={{ height: '25vh' }} direction="row" justifyContent="center" spacing={2}>
