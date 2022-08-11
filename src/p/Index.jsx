@@ -13,6 +13,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import DownloadIcon from '@mui/icons-material/Download';
+import UploadIcon from '@mui/icons-material/Upload';
 
 
 import { Link } from "react-router-dom"
@@ -581,33 +583,91 @@ export default () => {
           <Stack style={{ flexBasis: 0, flexGrow: 1, }}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`} p={2}>
               <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
-              <IconButton variant="outlined" color='info' size="small">
-                <ChevronRightRoundedIcon />
-              </IconButton>
+
+              <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
+                <Stack direction={'row'} >
+                  <DownloadIcon color={'primary'} fontSize={'small'} />
+                  <Typography variant={'caption'}>
+                    832.42MB
+                  </Typography>
+                </Stack>
+                <Stack direction={'row'} >
+                  <UploadIcon color={'secondary'} fontSize={'small'} />
+                  <Typography variant={'caption'}>
+                    319.66MB
+                  </Typography>
+                </Stack>
+                <IconButton variant="outlined" color='info' size="small">
+                  <ChevronRightRoundedIcon />
+                </IconButton>
+              </Stack>
             </Stack>
             <Stack direction={'row'}>
-
               <Stack style={{ height: '25vh', width: "60%" }}>
                 <MyResponsiveBar />
               </Stack>
               <Stack style={{ width: "40%" }}>
-                <Box p={2}>
-                  <Paper variant="outlined" square>
-                    <div>bad Motherfucker</div>
-                  </Paper>
+                <Box m={1} >
+                  <Stack direction={'row'}>
+                    <Stack p={1} alignItems={'flex-start'}>
+                      <Typography component={'div'} variant={'caption'} color={'#AAA'}>
+                        Month Data
+                      </Typography>
+                      <Typography component={'div'} variant={'subtitle1'}>
+                        1138.45GB
+                      </Typography>
+                    </Stack>
+                    <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
+                      <Stack direction={'row'} >
+                        <DownloadIcon color={'primary'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          832.42MB
+                        </Typography>
+                      </Stack>
+                      <Stack direction={'row'} >
+                        <UploadIcon color={'secondary'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          319.66MB
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
                 </Box>
-                <Box p={2}>
-                  <Paper variant="outlined" square>
-                    <div>bad Motherfucker</div>
-                  </Paper>
+                <Box m={1}>
+                  <Stack direction={'row'}>
+                    <Stack p={1} alignItems={'flex-start'}>
+                      <Typography component={'div'} variant={'caption'} color={'#AAA'}>
+                        Year Data
+                      </Typography>
+                      <Typography component={'div'} variant={'subtitle1'}>
+                        4517.35GB
+                      </Typography>
+                    </Stack>
+                    <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
+                      <Stack direction={'row'} >
+                        <DownloadIcon color={'primary'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          2517.42MB
+                        </Typography>
+                      </Stack>
+                      <Stack direction={'row'} >
+                        <UploadIcon color={'secondary'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          2000.13MB
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
                 </Box>
               </Stack>
             </Stack>
           </Stack>
 
-          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
-            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-              <Typography pl={1} variant={`subtitle1`}>{`Restriction Traffic`}</Typography>
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`} p={2}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`Restriction Traffic`}
+              </Typography>
               <IconButton variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
               </IconButton>
