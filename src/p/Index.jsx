@@ -363,7 +363,7 @@ export default () => {
                 </ListItem>
                 <ListItem>
                   <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
-                    color={'secondary'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
+                    color={'info'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
 
                   <Popover
                     onClose={e => wifiPopoverOpen.set(null)}
@@ -495,7 +495,7 @@ export default () => {
                 </ListItem>
                 <ListItem>
                   <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
-                    color={'secondary'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
+                    color={'info'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
 
                   <Popover
                     onClose={e => wifiPopoverOpen.set(null)}
@@ -580,8 +580,8 @@ export default () => {
         <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
           divider={<Divider orientation="vertical" flexItem />}>
 
-          <Stack style={{ flexBasis: 0, flexGrow: 1, }}>
-            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`} p={2}>
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
               <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
 
               <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
@@ -592,7 +592,7 @@ export default () => {
                   </Typography>
                 </Stack>
                 <Stack direction={'row'} >
-                  <UploadIcon color={'secondary'} fontSize={'small'} />
+                  <UploadIcon color={'success'} fontSize={'small'} />
                   <Typography variant={'caption'}>
                     319.66MB
                   </Typography>
@@ -603,7 +603,7 @@ export default () => {
               </Stack>
             </Stack>
             <Stack direction={'row'}>
-              <Stack style={{ height: '25vh', width: "60%" }}>
+              <Stack style={{ height: '20vh', width: "60%" }}>
                 <MyResponsiveBar />
               </Stack>
               <Stack style={{ width: "40%" }}>
@@ -625,7 +625,7 @@ export default () => {
                         </Typography>
                       </Stack>
                       <Stack direction={'row'} >
-                        <UploadIcon color={'secondary'} fontSize={'small'} />
+                        <UploadIcon color={'success'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
                           319.66MB
                         </Typography>
@@ -651,7 +651,7 @@ export default () => {
                         </Typography>
                       </Stack>
                       <Stack direction={'row'} >
-                        <UploadIcon color={'secondary'} fontSize={'small'} />
+                        <UploadIcon color={'success'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
                           2000.13MB
                         </Typography>
@@ -663,19 +663,144 @@ export default () => {
             </Stack>
           </Stack>
 
-          <Stack style={{ flexBasis: 0, flexGrow: 1, }}>
-            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`} p={2}>
+          <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
               <Typography pl={1} variant={`subtitle1`}>
-                {`Restriction Traffic`}
+                {`Month Data Usage`}
               </Typography>
               <IconButton variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
               </IconButton>
             </Stack>
-            <Stack style={{ height: '25vh' }}>
-              <MyResponsiveBar />
+
+            <Stack direction={`row`}>
+
+              <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <MyResponsivePie />
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div" color={'green'}>
+                      {`Free (66%)`}
+                    </Typography>
+                    {`2285.53GB`}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Data Limit" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      {`3500.00 GB`}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Start Date" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      {`Day 15`}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Remain Days" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={45} />
+                      <Typography variant="caption" color={`green`}>
+                        {`12 / 30`}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
+                    color={'secondary'} fullWidth size='small' variant={'outlined'}>Setting Plan</Button>
+
+                  <Popover
+                    onClose={e => wifiPopoverOpen.set(null)}
+                    anchorEl={wifiPopoverOpen.get()}
+                    open={wifiPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: `20vw` }} dense>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Auth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            WPA2PSK/WPA3
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Encryption" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            AES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Password" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            YES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" />
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Bandwidth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            80 Mhz
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Channel" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            12
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Mode" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            802.11 a/n/ac/ax
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                    </List>
+
+                  </Popover>
+                </ListItem>
+              </List>
+
+
             </Stack>
+            {/* content */}
+
           </Stack>
+
+
+
         </Stack>
         {/* end of right side 2 */}
 
