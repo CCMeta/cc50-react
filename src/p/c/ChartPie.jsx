@@ -1,29 +1,23 @@
 import { ResponsivePie } from '@nivo/pie'
 
-const data = [
+const _data = [
   {
     "id": "stylus",
-    "label": "stylus",
     "value": 267,
-    "color": "hsl(67, 70%, 50%)"
   },
   {
     "id": "sass",
-    "label": "sass",
     "value": 390,
-    "color": "hsl(84, 70%, 50%)"
   },
   {
     "id": "haskell",
-    "label": "haskell",
     "value": 557,
-    "color": "hsl(42, 70%, 50%)"
   }
 ]
 
-export const MyResponsivePie = ({ _data }) => (
+export const MyResponsivePie = ({ data }) => (
   <ResponsivePie
-    data={data}
+    data={data ?? _data}
     margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
     innerRadius={0.8}
     padAngle={1}
