@@ -15,6 +15,7 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import DownloadIcon from '@mui/icons-material/Download';
 import UploadIcon from '@mui/icons-material/Upload';
+import TimerIcon from '@mui/icons-material/Schedule';
 
 
 import { Link } from "react-router-dom"
@@ -25,7 +26,7 @@ import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './u
 import { Suspense } from 'react';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsivePie } from "./c/ChartPie";
-import { MyResponsiveLine } from "./c/SpeedLineArea";
+import { MyResponsiveLine } from "./c/ChartLineArea";
 
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,
@@ -81,6 +82,22 @@ export default () => {
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info = Define([])
+  const data_data_Usage_count = Define([
+    { "id": "DL", "value": 400 },
+    { "id": "UL", "value": 200 },
+    { "id": "FREE", "value": 600 },
+  ])
+  const data_wifi_clients = Define([
+    {
+      "id": "24",
+      "value": 30,
+    },
+    {
+      "id": "5",
+      "value": 70,
+    },
+  ])
+
   const data_MyResponsiveStream = Define([{ cpu: 0, mem: 0 }])
 
   /*********createEffect**********/
@@ -321,15 +338,15 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie />
+                <MyResponsivePie data={data_wifi_clients.get()} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
-                      {`Clients`}
+                      {`2.4G Clients`}
                     </Typography>
-                    {`66% (104)`}<br />{`Total 185`}
+                    {`30% (30)`}<br />{`Total 100`}
                   </Typography>
                 </Box>
               </Stack>
@@ -347,7 +364,7 @@ export default () => {
                   <ListItemText primary="SSID" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      Bad Motherfucker WiFi Overview 2.4G
+                      My Wifi 2.4G SSID is super cool
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -453,15 +470,15 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie />
+                <MyResponsivePie data={data_wifi_clients.get()} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
-                      {`Clients`}
+                      {`5G Clients`}
                     </Typography>
-                    {`33% (36)`}<br />{`Total 185`}
+                    {`70% (70)`}<br />{`Total 100`}
                   </Typography>
                 </Box>
               </Stack>
@@ -479,7 +496,7 @@ export default () => {
                   <ListItemText primary="SSID" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      5G Bad Motherfucker
+                      5G super nice SSID is me
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -488,8 +505,8 @@ export default () => {
                   <ListItemText primary="Signal" />
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                      <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
-                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>Weak</Typography>
+                      <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={95} />
+                      <Typography variant="caption" sx={{ color: "green", width: "2rem" }}>Nice</Typography>
                     </Stack>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -574,8 +591,6 @@ export default () => {
 
         </Stack>
         {/* end of right side 1 */}
-
-
 
         <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
           divider={<Divider orientation="vertical" flexItem />}>
@@ -676,7 +691,7 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie />
+                <MyResponsivePie data={data_data_Usage_count.get()} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
@@ -804,10 +819,37 @@ export default () => {
         </Stack>
         {/* end of right side 2 */}
 
-
-
         <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
-          <Stack style={{ height: '25vh' }} direction="row" justifyContent="center" spacing={2}>
+
+          <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+            <Typography pl={1} variant={`subtitle1`}>{`Speed Flow`}</Typography>
+
+            <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
+              <Stack direction={'row'} >
+                <TimerIcon color={'primary'} fontSize={'small'} />
+                <Typography variant={'caption'}>
+                  {`26 ms`}
+                </Typography>
+              </Stack>
+              <Stack direction={'row'} >
+                <DownloadIcon color={'primary'} fontSize={'small'} />
+                <Typography variant={'caption'}>
+                  83.24MB/S
+                </Typography>
+              </Stack>
+              <Stack direction={'row'} >
+                <UploadIcon color={'success'} fontSize={'small'} />
+                <Typography variant={'caption'}>
+                  19.66MB/S
+                </Typography>
+              </Stack>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+          </Stack>
+
+          <Stack style={{ height: '25vh' }} direction="row" justifyContent="center">
             {/* <MyResponsiveStream data={data_MyResponsiveStream.get()} /> */}
             <MyResponsiveLine />
           </Stack>
