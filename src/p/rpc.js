@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const api_host_ubus = '/cgi-bin/luci/admin/ubus'
-const api_host_webcmd = '/cgi-bin/luci/admin/mtk/webcmd'
+const path_to_ubus = '/cgi-bin/luci/admin/ubus'
+const path_to_webcmd = '/cgi-bin/luci/admin/mtk/webcmd'
 
 export const rpc = {}
 
@@ -38,10 +38,10 @@ rpc.request = function (method, params, url, timeout = 10000) {
 rpc.post = function (target, action, object = {}, type = 'ubus') {
   switch (type) {
     case 'webcmd':
-      return this.request('call', [sid(), target, action, object], api_host_webcmd)
+      return this.request('call', [sid(), target, action, object], path_to_webcmd)
     case 'ubus':
     default:
-      return this.request('call', [sid(), target, action, object], api_host_ubus)
+      return this.request('call', [sid(), target, action, object], path_to_ubus)
   }
 }
 

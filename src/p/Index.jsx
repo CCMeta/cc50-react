@@ -77,8 +77,13 @@ const MaterialUISwitch = styled(Switch)(() => ({
 
 export default () => {
   /*********constants**********/
+  const data_device_performance = Define({ cpu: 0, mem: 0 })
+  const data_device_heat = Define(0)
+  const data_luci_conntrack = Define([])
+  const data_device_operation_info = Define({})
+  const data_sim_network_info = Define({})
   const wifiPopoverOpen = Define(null)
-  const network_interface_dump = Define([])
+  const wan_network_interface_dump = Define()
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info = Define([])
@@ -88,27 +93,12 @@ export default () => {
     { "id": "FREE", "value": 600 },
   ])
   const data_wifi_clients = Define([
-    {
-      "id": "24",
-      "value": 30,
-    },
-    {
-      "id": "5",
-      "value": 70,
-    },
+    { "id": "24", "value": 30, },
+    { "id": "5", "value": 70, },
   ])
-
-  const data_MyResponsiveStream = Define([{ cpu: 0, mem: 0 }])
 
   /*********createEffect**********/
   createEffect(async () => {
-
-
-    // setInterval(async () => {
-    //   data_MyResponsiveStream.set(data_MyResponsiveStream.get().concat([
-    //     await fetching_MyResponsiveStream()
-    //   ]))
-    // }, 5000);
 
 
     await fetching(FormBuilder({
@@ -116,13 +106,29 @@ export default () => {
     }), 'login'
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
 
+    setInterval(async () => {
+      data_device_performance.set(await fetching_device_performance())
+      data_device_heat.set(await fetching_device_heat())
+
+      data_luci_conntrack.set(
+        (await $rpc.post(`luci`, "getConntrackList"))?.[1].result
+      )
+    }, 3000);
+
+    data_sim_network_info.set(await fetching_sim_network_info())
+    data_device_operation_info.set(await fetching_device_operation_info())
+
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
-
-
-    network_interface_dump.set(
-      (await $rpc.post("network.interface", "dump"))?.[1]?.interface
+    data_clients_info.set(
+      await fetching(``, 'wifi', `/sta_info/rai0`)
     )
+
+
+    wan_network_interface_dump.set(
+      (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
+    )
+    // console.log(wan_network_interface_dump.get())
 
     luci_rpc_getHostHints.set(
       (await $rpc.post("luci-rpc", "getHostHints"))?.[1]?.interface
@@ -132,15 +138,49 @@ export default () => {
       (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases
     )
 
-    data_clients_info.set(
-      await fetching(``, 'wifi', `/sta_info/rai0`)
-    )
-
-
   })
 
   /*********functions**********/
-  const fetching_MyResponsiveStream = async () => {
+  const fetching_device_heat = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `/root/list_heat.sh`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return parseInt(res.split('\n')[0] / 1000)
+    })
+  }
+
+  const fetching_sim_network_info = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `( echo "0" && echo "4" && echo "5" && echo "7" && echo "8" && echo "-1") | sample_nw`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return {
+        pref_roaming: CmdResultParser(res, 'pref_roaming => '),
+        long_eons: CmdResultParser(res, 'long_eons = '),
+        short_eons: CmdResultParser(res, 'short_eons = '),
+        radio_tech: CmdResultParser(res, 'radio_tech ='),
+        signal: CmdResultParser(res, 'signal strength level is '),
+      }
+    })
+  }
+
+  const fetching_device_operation_info = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `( echo "0" && echo "3" && echo "7" && echo "-1") | sample_dm`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return {
+        modem: CmdResultParser(res, 'modem state is '),
+        imei: CmdResultParser(res, ' imei:'),
+      }
+    })
+  }
+
+  const fetching_device_performance = async () => {
     return await fetching(FormBuilder({
       "cmd": `top -n 1 -b | head -2`,
       "token": sessionStorage.getItem('sid'),
@@ -150,8 +190,8 @@ export default () => {
         let cpu_idle = parseInt(CmdResultParser(res, `nic `, `% idle`))
         let mem_used = parseInt(CmdResultParser(res, `Mem:`, `used, `))
         let mem_free = parseInt(CmdResultParser(res, `used, `, `free, `))
-        let cpu = 100 - cpu_idle
-        let mem = 100 * mem_used / (mem_free + mem_used)
+        let cpu = parseInt(100 - cpu_idle)
+        let mem = parseInt(100 * mem_used / (mem_free + mem_used))
         return { cpu, mem, }
       }
       return localCmdResultParser(res)
@@ -190,10 +230,10 @@ export default () => {
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Firmware" />
+            <ListItemText primary="IMEI" />
             <ListItemSecondaryAction>
               <Typography variant="caption">
-                NR15.R3.MD700.MP.V25.P11
+                {data_device_operation_info.get()?.imei}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -210,8 +250,11 @@ export default () => {
             <ListItemText primary="CPU Rate" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color="secondary" variant="determinate" value={39} />
-                <Typography variant="caption" sx={{ color: "purple", width: "2rem" }}>39%</Typography>
+                <LinearProgress sx={{ width: '6rem' }} color="secondary" variant="determinate"
+                  value={data_device_performance.get()?.cpu} />
+                <Typography variant="caption" sx={{ color: "purple", width: "2rem" }}>
+                  {`${data_device_performance.get()?.cpu}%`}
+                </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
@@ -220,8 +263,11 @@ export default () => {
             <ListItemText primary="Memory" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={82} />
-                <Typography variant="caption" sx={{ color: "green", width: "2rem" }}>82%</Typography>
+                <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate"
+                  value={data_device_performance.get()?.mem} />
+                <Typography variant="caption" sx={{ color: "green", width: "2rem" }}>
+                  {`${data_device_performance.get()?.mem}%`}
+                </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
@@ -229,8 +275,11 @@ export default () => {
             <ListItemText primary="Temperature" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color="error" variant="determinate" value={65} />
-                <Typography variant="caption" sx={{ color: "red", width: "2rem" }}>65℃</Typography>
+                <LinearProgress sx={{ width: '6rem' }} color="error" variant="determinate"
+                  value={data_device_heat.get()} />
+                <Typography variant="caption" sx={{ color: "red", width: "2rem" }}>
+                  {`${data_device_heat.get()}℃`}
+                </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
@@ -241,14 +290,14 @@ export default () => {
           <ListItem>
             <ListItemText primary="Internet" />
             <ListItemSecondaryAction>
-              <MaterialUISwitch />
+              <MaterialUISwitch checked={data_device_operation_info.get()?.modem === `ONLINE`} />
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <ListItemText primary="Servicer" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='secondary'>
-                Orange France
+                {`${data_sim_network_info.get()?.long_eons} (${data_sim_network_info.get()?.short_eons})`}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -256,7 +305,7 @@ export default () => {
             <ListItemText primary="Net Mode" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='secondary'>
-                5G / LTE
+                {data_sim_network_info.get()?.radio_tech}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -272,7 +321,7 @@ export default () => {
             <ListItemText primary="Roaming" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='secondary'>
-                OPEN
+                {data_sim_network_info.get()?.pref_roaming}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -281,7 +330,9 @@ export default () => {
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
-                <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>Weak</Typography>
+                <Typography variant="caption" sx={{ color: "orange", minWidth: "2rem" }}>
+                  {data_sim_network_info.get()?.signal}
+                </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
@@ -289,7 +340,9 @@ export default () => {
             <ListItemText primary="WAN IP" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='secondary'>
-                202.10.120.45
+                {wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.address}
+                {`/`}
+                {wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.mask}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -297,7 +350,9 @@ export default () => {
             <ListItemText primary="Gateway" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='secondary'>
-                111.231.120.45
+                {wan_network_interface_dump?.get()?.["route"]?.[1]?.nexthop}
+                {`/`}
+                {wan_network_interface_dump?.get()?.["route"]?.[1]?.mask}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -306,8 +361,11 @@ export default () => {
             <ListItemText primary="Connection" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={31} />
-                <Typography variant="caption" sx={{ color: "blue", width: "2rem" }}>7729</Typography>
+                <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
+                  value={data_luci_conntrack.get().length} />
+                <Typography variant="caption" sx={{ color: "blue", width: "2rem" }}>
+                  {data_luci_conntrack.get().length}
+                </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
@@ -822,7 +880,12 @@ export default () => {
         <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
 
           <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-            <Typography pl={1} variant={`subtitle1`}>{`Speed Flow`}</Typography>
+            <Typography pl={1} variant={`subtitle1`}>
+              {`Speed Flow  `}
+              <Typography variant={'caption'} color={`#AAA`}>
+                {`(2 minute window, 3 second interval)`}
+              </Typography>
+            </Typography>
 
             <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
               <Stack direction={'row'} >
@@ -947,28 +1010,6 @@ export default () => {
             </TableContainer>
           </Paper>
 
-          <Paper elevation={6}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>l3_device</TableCell>
-                    <TableCell align="right">proto</TableCell>
-                    <TableCell align="right">interface</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {network_interface_dump?.get()?.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell component="th" scope="row">{row.l3_device}</TableCell>
-                      <TableCell padding="none" align="right">{row.proto}</TableCell>
-                      <TableCell align="right">{row.interface}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
         </Stack>
         {/* end of right side 4 */}
 
