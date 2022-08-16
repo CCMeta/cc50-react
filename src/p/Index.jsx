@@ -103,16 +103,17 @@ export default () => {
   const wan_network_interface_dump = Define()
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
-  const data_clients_info = Define([])
+  const data_clients_info_5G = Define([])
+  const data_clients_info_24G = Define([])
   const data_data_Usage_count = Define([
     { "id": "DL", "value": 400 },
     { "id": "UL", "value": 200 },
     { "id": "FREE", "value": 600 },
   ])
-  const data_wifi_clients = Define([
-    { "id": "24", "value": 30, },
-    { "id": "5", "value": 70, },
-  ])
+  const data_wifi_clients = [
+    { "id": "24", "value": data_clients_info_24G.get().length, },
+    { "id": "5", "value": data_clients_info_5G.get().length, },
+  ]
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -150,15 +151,12 @@ export default () => {
     data_sim_network_info.set(await fetching_sim_network_info())
     data_device_operation_info.set(await fetching_device_operation_info())
 
-    data_iwinfo_24G.set(await fetching_iwinfo_24G())
-
     data_iwinfo_5G.set(await fetching_iwinfo_5G())
-
+    data_iwinfo_24G.set(await fetching_iwinfo_24G())
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
-    data_clients_info.set(
-      await fetching(``, 'wifi', `/sta_info/rai0`)
-    )
+    data_clients_info_5G.set(await fetching(``, 'wifi', `/sta_info/rai0`))
+    data_clients_info_24G.set(await fetching(``, 'wifi', `/sta_info/ra0`))
 
     wan_network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
@@ -458,7 +456,7 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_wifi_clients.get()} />
+                <MyResponsivePie data={data_wifi_clients} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
@@ -466,7 +464,8 @@ export default () => {
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
                       {`2.4G Clients`}
                     </Typography>
-                    {`30% (30)`}<br />{`Total 100`}
+                    {`${data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)}% (${data_clients_info_24G.get().length})`}<br />
+                    {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
               </Stack>
@@ -592,7 +591,7 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_wifi_clients.get()} />
+                <MyResponsivePie data={data_wifi_clients} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
@@ -600,7 +599,8 @@ export default () => {
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
                       {`5G Clients`}
                     </Typography>
-                    {`70% (70)`}<br />{`Total 100`}
+                    {`${data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)}% (${data_clients_info_5G.get().length})`}<br />
+                    {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
               </Stack>
@@ -1038,7 +1038,7 @@ export default () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data_clients_info?.get()?.map((row, index) => (
+                  {data_clients_info_5G?.get()?.map((row, index) => (
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">{row.MacAddr}</TableCell>
                       <TableCell>{row.PhyMode}</TableCell>
