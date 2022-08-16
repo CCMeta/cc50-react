@@ -27,6 +27,7 @@ import { Suspense } from 'react';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsivePie } from "./c/ChartPie";
 import { MyResponsiveLine } from "./c/ChartLineArea";
+import { data } from 'browserslist';
 
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,
@@ -74,9 +75,23 @@ const MaterialUISwitch = styled(Switch)(() => ({
     borderRadius: 20 / 2,
   },
 }));
+const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`
+const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
+
+
 
 export default () => {
   /*********constants**********/
+  const data_lan_speed_chart = Define([{
+    "id": "rx", data: [
+      { x: current_time(), y: 0 }
+    ]
+  }, {
+    "id": "tx", data: [
+      { x: current_time(), y: 0 }
+    ]
+  }])
+  const data_lan_speed_now = Define({ rx: 0, tx: 0 })
   const data_device_performance = Define({ cpu: 0, mem: 0 })
   const data_device_heat = Define(0)
   const data_luci_conntrack = Define([])
@@ -109,6 +124,21 @@ export default () => {
     setInterval(async () => {
       data_device_performance.set(await fetching_device_performance())
       data_device_heat.set(await fetching_device_heat())
+
+      //concat speed
+      data_lan_speed_now.set(await fetching_lan_speed_now())
+      data_lan_speed_chart.set([{
+        "id": "rx", data: [
+          ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
+          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
+        ]
+      }, {
+        "id": "tx", data: [
+          ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
+          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
+        ]
+      }])
+      console.log(data_lan_speed_chart.get());
 
       data_luci_conntrack.set(
         (await $rpc.post(`luci`, "getConntrackList"))?.[1].result
@@ -147,7 +177,7 @@ export default () => {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
-      return parseInt(res.split('\n')[0] / 1000)
+      return parseInt(res.split('\n')[0] / 125)
     })
   }
 
@@ -178,6 +208,17 @@ export default () => {
         imei: CmdResultParser(res, ' imei:'),
       }
     })
+  }
+
+  const fetching_lan_speed_now = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `vnstat -i rai0 -tr 3 --json`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => ({
+      rx: res?.rx?.bytespersecond,
+      tx: res?.tx?.bytespersecond,
+    }))
   }
 
   const fetching_device_performance = async () => {
@@ -883,7 +924,7 @@ export default () => {
             <Typography pl={1} variant={`subtitle1`}>
               {`Speed Flow  `}
               <Typography variant={'caption'} color={`#AAA`}>
-                {`(2 minute window, 3 second interval)`}
+                {`(1 minute window, 3 second interval)`}
               </Typography>
             </Typography>
 
@@ -897,13 +938,13 @@ export default () => {
               <Stack direction={'row'} >
                 <DownloadIcon color={'primary'} fontSize={'small'} />
                 <Typography variant={'caption'}>
-                  83.24MB/S
+                  {`${bytesToMbit(data_lan_speed_now.get()?.tx)} Mbit/S`}
                 </Typography>
               </Stack>
               <Stack direction={'row'} >
                 <UploadIcon color={'success'} fontSize={'small'} />
                 <Typography variant={'caption'}>
-                  19.66MB/S
+                  {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
                 </Typography>
               </Stack>
               <IconButton variant="outlined" color='info' size="small">
@@ -914,7 +955,7 @@ export default () => {
 
           <Stack style={{ height: '25vh' }} direction="row" justifyContent="center">
             {/* <MyResponsiveStream data={data_MyResponsiveStream.get()} /> */}
-            <MyResponsiveLine />
+            <MyResponsiveLine data={data_lan_speed_chart.get()} />
           </Stack>
         </Stack>
         {/* end of right side 3 */}

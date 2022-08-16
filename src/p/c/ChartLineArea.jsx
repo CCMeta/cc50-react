@@ -1,8 +1,8 @@
 import { ResponsiveLine } from '@nivo/line'
 
-const data = [
+const _data = [
   {
-    "id": "germany",
+    "id": "rx",
     "data": [
       {
         "x": "plane",
@@ -51,7 +51,7 @@ const data = [
     ]
   },
   {
-    "id": "norway",
+    "id": "tx",
     "data": [
       {
         "x": "plane",
@@ -101,9 +101,9 @@ const data = [
   }
 ]
 
-export const MyResponsiveLine = ({ _data }) => (
+export const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine
-    data={data}
+    data={data ?? _data}
     margin={{ top: 10, right: 10, bottom: 30, left: 50 }}
     yScale={{
       type: 'linear',
@@ -112,7 +112,7 @@ export const MyResponsiveLine = ({ _data }) => (
       stacked: true,
       reverse: false
     }}
-    curve="natural"
+    curve="linear"
     colors={{ scheme: 'pastel1' }}
     lineWidth={1}
     pointSize={8}

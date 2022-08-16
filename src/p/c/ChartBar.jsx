@@ -27,7 +27,7 @@ const _data = [
 
 export const MyResponsiveBar = ({ data }) => (
   <ResponsiveBar
-    data={_data}
+    data={data ?? _data}
     keys={[
       'UL',
       'DL'
