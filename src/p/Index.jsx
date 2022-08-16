@@ -82,6 +82,8 @@ const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
 
 export default () => {
   /*********constants**********/
+  const data_iwinfo_24G = Define()
+  const data_iwinfo_5G = Define()
   const data_lan_speed_chart = Define([{
     "id": "rx", data: [
       { x: current_time(), y: 0.01 }
@@ -148,12 +150,15 @@ export default () => {
     data_sim_network_info.set(await fetching_sim_network_info())
     data_device_operation_info.set(await fetching_device_operation_info())
 
+    data_iwinfo_24G.set(await fetching_iwinfo_24G())
+
+    data_iwinfo_5G.set(await fetching_iwinfo_5G())
+
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
     data_clients_info.set(
       await fetching(``, 'wifi', `/sta_info/rai0`)
     )
-
 
     wan_network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
@@ -171,6 +176,22 @@ export default () => {
   })
 
   /*********functions**********/
+  const fetching_iwinfo_5G = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `ubus call iwinfo info '{"device":"rai0"}'`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    )
+  }
+
+  const fetching_iwinfo_24G = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `ubus call iwinfo info '{"device":"ra0"}'`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    )
+  }
+
   const fetching_device_heat = async () => {
     return await fetching(FormBuilder({
       "cmd": `/root/list_heat.sh`,
@@ -463,7 +484,7 @@ export default () => {
                   <ListItemText primary="SSID" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      My Wifi 2.4G SSID is super cool
+                      {data_iwinfo_24G.get()?.ssid}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -473,7 +494,9 @@ export default () => {
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
-                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>Weak</Typography>
+                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>
+                        {data_iwinfo_24G.get()?.signal}
+                      </Typography>
                     </Stack>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -595,7 +618,7 @@ export default () => {
                   <ListItemText primary="SSID" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      5G super nice SSID is me
+                      {data_iwinfo_5G.get()?.ssid}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -605,7 +628,9 @@ export default () => {
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={95} />
-                      <Typography variant="caption" sx={{ color: "green", width: "2rem" }}>Nice</Typography>
+                      <Typography variant="caption" sx={{ color: "green", width: "2rem" }}>
+                        {data_iwinfo_5G.get()?.signal}
+                      </Typography>
                     </Stack>
                   </ListItemSecondaryAction>
                 </ListItem>
