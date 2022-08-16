@@ -104,7 +104,7 @@ const _data = [
 export const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine
     data={data ?? _data}
-    margin={{ top: 10, right: 10, bottom: 30, left: 50 }}
+    margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
     yScale={{
       type: 'linear',
       min: 'auto',

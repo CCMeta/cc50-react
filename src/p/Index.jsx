@@ -84,11 +84,11 @@ export default () => {
   /*********constants**********/
   const data_lan_speed_chart = Define([{
     "id": "rx", data: [
-      { x: current_time(), y: 0 }
+      { x: current_time(), y: 0.01 }
     ]
   }, {
     "id": "tx", data: [
-      { x: current_time(), y: 0 }
+      { x: current_time(), y: 0.01 }
     ]
   }])
   const data_lan_speed_now = Define({ rx: 0, tx: 0 })
@@ -115,11 +115,11 @@ export default () => {
   /*********createEffect**********/
   createEffect(async () => {
 
-
     await fetching(FormBuilder({
       "luci_username": "root", "luci_password": "123456",
     }), 'login'
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
+
 
     setInterval(async () => {
       data_device_performance.set(await fetching_device_performance())
@@ -177,7 +177,7 @@ export default () => {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
-      return parseInt(res.split('\n')[0] / 125)
+      return parseInt(res.split('\n')[0] / 1000)
     })
   }
 
