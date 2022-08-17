@@ -85,9 +85,29 @@ const bytesToHuman = (value, size = "B") => {
   const times = Math.floor(Math.log(value) / Math.log(unit))
   return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)];
 }
+const getRemainDaysOfMonthUsage = start => {
+  const now = (new Date()).getTime()
+  var setDateDone = (new Date()).setDate(start)
+  if (setDateDone < now) {
+    let nextMonth = new Date(setDateDone).setMonth((new Date(setDateDone)).getMonth() + 1)
+    var fullMonth = (nextMonth - setDateDone) / 86400000
+    setDateDone = nextMonth
+  } else {
+    let prevMonth = new Date(setDateDone).setMonth((new Date(setDateDone)).getMonth() - 1)
+    var fullMonth = (setDateDone - prevMonth) / 86400000
+  }
+  const spaceTime = (setDateDone - now)
+  const spaceDays = spaceTime / 86400000
+  return [spaceDays, fullMonth]
+}
 
 export default () => {
   /*********constants**********/
+  const data_for_month_usage = Define({
+    start: 10,
+    limit: 40,
+  })
+
   const data_for_week_chart = Define((() => {
     let arr = []
     for (let id = 6; id >= 0; id--)
@@ -120,15 +140,26 @@ export default () => {
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
-  const data_data_Usage_count = Define([
-    { "id": "DL", "value": 400 },
-    { "id": "UL", "value": 200 },
-    { "id": "FREE", "value": 600 },
-  ])
   const data_wifi_clients = [
     { "id": "24", "value": data_clients_info_24G.get().length, },
     { "id": "5", "value": data_clients_info_5G.get().length, },
   ]
+  const data_data_Usage_count = () => {
+    let tx = data_traffic_5G.get()?.months?.slice(-1)[0].tx
+    let rx = data_traffic_5G.get()?.months?.slice(-1)[0].rx
+    let free = (data_for_month_usage.get().limit * Math.pow(1000, 2)) - (tx + rx)
+    const chartData = [
+      //data_data_Usage_count
+      { "id": "DL", "value": tx },
+      { "id": "UL", "value": rx },
+      { "id": "FREE", "value": free },
+    ]
+    const textData = {
+      free: bytesToHuman(free, `KiB`),
+      ratio: ((tx + rx) / free).toFixed(2) * 100
+    }
+    return { chartData, textData }
+  }
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -254,7 +285,6 @@ export default () => {
       data_for_week_chart.set(
         data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length).concat(last7Days)
       )
-      console.log(data_for_week_chart.get().length)
 
       let weeks = [{ rx: 0, tx: 0 }]
       last7Days.map((v, i) => {
@@ -856,15 +886,15 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_data_Usage_count.get()} />
+                <MyResponsivePie scheme={`pastel1`} data={data_data_Usage_count().chartData} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={'green'}>
-                      {`Free (66%)`}
+                      {`Free (${data_data_Usage_count().textData.ratio}%)`}
                     </Typography>
-                    {`2285.53GB`}
+                    {`${data_data_Usage_count().textData.free}`}
                   </Typography>
                 </Box>
               </Stack>
@@ -875,7 +905,7 @@ export default () => {
                   <ListItemText primary="Data Limit" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      {`3500.00 GB`}
+                      {`${data_for_month_usage.get().limit} GB`}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -884,7 +914,7 @@ export default () => {
                   <ListItemText primary="Start Date" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      {`Day 15`}
+                      {`Day ${data_for_month_usage.get().start}`}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -895,7 +925,7 @@ export default () => {
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={45} />
                       <Typography variant="caption" color={`green`}>
-                        {`12 / 30`}
+                        {`${getRemainDaysOfMonthUsage(data_for_month_usage.get().start).join(' / ')}`}
                       </Typography>
                     </Stack>
                   </ListItemSecondaryAction>
