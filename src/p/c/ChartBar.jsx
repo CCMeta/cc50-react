@@ -3,25 +3,25 @@ import { ResponsiveBar } from '@nivo/bar'
 
 const _data = [
   {
-    "date": "MON", "DL": 92, "UL": 92,
+    "id": "MON", "tx": 92, "rx": 92,
   },
   {
-    "date": "TUR", "UL": 200, "DL": 96,
+    "id": "TUR", "rx": 200, "tx": 96,
   },
   {
-    "date": "THR", "DL": 43, "UL": 184,
+    "id": "THR", "tx": 43, "rx": 184,
   },
   {
-    "date": "WES", "DL": 84, "UL": 50,
+    "id": "WES", "tx": 84, "rx": 50,
   },
   {
-    "date": "FRI", "DL": 91, "UL": 133,
+    "id": "FRI", "tx": 91, "rx": 133,
   },
   {
-    "date": "SAT", "DL": 150, "UL": 50,
+    "id": "SAT", "tx": 150, "rx": 50,
   },
   {
-    "date": "SUN", "DL": 139, "UL": 99,
+    "id": "SUN", "tx": 139, "rx": 99,
   }
 ]
 
@@ -29,15 +29,15 @@ export const MyResponsiveBar = ({ data }) => (
   <ResponsiveBar
     data={data ?? _data}
     keys={[
-      'UL',
-      'DL'
+      'rx',
+      'tx'
     ]}
-    axisLeft={{
-      tickValues: [0, 50, 100, 150, 200, 250]
-    }}
+    // axisLeft={{
+    //   tickValues: [0, 50, 100, 150, 200, 250]
+    // }}
     layers={['grid', 'axes', 'bars', '', '']}
     borderRadius={2}
-    indexBy="date"
+    indexBy="id"
     margin={{ top: 10, right: 5, bottom: 25, left: 50 }}
     padding={0.5}
     colors={{ scheme: 'pastel2' }}

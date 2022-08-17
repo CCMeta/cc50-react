@@ -77,11 +77,26 @@ const MaterialUISwitch = styled(Switch)(() => ({
 }));
 const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`
 const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
-
-
+// const bytesToGiB = (bytes) => (bytes / Math.pow(1024, 3)).toFixed(2)
+const bytesToHuman = (value, size = "B") => {
+  if (!value || value === 0) return '0 B';
+  const unit = 1024
+  const sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+  const times = Math.floor(Math.log(value) / Math.log(unit))
+  return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)];
+}
 
 export default () => {
   /*********constants**********/
+  const data_for_week_chart = Define((() => {
+    let arr = []
+    for (let id = 6; id >= 0; id--)
+      arr.push({ id: `N${id}`, rx: 1, tx: 1 })
+    return arr
+  })())
+
+  const data_traffic_24G = Define()
+  const data_traffic_5G = Define()
   const data_iwinfo_24G = Define()
   const data_iwinfo_5G = Define()
   const data_lan_speed_chart = Define([{
@@ -141,15 +156,16 @@ export default () => {
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
         ]
       }])
-      console.log(data_lan_speed_chart.get());
 
       data_luci_conntrack.set(
         (await $rpc.post(`luci`, "getConntrackList"))?.[1].result
       )
+      data_traffic_5G.set(await fetching_traffic_5G())
     }, 3000);
 
     data_sim_network_info.set(await fetching_sim_network_info())
     data_device_operation_info.set(await fetching_device_operation_info())
+
 
     data_iwinfo_5G.set(await fetching_iwinfo_5G())
     data_iwinfo_24G.set(await fetching_iwinfo_24G())
@@ -161,7 +177,6 @@ export default () => {
     wan_network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
     )
-    // console.log(wan_network_interface_dump.get())
 
     luci_rpc_getHostHints.set(
       (await $rpc.post("luci-rpc", "getHostHints"))?.[1]?.interface
@@ -226,6 +241,28 @@ export default () => {
         modem: CmdResultParser(res, 'modem state is '),
         imei: CmdResultParser(res, ' imei:'),
       }
+    })
+  }
+
+  const fetching_traffic_5G = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `vnstat -i rai0 -u && vnstat -i rai0 --json`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      const last7Days = res.interfaces[0].traffic.days.slice(-7)
+      data_for_week_chart.set(
+        data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length).concat(last7Days)
+      )
+      console.log(data_for_week_chart.get().length)
+
+      let weeks = [{ rx: 0, tx: 0 }]
+      last7Days.map((v, i) => {
+        weeks[0].rx += v.rx
+        weeks[0].tx += v.tx
+      })
+      res.interfaces[0].traffic.weeks = weeks
+      return res.interfaces[0].traffic
     })
   }
 
@@ -464,7 +501,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
                       {`2.4G Clients`}
                     </Typography>
-                    {`${data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)}% (${data_clients_info_24G.get().length})`}<br />
+                    {`${(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_24G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -599,7 +636,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
                       {`5G Clients`}
                     </Typography>
-                    {`${data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)}% (${data_clients_info_5G.get().length})`}<br />
+                    {`${(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_5G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -727,13 +764,13 @@ export default () => {
                 <Stack direction={'row'} >
                   <DownloadIcon color={'primary'} fontSize={'small'} />
                   <Typography variant={'caption'}>
-                    832.42MB
+                    {bytesToHuman(data_traffic_5G.get()?.days?.slice(-1)[0].tx, `KiB`)}
                   </Typography>
                 </Stack>
                 <Stack direction={'row'} >
                   <UploadIcon color={'success'} fontSize={'small'} />
                   <Typography variant={'caption'}>
-                    319.66MB
+                    {bytesToHuman(data_traffic_5G.get()?.days?.slice(-1)[0].rx, `KiB`)}
                   </Typography>
                 </Stack>
                 <IconButton variant="outlined" color='info' size="small">
@@ -743,30 +780,33 @@ export default () => {
             </Stack>
             <Stack direction={'row'}>
               <Stack style={{ height: '20vh', width: "60%" }}>
-                <MyResponsiveBar />
+                <MyResponsiveBar data={data_for_week_chart.get()} />
               </Stack>
               <Stack style={{ width: "40%" }}>
                 <Box m={1} >
                   <Stack direction={'row'}>
                     <Stack p={1} alignItems={'flex-start'}>
                       <Typography component={'div'} variant={'caption'} color={'#AAA'}>
-                        Month Data
+                        Week Data
                       </Typography>
                       <Typography component={'div'} variant={'subtitle1'}>
-                        1138.45GB
+                        {`${bytesToHuman(
+                          data_traffic_5G.get()?.weeks?.slice(-1)[0].tx +
+                          data_traffic_5G.get()?.weeks?.slice(-1)[0].rx
+                          , `KiB`)}`}
                       </Typography>
                     </Stack>
                     <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
                       <Stack direction={'row'} >
                         <DownloadIcon color={'primary'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          832.42MB
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.slice(-1)[0].tx, `KiB`)}
                         </Typography>
                       </Stack>
                       <Stack direction={'row'} >
                         <UploadIcon color={'success'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          319.66MB
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.slice(-1)[0].rx, `KiB`)}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -776,23 +816,24 @@ export default () => {
                   <Stack direction={'row'}>
                     <Stack p={1} alignItems={'flex-start'}>
                       <Typography component={'div'} variant={'caption'} color={'#AAA'}>
-                        Year Data
+                        Month Data
                       </Typography>
                       <Typography component={'div'} variant={'subtitle1'}>
-                        4517.35GB
+                        {`${bytesToHuman(data_traffic_5G.get()?.months?.slice(-1)[0].tx +
+                          data_traffic_5G.get()?.months?.slice(-1)[0].rx, `KiB`)}`}
                       </Typography>
                     </Stack>
                     <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
                       <Stack direction={'row'} >
                         <DownloadIcon color={'primary'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          2517.42MB
+                          {bytesToHuman(data_traffic_5G.get()?.months?.slice(-1)[0].tx, `KiB`)}
                         </Typography>
                       </Stack>
                       <Stack direction={'row'} >
                         <UploadIcon color={'success'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          2000.13MB
+                          {bytesToHuman(data_traffic_5G.get()?.months?.slice(-1)[0].rx, `KiB`)}
                         </Typography>
                       </Stack>
                     </Stack>
