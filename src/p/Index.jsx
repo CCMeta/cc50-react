@@ -78,13 +78,14 @@ const MaterialUISwitch = styled(Switch)(() => ({
 const normalise = (value, MAX = 100, MIN = 0) => ((value - MIN) * 100) / (MAX - MIN);
 const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`
 const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
+const bytesToMiB = (bytes) => (bytes / Math.pow(1024, 2)).toFixed(2)
 // const bytesToGiB = (bytes) => (bytes / Math.pow(1024, 3)).toFixed(2)
 const bytesToHuman = (value, size = "B") => {
   if (!value || value === 0) return '0 B';
   const unit = 1024
   const sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
   const times = Math.floor(Math.log(value) / Math.log(unit))
-  return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)];
+  return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)]
 }
 const getRemainDaysOfMonthUsage = start => {
   const now = (new Date()).getTime()
@@ -191,42 +192,15 @@ export default () => {
 
   /*********createEffect**********/
   createEffect(async () => {
-
+    //login process
     await fetching(FormBuilder({
       "luci_username": "root", "luci_password": "123456",
     }), 'login'
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
 
-
-    setInterval(async () => {
-      data_device_performance.set(await fetching_device_performance())
-      data_device_heat.set(await fetching_device_heat())
-
-      //concat speed
-      data_lan_speed_now.set(await fetching_lan_speed_now())
-      data_lan_speed_chart.set([{
-        "id": "rx", data: [
-          ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
-          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
-        ]
-      }, {
-        "id": "tx", data: [
-          ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
-          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
-        ]
-      }])
-      data_system_info.set((await $rpc.post("system", "info"))?.[1])
-
-      data_luci_conntrack.set(
-        (await $rpc.post(`luci`, "getConntrackList"))?.[1].result
-      )
-
-      data_traffic_5G.set(await fetching_traffic_5G())
-    }, 3000);
-
+    // Once api without interval
     data_sim_network_info.set(await fetching_sim_network_info())
     data_device_operation_info.set(await fetching_device_operation_info())
-
 
     data_iwinfo_5G.set(await fetching_iwinfo_5G())
     data_iwinfo_24G.set(await fetching_iwinfo_24G())
@@ -247,7 +221,31 @@ export default () => {
       (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases
     )
 
+    // setInterval api below 
+    const intervalHome = async () => {
+      data_device_performance.set(await fetching_device_performance())
+      data_device_heat.set(await fetching_device_heat())
+      data_system_info.set((await $rpc.post("system", "info"))?.[1])
+      data_luci_conntrack.set((await $rpc.post(`luci`, "getConntrackList"))?.[1].result)
+      data_traffic_5G.set(await fetching_traffic_5G())
 
+      //concat speed
+      data_lan_speed_now.set(await fetching_lan_speed_now())
+      data_lan_speed_chart.set([{
+        "id": "rx", data: [
+          ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
+          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
+        ]
+      }, {
+        "id": "tx", data: [
+          ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
+          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
+        ]
+      }])
+
+      return intervalHome
+    }
+    setInterval(await intervalHome(), 3000);
   })
 
   /*********functions**********/
@@ -314,7 +312,14 @@ export default () => {
     ).then(res => {
       const last7Days = res.interfaces[0].traffic.days.slice(0, 7).reverse()
       data_for_week_chart.set(
-        data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length).concat(last7Days)
+        data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length)
+          .concat(last7Days.map(v => {
+            return {
+              ...v,
+              tx: bytesToMiB(v.tx * 1024),
+              rx: bytesToMiB(v.rx * 1024),
+            }
+          }))
       )
 
       let weeks = [{ rx: 0, tx: 0 }]
@@ -902,7 +907,7 @@ export default () => {
           <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
               <Typography pl={1} variant={`subtitle1`}>
-                {`WiFi Overview 2.4G`}
+                {`WiFi Overview 5G`}
               </Typography>
               <IconButton variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
@@ -917,9 +922,9 @@ export default () => {
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
-                      {`2.4G Clients`}
+                      {`5G Clients`}
                     </Typography>
-                    {`${(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_24G.get().length})`}<br />
+                    {`${(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_5G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -939,7 +944,7 @@ export default () => {
                   <ListItemText primary="SSID" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color={`primary`}>
-                      {data_iwinfo_24G.get()?.ssid}
+                      {data_iwinfo_5G.get()?.ssid}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -948,9 +953,9 @@ export default () => {
                   <ListItemText primary="Signal" />
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                      <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
-                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>
-                        {data_iwinfo_24G.get()?.signal}
+                      <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={95} />
+                      <Typography variant="caption" sx={{ color: "green", width: "2rem" }}>
+                        {data_iwinfo_5G.get()?.signal}
                       </Typography>
                     </Stack>
                   </ListItemSecondaryAction>
@@ -976,7 +981,7 @@ export default () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
-                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
                         <ListItemText primary="Encryption" />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" color={`primary`}>

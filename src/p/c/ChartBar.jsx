@@ -32,9 +32,7 @@ export const MyResponsiveBar = ({ data }) => (
       'rx',
       'tx'
     ]}
-    // axisLeft={{
-    //   tickValues: [0, 50, 100, 150, 200, 250]
-    // }}
+    axisLeft={{ tickValues: 6 }}
     layers={['grid', 'axes', 'bars', '', '']}
     borderRadius={2}
     indexBy="id"

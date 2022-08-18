@@ -112,6 +112,7 @@ export const MyResponsiveLine = ({ data }) => (
       stacked: true,
       reverse: false
     }}
+    axisLeft={{ tickValues: 6 }}
     curve="linear"
     colors={{ scheme: 'pastel1' }}
     lineWidth={1}
@@ -122,5 +123,6 @@ export const MyResponsiveLine = ({ data }) => (
     pointLabelYOffset={-12}
     enableArea={true}
     useMesh={true}
+    enableGridX={false}
   />
 )
