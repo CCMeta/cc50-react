@@ -75,6 +75,7 @@ const MaterialUISwitch = styled(Switch)(() => ({
     borderRadius: 20 / 2,
   },
 }));
+const normalise = (value, MAX = 100, MIN = 0) => ((value - MIN) * 100) / (MAX - MIN);
 const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`
 const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
 // const bytesToGiB = (bytes) => (bytes / Math.pow(1024, 3)).toFixed(2)
@@ -953,7 +954,11 @@ export default () => {
                   <ListItemText primary="Remain Days" />
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                      <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate" value={45} />
+                      <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate"
+                        value={normalise(
+                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[0],
+                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[1],
+                        )} />
                       <Typography variant="caption" color={`green`}>
                         {`${getRemainDaysOfMonthUsage(data_for_month_usage.get().start).join(' / ')}`}
                       </Typography>
