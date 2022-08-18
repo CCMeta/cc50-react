@@ -140,10 +140,25 @@ export default () => {
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
-  const data_wifi_clients = [
-    { "id": "24", "value": data_clients_info_24G.get().length, },
-    { "id": "5", "value": data_clients_info_5G.get().length, },
-  ]
+  const data_wifi_clients = () => {
+    const result = []
+    var wifi_mode_counter = {}
+    data_clients_info_5G.get().map((v, i) => {
+      wifi_mode_counter[`5G-${v.PhyMode}`] = wifi_mode_counter[`5G-${v.PhyMode}`] ?? 0
+      wifi_mode_counter[`5G-${v.PhyMode}`]++
+    })
+    data_clients_info_24G.get().map((v, i) => {
+      wifi_mode_counter[`24G-${v.PhyMode}`] = wifi_mode_counter[`24G-${v.PhyMode}`] ?? 0
+      wifi_mode_counter[`24G-${v.PhyMode}`]++
+    })
+    for (const key in wifi_mode_counter) {
+      result.push({
+        id: key,
+        value: wifi_mode_counter[key],
+      })
+    }
+    return result
+  }
   const data_data_Usage_count = () => {
     let tx = data_traffic_5G.get()?.months?.[0].tx
     let rx = data_traffic_5G.get()?.months?.[0].rx
@@ -523,7 +538,7 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_wifi_clients} />
+                <MyResponsivePie data={data_wifi_clients()} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
@@ -658,7 +673,7 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_wifi_clients} />
+                <MyResponsivePie data={data_wifi_clients()} />
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
                 }}>
