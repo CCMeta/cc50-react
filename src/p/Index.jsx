@@ -535,11 +535,510 @@ export default () => {
       {/* end of left side content */}
 
 
-      <Stack style={{ flexBasis: 0, flexGrow: 4 }}
-        divider={<Divider orientation="horizontal" flexItem />}>
+      <Stack style={{ flexBasis: 0, flexGrow: 4 }}>
 
-        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} mx={2} my={1}>
+          <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+
+              <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
+                <Stack direction={'row'} >
+                  <DownloadIcon color={'primary'} fontSize={'small'} />
+                  <Typography variant={'caption'}>
+                    {bytesToHuman(data_traffic_5G.get()?.days?.[0].tx, `KiB`)}
+                  </Typography>
+                </Stack>
+                <Stack direction={'row'} >
+                  <UploadIcon color={'success'} fontSize={'small'} />
+                  <Typography variant={'caption'}>
+                    {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
+                  </Typography>
+                </Stack>
+                <IconButton variant="outlined" color='info' size="small">
+                  <ChevronRightRoundedIcon />
+                </IconButton>
+              </Stack>
+            </Stack>
+            <Stack direction={'row'}>
+              <Stack style={{ height: '20vh', width: "60%" }}>
+                <MyResponsiveBar data={data_for_week_chart.get()} />
+              </Stack>
+              <Stack style={{ width: "40%" }}>
+                <Box m={1} >
+                  <Stack direction={'row'}>
+                    <Stack p={1} alignItems={'flex-start'}>
+                      <Typography component={'div'} variant={'caption'} color={'#AAA'}>
+                        Week Data
+                      </Typography>
+                      <Typography component={'div'} variant={'subtitle1'}>
+                        {`${bytesToHuman(
+                          data_traffic_5G.get()?.weeks?.[0].tx +
+                          data_traffic_5G.get()?.weeks?.[0].rx
+                          , `KiB`)}`}
+                      </Typography>
+                    </Stack>
+                    <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
+                      <Stack direction={'row'} >
+                        <DownloadIcon color={'primary'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
+                        </Typography>
+                      </Stack>
+                      <Stack direction={'row'} >
+                        <UploadIcon color={'success'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+                </Box>
+                <Box m={1}>
+                  <Stack direction={'row'}>
+                    <Stack p={1} alignItems={'flex-start'}>
+                      <Typography component={'div'} variant={'caption'} color={'#AAA'}>
+                        Month Data
+                      </Typography>
+                      <Typography component={'div'} variant={'subtitle1'}>
+                        {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
+                          data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
+                      </Typography>
+                    </Stack>
+                    <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
+                      <Stack direction={'row'} >
+                        <DownloadIcon color={'primary'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
+                        </Typography>
+                      </Stack>
+                      <Stack direction={'row'} >
+                        <UploadIcon color={'success'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Stack>
+            </Stack>
+          </Paper>
+          <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`Month Data Usage`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={`row`}>
+
+              <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div" color={'green'}>
+                      {`Free (${data_data_Usage_count().textData.ratio}%)`}
+                    </Typography>
+                    {`${data_data_Usage_count().textData.free}`}
+                  </Typography>
+                </Box>
+                <MyResponsivePie scheme={`pastel1`} data={data_data_Usage_count().chartData} />
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Data Limit" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      {`${data_for_month_usage.get().limit} GB`}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Start Date" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      {`Day ${data_for_month_usage.get().start}`}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Remain Days" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color="success" variant="determinate"
+                        value={normalise(
+                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[0],
+                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[1],
+                        )} />
+                      <Typography variant="caption" color={`green`}>
+                        {`${getRemainDaysOfMonthUsage(data_for_month_usage.get().start).join(' / ')}`}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
+                    color={'secondary'} fullWidth size='small' variant={'outlined'}>Setting Plan</Button>
+
+                  <Popover
+                    onClose={e => wifiPopoverOpen.set(null)}
+                    anchorEl={wifiPopoverOpen.get()}
+                    open={wifiPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: `20vw` }} dense>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Auth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            WPA2PSK/WPA3
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Encryption" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            AES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Password" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            YES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" />
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Bandwidth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            80 Mhz
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Channel" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            12
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Mode" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            802.11 a/n/ac/ax
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                    </List>
+
+                  </Popover>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+          </Paper>
+        </Stack>
+        {/* end of right side -1 */}
+
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} mx={2} my={1}>
+          <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`WiFi Overview 2.4G`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={`row`}>
+
+              <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div" color={`#AAA`}>
+                      {`2.4G Clients`}
+                    </Typography>
+                    {`${(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_24G.get().length})`}<br />
+                    {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
+                  </Typography>
+                </Box>
+                <MyResponsivePie data={data_wifi_clients()} />
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="ON / OFF" />
+                  <ListItemSecondaryAction>
+                    <MaterialUISwitch />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="SSID" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      {data_iwinfo_24G.get()?.ssid}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Signal" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
+                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>
+                        {data_iwinfo_24G.get()?.signal}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
+                    color={'info'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
+
+                  <Popover
+                    onClose={e => wifiPopoverOpen.set(null)}
+                    anchorEl={wifiPopoverOpen.get()}
+                    open={wifiPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: `20vw` }} dense>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Auth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            WPA2PSK/WPA3
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Encryption" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            AES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Password" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            YES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" />
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Bandwidth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            80 Mhz
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Channel" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            12
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Mode" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            802.11 a/n/ac/ax
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                    </List>
+
+                  </Popover>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+          </Paper>
+          <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`WiFi Overview 2.4G`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={`row`}>
+
+              <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div" color={`#AAA`}>
+                      {`2.4G Clients`}
+                    </Typography>
+                    {`${(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_24G.get().length})`}<br />
+                    {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
+                  </Typography>
+                </Box>
+                <MyResponsivePie data={data_wifi_clients()} />
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="ON / OFF" />
+                  <ListItemSecondaryAction>
+                    <MaterialUISwitch />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="SSID" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color={`primary`}>
+                      {data_iwinfo_24G.get()?.ssid}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Signal" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color="warning" variant="determinate" value={45} />
+                      <Typography variant="caption" sx={{ color: "orange", width: "2rem" }}>
+                        {data_iwinfo_24G.get()?.signal}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => wifiPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />}
+                    color={'info'} fullWidth size='small' variant={'outlined'}>More Detail</Button>
+
+                  <Popover
+                    onClose={e => wifiPopoverOpen.set(null)}
+                    anchorEl={wifiPopoverOpen.get()}
+                    open={wifiPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: `20vw` }} dense>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Auth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            WPA2PSK/WPA3
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Encryption" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            AES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Password" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            YES
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" />
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Bandwidth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            80 Mhz
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Channel" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            12
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="secondary" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Mode" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color={`primary`}>
+                            802.11 a/n/ac/ax
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                    </List>
+
+                  </Popover>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+          </Paper>
+        </Stack>
+        {/* end of right side 0 */}
+
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1, display: "none" }}
           divider={<Divider orientation="vertical" flexItem />}>
+
+
 
           <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
@@ -554,9 +1053,8 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_wifi_clients()} />
                 <Box sx={{
-                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
@@ -566,6 +1064,7 @@ export default () => {
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
+                <MyResponsivePie data={data_wifi_clients()} />
               </Stack>
 
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
@@ -689,9 +1188,8 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie data={data_wifi_clients()} />
                 <Box sx={{
-                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={`#AAA`}>
@@ -701,6 +1199,7 @@ export default () => {
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
+                <MyResponsivePie data={data_wifi_clients()} />
               </Stack>
 
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
@@ -814,7 +1313,7 @@ export default () => {
         </Stack>
         {/* end of right side 1 */}
 
-        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }}
+        <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1, display: "none" }}
           divider={<Divider orientation="vertical" flexItem />}>
 
           <Stack style={{ flexBasis: 0, flexGrow: 1, }} p={2}>
@@ -917,9 +1416,8 @@ export default () => {
             <Stack direction={`row`}>
 
               <Stack style={{ height: '20vh', width: "20vh", position: 'relative' }}>
-                <MyResponsivePie scheme={`pastel1`} data={data_data_Usage_count().chartData} />
                 <Box sx={{
-                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: -1,
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <Typography variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div" color={'green'}>
@@ -928,6 +1426,7 @@ export default () => {
                     {`${data_data_Usage_count().textData.free}`}
                   </Typography>
                 </Box>
+                <MyResponsivePie scheme={`pastel1`} data={data_data_Usage_count().chartData} />
               </Stack>
 
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
@@ -1044,12 +1543,10 @@ export default () => {
 
           </Stack>
 
-
-
         </Stack>
         {/* end of right side 2 */}
 
-        <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
+        <Stack style={{ flexBasis: 0, flexGrow: 1 }}>
 
           <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
             <Typography pl={1} variant={`subtitle1`}>
@@ -1091,7 +1588,7 @@ export default () => {
         </Stack>
         {/* end of right side 3 */}
 
-        <Stack style={{ flexBasis: 0, flexGrow: 1 }} p={2}>
+        <Stack style={{ flexBasis: 0, flexGrow: 1, display: "none" }} p={2}>
 
           <Stack direction="row" justifyContent="center" spacing={2}>
             <Card elevation={6} className={css.card}>
