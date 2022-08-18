@@ -100,6 +100,17 @@ const getRemainDaysOfMonthUsage = start => {
   const spaceDays = spaceTime / 86400000
   return [spaceDays, fullMonth]
 }
+const secondToWatch = v => {
+  var sec_num = parseInt(v, 10);
+  var hours = Math.floor(sec_num / 3600);
+  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+  var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+  if (hours < 10) { hours = "0" + hours; }
+  if (minutes < 10) { minutes = "0" + minutes; }
+  if (seconds < 10) { seconds = "0" + seconds; }
+  return hours + ':' + minutes + ':' + seconds;
+}
 
 export default () => {
   /*********constants**********/
@@ -136,6 +147,7 @@ export default () => {
   const data_sim_network_info = Define({})
   const wifiPopoverOpen = Define(null)
   const wan_network_interface_dump = Define()
+  const data_system_info = Define({ "localtime": 0, "uptime": 0 })
   const luci_rpc_getHostHints = Define([])
   const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info_5G = Define([])
@@ -202,10 +214,12 @@ export default () => {
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
         ]
       }])
+      data_system_info.set((await $rpc.post("system", "info"))?.[1])
 
       data_luci_conntrack.set(
         (await $rpc.post(`luci`, "getConntrackList"))?.[1].result
       )
+
       data_traffic_5G.set(await fetching_traffic_5G())
     }, 3000);
 
@@ -231,6 +245,7 @@ export default () => {
     luci_rpc_getDHCPLeases.set(
       (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases
     )
+
 
   })
 
@@ -367,7 +382,7 @@ export default () => {
             <ListItemText primary="Uptime" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='secondary'>
-                1y 2m 1w 2d
+                {`${secondToWatch(data_system_info.get().uptime)}`}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
