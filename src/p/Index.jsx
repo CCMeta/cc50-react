@@ -145,9 +145,9 @@ export default () => {
     { "id": "5", "value": data_clients_info_5G.get().length, },
   ]
   const data_data_Usage_count = () => {
-    let tx = data_traffic_5G.get()?.months?.slice(-1)[0].tx
-    let rx = data_traffic_5G.get()?.months?.slice(-1)[0].rx
-    let free = (data_for_month_usage.get().limit * Math.pow(1000, 2)) - (tx + rx)
+    let tx = data_traffic_5G.get()?.months?.[0].tx
+    let rx = data_traffic_5G.get()?.months?.[0].rx
+    let free = (data_for_month_usage.get().limit * Math.pow(1024, 2)) - (tx + rx)
     const chartData = [
       //data_data_Usage_count
       { "id": "DL", "value": tx },
@@ -281,7 +281,7 @@ export default () => {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
-      const last7Days = res.interfaces[0].traffic.days.slice(-7)
+      const last7Days = res.interfaces[0].traffic.days.slice(0, 7).reverse()
       data_for_week_chart.set(
         data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length).concat(last7Days)
       )
@@ -794,13 +794,13 @@ export default () => {
                 <Stack direction={'row'} >
                   <DownloadIcon color={'primary'} fontSize={'small'} />
                   <Typography variant={'caption'}>
-                    {bytesToHuman(data_traffic_5G.get()?.days?.slice(-1)[0].tx, `KiB`)}
+                    {bytesToHuman(data_traffic_5G.get()?.days?.[0].tx, `KiB`)}
                   </Typography>
                 </Stack>
                 <Stack direction={'row'} >
                   <UploadIcon color={'success'} fontSize={'small'} />
                   <Typography variant={'caption'}>
-                    {bytesToHuman(data_traffic_5G.get()?.days?.slice(-1)[0].rx, `KiB`)}
+                    {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
                   </Typography>
                 </Stack>
                 <IconButton variant="outlined" color='info' size="small">
@@ -821,8 +821,8 @@ export default () => {
                       </Typography>
                       <Typography component={'div'} variant={'subtitle1'}>
                         {`${bytesToHuman(
-                          data_traffic_5G.get()?.weeks?.slice(-1)[0].tx +
-                          data_traffic_5G.get()?.weeks?.slice(-1)[0].rx
+                          data_traffic_5G.get()?.weeks?.[0].tx +
+                          data_traffic_5G.get()?.weeks?.[0].rx
                           , `KiB`)}`}
                       </Typography>
                     </Stack>
@@ -830,13 +830,13 @@ export default () => {
                       <Stack direction={'row'} >
                         <DownloadIcon color={'primary'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          {bytesToHuman(data_traffic_5G.get()?.weeks?.slice(-1)[0].tx, `KiB`)}
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
                         </Typography>
                       </Stack>
                       <Stack direction={'row'} >
                         <UploadIcon color={'success'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          {bytesToHuman(data_traffic_5G.get()?.weeks?.slice(-1)[0].rx, `KiB`)}
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -849,21 +849,21 @@ export default () => {
                         Month Data
                       </Typography>
                       <Typography component={'div'} variant={'subtitle1'}>
-                        {`${bytesToHuman(data_traffic_5G.get()?.months?.slice(-1)[0].tx +
-                          data_traffic_5G.get()?.months?.slice(-1)[0].rx, `KiB`)}`}
+                        {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
+                          data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
                       </Typography>
                     </Stack>
                     <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
                       <Stack direction={'row'} >
                         <DownloadIcon color={'primary'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          {bytesToHuman(data_traffic_5G.get()?.months?.slice(-1)[0].tx, `KiB`)}
+                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
                         </Typography>
                       </Stack>
                       <Stack direction={'row'} >
                         <UploadIcon color={'success'} fontSize={'small'} />
                         <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
-                          {bytesToHuman(data_traffic_5G.get()?.months?.slice(-1)[0].rx, `KiB`)}
+                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
                         </Typography>
                       </Stack>
                     </Stack>
