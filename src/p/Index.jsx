@@ -88,7 +88,7 @@ const bytesToHuman = (value, size = "B") => {
 const getRemainDaysOfMonthUsage = start => {
   const now = (new Date()).getTime()
   var setDateDone = (new Date()).setDate(start)
-  if (setDateDone < now) {
+  if (setDateDone <= now) {
     let nextMonth = new Date(setDateDone).setMonth((new Date(setDateDone)).getMonth() + 1)
     var fullMonth = (nextMonth - setDateDone) / 86400000
     setDateDone = nextMonth
@@ -104,7 +104,7 @@ const getRemainDaysOfMonthUsage = start => {
 export default () => {
   /*********constants**********/
   const data_for_month_usage = Define({
-    start: 10,
+    start: 19,
     limit: 40,
   })
 
@@ -156,7 +156,7 @@ export default () => {
     ]
     const textData = {
       free: bytesToHuman(free, `KiB`),
-      ratio: ((tx + rx) / free).toFixed(2) * 100
+      ratio: (free / (tx + rx + free)).toFixed(2) * 100
     }
     return { chartData, textData }
   }
