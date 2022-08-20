@@ -105,13 +105,7 @@ export const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine
     data={data ?? _data}
     margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
-    yScale={{
-      type: 'linear',
-      min: 'auto',
-      max: 'auto',
-      stacked: true,
-      reverse: false
-    }}
+    areaOpacity={0.5}
     axisLeft={{ tickValues: 6 }}
     curve="linear"
     colors={{ scheme: 'pastel1' }}
