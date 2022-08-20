@@ -1551,7 +1551,7 @@ export default () => {
         </Stack>
         {/* end of right side 2 */}
 
-        <Stack style={{ flexBasis: 0, flexGrow: 1 }}>
+        <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2 }}>
 
           <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
             <Typography pl={1} variant={`subtitle1`}>
