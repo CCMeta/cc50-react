@@ -194,7 +194,7 @@ export default () => {
   createEffect(async () => {
     //login process
     await fetching(FormBuilder({
-      "luci_username": "root", "luci_password": "123456",
+      "luci_username": "root", "luci_password": "1",
     }), 'login'
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
 
@@ -477,7 +477,7 @@ export default () => {
               <ListItemText primary="PIN LOCK" />
               <ListItemSecondaryAction>
                 <Typography variant='caption' color='secondary'>
-                  FUCKED
+                  WHOPS
                 </Typography>
               </ListItemSecondaryAction>
             </ListItem>

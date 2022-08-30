@@ -1,0 +1,22 @@
+# opkg.conf  
+dest root /
+dest ram /tmp
+lists_dir ext /var/opkg-lists
+option overlay_root /overlay
+option check_signature
+
+arch all 100
+arch aarch64_cortex-a55_neon-vfpv4 200
+arch aarch64_cortex-a53_neon-vfpv4 300
+arch aarch64_cortex-a55 400
+arch aarch64_cortex-a53 500
+
+
+# repos list 
+src/gz openwrt_base https://downloads.openwrt.org/releases/19.07-SNAPSHOT/packages/aarch64_cortex-a53/base/
+src/gz openwrt_luci https://downloads.openwrt.org/releases/19.07-SNAPSHOT/packages/aarch64_cortex-a53/luci/
+src/gz openwrt_packages https://downloads.openwrt.org/releases/19.07-SNAPSHOT/packages/aarch64_cortex-a53/packages/
+src/gz openwrt_routing https://downloads.openwrt.org/releases/19.07-SNAPSHOT/packages/aarch64_cortex-a53/routing/
+src/gz openwrt_telephony https://downloads.openwrt.org/releases/19.07-SNAPSHOT/packages/aarch64_cortex-a53/telephony/
+src/gz openwrt_freifunk https://downloads.openwrt.org/releases/19.07-SNAPSHOT/packages/aarch64_cortex-a53/freifunk/
+
