@@ -1,5 +1,5 @@
 import {
-  AppBar, Badge, Box, Button, Card, CardContent, Divider, IconButton, LinearProgress, List,
+  AppBar, Badge, Box, Button, Divider, IconButton, LinearProgress, List,
   ListItem, ListItemSecondaryAction, ListItemText, Paper, Popover, Stack, styled, Switch, Toolbar, Typography
 } from '@mui/material';
 import cookie from 'cookie';
@@ -10,16 +10,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import TimerIcon from '@mui/icons-material/Schedule';
 import UploadIcon from '@mui/icons-material/Upload';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 
 
 import 'animate.css';
-import css from '../s/About.module.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
@@ -1588,100 +1581,6 @@ export default () => {
             </Stack>
           </Stack>
           {/* end of right side 3 */}
-
-          <Stack sx={{ flexBasis: 0, flexGrow: 1, display: "none" }} p={2}>
-
-            <Stack direction="row" justifyContent="center" spacing={2}>
-              <Card elevation={6} className={css.card}>
-                <CardContent>
-                  <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
-                    <Typography>00.00</Typography>
-                    <Stack>
-                      <Typography>up</Typography>
-                      <Typography>mb/s</Typography>
-                    </Stack>
-                  </Stack>
-                </CardContent>
-              </Card>
-              <Card elevation={6} className={css.card}>
-                <CardContent>
-                  <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
-                    <Typography>00.00</Typography>
-                    <Stack>
-                      <Typography>up</Typography>
-                      <Typography>mb/s</Typography>
-                    </Stack>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Stack>
-
-            <Paper elevation={6}>
-              <List>
-                <ListItem divider={true}>
-                  <ListItemText primary="Session Flow" secondary="This Session Data" />
-                </ListItem>
-                <ListItem divider={true}>
-                  <ListItemText primary="Month Flow" secondary="This Month Data" />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Total Flow" secondary="All Time Data" />
-                </ListItem>
-              </List>
-            </Paper>
-
-            <Paper elevation={6}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>MacAddr</TableCell>
-                      <TableCell>PhyMode</TableCell>
-                      <TableCell>AvgRssi0</TableCell>
-                      <TableCell>StreamSnr1</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data_clients_info_5G?.get()?.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">{row.MacAddr}</TableCell>
-                        <TableCell>{row.PhyMode}</TableCell>
-                        <TableCell>{row.AvgRssi0}</TableCell>
-                        <TableCell>{row.StreamSnr1}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
-
-            <Paper elevation={6}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Host</TableCell>
-                      <TableCell>IPv4</TableCell>
-                      <TableCell>MAC</TableCell>
-                      <TableCell>Leasetime</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {luci_rpc_getDHCPLeases?.get()?.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">{row.hostname}</TableCell>
-                        <TableCell>{row.ipaddr}</TableCell>
-                        <TableCell>{row.macaddr}</TableCell>
-                        <TableCell>{row.expires}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
-
-          </Stack>
-          {/* end of right side 4 */}
 
         </Stack>
         {/* end of right side content */}
