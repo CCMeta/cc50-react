@@ -3,19 +3,19 @@ import { useObserver } from 'react-solid-state';
 
 import { Define } from '../utils';
 
-import ShieldIcon from '@mui/icons-material/HealthAndSafety';
+import CallIcon from '@mui/icons-material/Call';
 import InfoIcon from '@mui/icons-material/Info';
 import KeyIcon from '@mui/icons-material/Key';
-import LanguageIcon from '@mui/icons-material/Language';
+import SpeedIcon from '@mui/icons-material/Speed';
 import MouseIcon from '@mui/icons-material/Mouse';
 import PinIcon from '@mui/icons-material/Pin';
 import PolicyIcon from '@mui/icons-material/Policy';
 import PolylineIcon from '@mui/icons-material/Polyline';
-import RestoreIcon from '@mui/icons-material/Restore';
+import MailIcon from '@mui/icons-material/Mail';
 import RouteIcon from '@mui/icons-material/Route';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SimCardIcon from '@mui/icons-material/SimCardOutlined';
-import WifiIcon from '@mui/icons-material/Wifi';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import { BottomNavigation, BottomNavigationAction, IconButton, Menu, MenuItem, Paper } from '@mui/material';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -70,22 +70,15 @@ export default () => {
   const subMenuList = Define([])
   const mainMenuOpen = Define(false)
 
-  const isOpen1 = Define(false)
-  const isOpen2 = Define(false)
-  const isOpen3 = Define(false)
-  const isOpen4 = Define(false)
-  const isOpen5 = Define(false)
-  const subMenusOpenMap = [isOpen1, isOpen2, isOpen3, isOpen4, isOpen5]
-
   const menuMetaData = [
-    { title: 'WAN', icon: <LanguageIcon color="primary" /> },
-    { title: 'LAN', icon: <WifiIcon color="primary" /> },
-    { title: 'SECURITY', icon: <ShieldIcon color="primary" /> },
-    { title: 'SMS', icon: <RestoreIcon color="primary" /> },
-    { title: 'SYSTEM', icon: <SettingsIcon color="primary" /> },
+    { title: 'DashBoard', value: `/`, icon: <SpeedIcon color="primary" /> },
+    { title: 'Clients', value: `clients`, icon: <WorkspacesIcon color="primary" /> },
+    { title: 'SMS', value: `about`, icon: <MailIcon color="primary" /> },
+    { title: 'Call', value: `about`, icon: <CallIcon color="primary" /> },
+    { title: 'Settings', value: `settings`, icon: <SettingsIcon color="primary" /> },
   ]
   /*********functions**********/
-  const trick = () => eval("console.log(`shit`)")
+  const trick = (e, uri) => uri && navigate(uri)
 
   const onChangeBottomNav = (event, activeIndex) => {
 
@@ -155,7 +148,7 @@ export default () => {
       <List>
         {menuMetaData.map((itemMenu, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton onClick={() => subMenusOpenMap[index].set(v => !v)}>
+            <ListItemButton onClick={e => trick(e, itemMenu.value)}>
               <ListItemIcon>
                 {itemMenu.icon}
               </ListItemIcon>
@@ -164,15 +157,14 @@ export default () => {
           </ListItem>
         ))}
       </List>
-
     </Drawer>
 
     <Paper className="cc-BottomNavigation" sx={sx_bottom} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>
-        <BottomNavigationAction label="WAN" icon={<LanguageIcon />} />
-        <BottomNavigationAction label="LAN" icon={<WifiIcon />} />
-        <BottomNavigationAction label="Security" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="SMS" icon={<ShieldIcon />} />
+        <BottomNavigationAction label="WAN" icon={<SpeedIcon />} />
+        <BottomNavigationAction label="LAN" icon={<WorkspacesIcon />} />
+        <BottomNavigationAction label="Security" icon={<MailIcon />} />
+        <BottomNavigationAction label="SMS" icon={<CallIcon />} />
         <BottomNavigationAction label="System" icon={<SettingsIcon />} />
       </BottomNavigation>
     </Paper>
