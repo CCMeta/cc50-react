@@ -1,33 +1,29 @@
-import { useObserver, createEffect, createStore, onCleanup, } from 'react-solid-state'
 import {
-  Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Card, CardContent, Paper, List,
-  ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, ListItemSecondaryAction, LinearProgress, Box, Switch, styled, CircularProgress, Chip, Badge, Button, Popover
-} from '@mui/material'
-import cookie from 'cookie'
+  AppBar, Badge, Box, Button, Card, CardContent, Divider, IconButton, LinearProgress, List,
+  ListItem, ListItemSecondaryAction, ListItemText, Paper, Popover, Stack, styled, Switch, Toolbar, Typography
+} from '@mui/material';
+import cookie from 'cookie';
+import { createEffect, useObserver } from 'react-solid-state';
 
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import DownloadIcon from '@mui/icons-material/Download';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import TimerIcon from '@mui/icons-material/Schedule';
+import UploadIcon from '@mui/icons-material/Upload';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import DownloadIcon from '@mui/icons-material/Download';
-import UploadIcon from '@mui/icons-material/Upload';
-import TimerIcon from '@mui/icons-material/Schedule';
 
 
-import { Link } from "react-router-dom"
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'animate.css';
-import css from '../s/About.module.css'
-import { fetching, Define, CmdResultParser, FormBuilder, rpc as $rpc } from './utils'
-import { Suspense } from 'react';
+import css from '../s/About.module.css';
 import { MyResponsiveBar } from "./c/ChartBar";
-import { MyResponsivePie } from "./c/ChartPie";
 import { MyResponsiveLine } from "./c/ChartLineArea";
-import { data } from 'browserslist';
+import { MyResponsivePie } from "./c/ChartPie";
+import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc } from './utils';
 
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,

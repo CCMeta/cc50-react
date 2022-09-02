@@ -71,11 +71,11 @@ export default () => {
   const mainMenuOpen = Define(false)
 
   const menuMetaData = [
-    { title: 'DashBoard', value: `/`, icon: <SpeedIcon color="primary" /> },
-    { title: 'Clients', value: `clients`, icon: <WorkspacesIcon color="primary" /> },
-    { title: 'SMS', value: `about`, icon: <MailIcon color="primary" /> },
-    { title: 'Call', value: `about`, icon: <CallIcon color="primary" /> },
-    { title: 'Settings', value: `settings`, icon: <SettingsIcon color="primary" /> },
+    { title: 'DashBoard', value: `/`, icon: <SpeedIcon color="info" /> },
+    { title: 'Clients', value: `clients`, icon: <WorkspacesIcon color="info" /> },
+    { title: 'SMS', value: `about`, icon: <MailIcon color="info" /> },
+    { title: 'Call', value: `about`, icon: <CallIcon color="info" /> },
+    { title: 'Settings', value: `settings`, icon: <SettingsIcon color="info" /> },
   ]
   /*********functions**********/
   const trick = (e, uri) => uri && navigate(uri)
