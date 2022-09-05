@@ -16,7 +16,7 @@ import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc } from './utils';
+import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc, secondsToWatch } from './utils';
 
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,
@@ -91,17 +91,7 @@ const getRemainDaysOfMonthUsage = start => {
   const spaceDays = spaceTime / 86400000
   return [spaceDays, fullMonth]
 }
-const secondToWatch = v => {
-  var sec_num = parseInt(v, 10);
-  var hours = Math.floor(sec_num / 3600);
-  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-  var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-  if (hours < 10) { hours = "0" + hours; }
-  if (minutes < 10) { minutes = "0" + minutes; }
-  if (seconds < 10) { seconds = "0" + seconds; }
-  return hours + ':' + minutes + ':' + seconds;
-}
 
 export default () => {
   /*********constants**********/
@@ -137,10 +127,8 @@ export default () => {
   const data_device_operation_info = Define({})
   const data_sim_network_info = Define({})
   const wifiPopoverOpen = Define(null)
-  const wan_network_interface_dump = Define()
+  const data_wan_network_interface_dump = Define()
   const data_system_info = Define({ "localtime": 0, "uptime": 0 })
-  const luci_rpc_getHostHints = Define([])
-  const luci_rpc_getDHCPLeases = Define([])
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
   const data_wifi_clients = () => {
@@ -198,20 +186,12 @@ export default () => {
     data_clients_info_5G.set(await fetching(``, 'wifi', `/sta_info/rai0`))
     data_clients_info_24G.set(await fetching(``, 'wifi', `/sta_info/ra0`))
 
-    wan_network_interface_dump.set(
+    data_wan_network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
     )
 
-    luci_rpc_getHostHints.set(
-      (await $rpc.post("luci-rpc", "getHostHints"))?.[1]?.interface
-    )
-
-    luci_rpc_getDHCPLeases.set(
-      (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases
-    )
-
     // setInterval api below 
-    const intervalHome = async () => {
+    const interval_apis = async () => {
       data_device_performance.set(await fetching_device_performance())
       data_device_heat.set(await fetching_device_heat())
       data_system_info.set((await $rpc.post("system", "info"))?.[1])
@@ -219,7 +199,7 @@ export default () => {
       data_traffic_5G.set(await fetching_traffic_5G())
 
       //concat speed
-      data_lan_speed_now.set(await fetching_lan_speed_now())
+      data_lan_speed_now.set(await fetching_realtime_traffic())
       data_lan_speed_chart.set([{
         "id": "rx", data: [
           ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
@@ -232,9 +212,9 @@ export default () => {
         ]
       }])
 
-      return intervalHome
+      return interval_apis
     }
-    setInterval(await intervalHome(), 3000);
+    setInterval(await interval_apis(), 3000);
   })
 
   /*********functions**********/
@@ -321,7 +301,7 @@ export default () => {
     })
   }
 
-  const fetching_lan_speed_now = async () => {
+  const fetching_realtime_traffic = async () => {
     return await fetching(FormBuilder({
       "cmd": `vnstat -i rai0 -tr 3 --json`,
       "token": sessionStorage.getItem('sid'),
@@ -378,7 +358,7 @@ export default () => {
               <ListItemText primary="Uptime" />
               <ListItemSecondaryAction>
                 <Typography variant='caption' color='secondary'>
-                  {`${secondToWatch(data_system_info.get().uptime)}`}
+                  {`${secondsToWatch(data_system_info.get().uptime)}`}
                 </Typography>
               </ListItemSecondaryAction>
             </ListItem>
@@ -493,9 +473,9 @@ export default () => {
               <ListItemText primary="WAN IP" />
               <ListItemSecondaryAction>
                 <Typography variant='caption' color='secondary'>
-                  {wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.address}
+                  {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.address}
                   {`/`}
-                  {wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.mask}
+                  {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.mask}
                 </Typography>
               </ListItemSecondaryAction>
             </ListItem>
@@ -503,9 +483,9 @@ export default () => {
               <ListItemText primary="Gateway" />
               <ListItemSecondaryAction>
                 <Typography variant='caption' color='secondary'>
-                  {wan_network_interface_dump?.get()?.["route"]?.[1]?.nexthop}
+                  {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.nexthop}
                   {`/`}
-                  {wan_network_interface_dump?.get()?.["route"]?.[1]?.mask}
+                  {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.mask}
                 </Typography>
               </ListItemSecondaryAction>
             </ListItem>

@@ -3,37 +3,37 @@ import { createEffect, useObserver } from 'react-solid-state';
 
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import 'animate.css';
 import { DataGrid } from '@mui/x-data-grid';
+import 'animate.css';
+import { Define, rpc as $rpc, secondsToWatch } from './utils';
 
 
 export default () => {
   /*********constants**********/
   const columns = [
-    { field: 'col1', headerName: 'Column 1', width: 150 },
-    { field: 'col2', headerName: 'Column 2', width: 150 },
+    { field: 'id', headerName: 'ID', },
+    { field: 'hostname', headerName: 'hostname', flex: 1, },
+    { field: 'macaddr', headerName: 'MAC/OS', flex: 1, },
+    { field: 'ipaddr', headerName: 'IPv4/IPv6', flex: 1, },
+    { field: 'expires', headerName: 'expires', },
+    { field: 'TYPE', headerName: 'TYPE/MODE', },
+    { field: 'SIGNAL', headerName: 'SIGNAL', },
+    // { field: 'SPEED', headerName: 'SPEED' },
+    // { field: 'FLOW', headerName: 'FLOW' },
+    // { field: 'CONNECT', headerName: 'CONNECT' },
   ]
-  const rows = [
-    { id: 1, col1: 'Hello', col2: 'World' },
-    { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 3, col1: 'MUI', col2: 'is Amazing' },
-    { id: 4, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 5, col1: 'MUI', col2: 'is Amazing' },
-    { id: 6, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 7, col1: 'MUI', col2: 'is Amazing' },
-    { id: 8, col1: 'Hello', col2: 'World' },
-    { id: 9, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 10, col1: 'MUI', col2: 'is Amazing' },
-    { id: 11, col1: 'Hello', col2: 'World' },
-    { id: 12, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 13, col1: 'MUI', col2: 'is Amazing' },
-    { id: 14, col1: 'Hello', col2: 'World' },
-    { id: 15, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 16, col1: 'MUI', col2: 'is Amazing' },
-  ]
+  const luci_rpc_getDHCPLeases = Define([])
 
   /*********createEffect**********/
   createEffect(async () => {
+
+    luci_rpc_getDHCPLeases.set(
+      (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases?.map((v, i) => ({
+        ...v,
+        id: i,
+        expires: secondsToWatch(v.expires),
+      }))
+    )
 
   })
   /*********functions**********/
@@ -60,7 +60,7 @@ export default () => {
 
       <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack>
       <Stack className='styled-scrollbars' height={`calc(100vh - 64px)`} sx={{ flexBasis: 0, flexGrow: 4 }}>
-        <DataGrid className='styled-scrollbars' rows={rows} columns={columns} />
+        <DataGrid rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
       </Stack>
 
     </Stack>
