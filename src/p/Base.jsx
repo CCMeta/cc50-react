@@ -1,30 +1,24 @@
-import { useObserver, createEffect } from 'react-solid-state'
-import { Stack, AppBar, Typography, Toolbar, IconButton, CssBaseline, Link } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { fetching, Define } from './utils';
+import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { createEffect, useObserver } from 'react-solid-state';
 
-export default _ => {
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import 'animate.css';
+
+
+export default () => {
   /*********constants**********/
 
   /*********createEffect**********/
   createEffect(async () => {
   })
 
-  const onSubmit = async () => {
-    const form = {
-    }
-    return console.log(form)
-    const result = await fetching('save_dhcp=' + JSON.stringify(form) + '&')
-    if (!result || result?.result != 'ok') {
-      return
-    }
-  }
   /*********functions**********/
 
   /*********styles**********/
 
   /*********component**********/
-  return useObserver(() => (<div>
+  return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
     <AppBar position="sticky">
       <Toolbar>
@@ -32,14 +26,14 @@ export default _ => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          BasePage
+          Clients
         </Typography>
       </Toolbar>
     </AppBar>
-    <Stack sx={{ pb: 7 }} spacing={2}>
-      <Link href="/">Index</Link>
-      <Link href="/about">About</Link>
+
+    <Stack sx={{ p: 2 }} spacing={2}>
     </Stack>
 
-  </div>))
+
+  </div >))
 }

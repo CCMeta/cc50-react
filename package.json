@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.6",
+    "@mui/x-data-grid": "^5.17.0",
     "@nivo/bar": "^0.79.1",
     "@nivo/core": "^0.79.0",
     "@nivo/line": "^0.79.1",
