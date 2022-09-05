@@ -1,9 +1,9 @@
 import { AppBar, Divider, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
-
+import LockIcon from '@mui/icons-material/Lock';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import { Define, rpc as $rpc, secondsToWatch } from './utils';
 
@@ -18,6 +18,14 @@ export default () => {
     { field: 'expires', headerName: 'expires', },
     { field: 'TYPE', headerName: 'TYPE/MODE', },
     { field: 'SIGNAL', headerName: 'SIGNAL', },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'ACTIONS',
+      getActions: (params) => [
+        <GridActionsCellItem icon={<LockIcon color="info" />} label="Lock" />,
+      ]
+    }
     // { field: 'SPEED', headerName: 'SPEED' },
     // { field: 'FLOW', headerName: 'FLOW' },
     // { field: 'CONNECT', headerName: 'CONNECT' },
@@ -60,7 +68,8 @@ export default () => {
 
       <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack>
       <Stack className='styled-scrollbars' height={`calc(100vh - 64px)`} sx={{ flexBasis: 0, flexGrow: 4 }}>
-        <DataGrid rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
+        <DataGrid disableSelectionOnClick={true} disableDensitySelector={true}
+          rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
       </Stack>
 
     </Stack>
