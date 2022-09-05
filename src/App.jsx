@@ -15,6 +15,7 @@ import NetworkInfoPage from './p/NetworkInfo';
 import DevicePage from './p/DeviceInfo';
 import OperationPage from './p/Operation';
 import PasswordPage from './p/Password';
+import ClientsPage from "./p/Clients";
 
 const App = () => {
 
@@ -25,6 +26,7 @@ const App = () => {
       <div style={{ flexGrow: 1, order: 1 }}>
         <Routes>
           <Route path="/" element={<IndexPage />} />
+          <Route path="clients" element={<ClientsPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="wifi" element={<WiFiPage />} />
           <Route path="sim" element={<SIMPage />} />
