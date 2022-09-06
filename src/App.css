@@ -7,6 +7,10 @@ html body {
   /* animation: App-logo-spin 10s linear infinite; */
 }
 
+.MuiDataGrid-root * {
+  outline: none !important;
+}
+
 body .MuiList-root {
   background-color: rgba(255, 255, 255, 0.375);
 }

@@ -68,8 +68,7 @@ export default () => {
 
       <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack>
       <Stack className='styled-scrollbars' height={`calc(100vh - 64px)`} sx={{ flexBasis: 0, flexGrow: 4 }}>
-        <DataGrid disableSelectionOnClick={true} disableDensitySelector={true}
-          rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
+        <DataGrid rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
       </Stack>
 
     </Stack>
