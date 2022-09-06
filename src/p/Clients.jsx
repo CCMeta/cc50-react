@@ -5,7 +5,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
-import { Define, rpc as $rpc, secondsToWatch } from './utils';
+import { Define, rpc as $rpc, secondsToWatch, fetching } from './utils';
 
 
 export default () => {
@@ -16,8 +16,8 @@ export default () => {
     { field: 'macaddr', headerName: 'MAC/OS', flex: 1, },
     { field: 'ipaddr', headerName: 'IPv4/IPv6', flex: 1, },
     { field: 'expires', headerName: 'expires', },
-    { field: 'TYPE', headerName: 'TYPE/MODE', },
-    { field: 'SIGNAL', headerName: 'SIGNAL', },
+    { field: 'PhyMode', headerName: 'TYPE/MODE', },
+    { field: 'AvgRssi0', headerName: 'SIGNAL', },
     {
       field: 'actions',
       type: 'actions',
@@ -36,11 +36,19 @@ export default () => {
   createEffect(async () => {
 
     luci_rpc_getDHCPLeases.set(
-      (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases?.map((v, i) => ({
-        ...v,
-        id: i,
-        expires: secondsToWatch(v.expires),
-      }))
+      await (async () => {
+        const rai0_clients = await fetching(``, 'wifi', `/sta_info/rai0`)
+        const ra0_clients = await fetching(``, 'wifi', `/sta_info/ra0`)
+        const clients = [...rai0_clients, ...ra0_clients]
+
+        return (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases?.map((v, i) => ({
+          ...v,
+          PhyMode: `Wire`,
+          ...clients.find(client => client.MacAddr === v.macaddr),
+          id: i,
+          expires: secondsToWatch(v.expires),
+        }))
+      })()
     )
 
   })
