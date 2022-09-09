@@ -73,7 +73,13 @@ export function FormBuilder(data) {
   return form
 }
 
-
+export const bytesToHuman = (value, size = "B") => {
+  if (!value || value === 0) return '0 B';
+  const unit = 1024
+  const sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+  const times = Math.floor(Math.log(value) / Math.log(unit))
+  return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)]
+}
 
 
 

@@ -15,7 +15,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import RouteIcon from '@mui/icons-material/Route';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SimCardIcon from '@mui/icons-material/SimCardOutlined';
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import ClientsIcon from '@mui/icons-material/DevicesOther';
 import { BottomNavigation, BottomNavigationAction, IconButton, Menu, MenuItem, Paper } from '@mui/material';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -72,7 +72,7 @@ export default () => {
 
   const menuMetaData = [
     { title: 'DashBoard', value: `/`, icon: <SpeedIcon color="info" /> },
-    { title: 'Clients', value: `clients`, icon: <WorkspacesIcon color="info" /> },
+    { title: 'Clients', value: `clients`, icon: <ClientsIcon color="info" /> },
     { title: 'SMS', value: `about`, icon: <MailIcon color="info" /> },
     { title: 'Call', value: `about`, icon: <CallIcon color="info" /> },
     { title: 'Settings', value: `settings`, icon: <SettingsIcon color="info" /> },
@@ -162,7 +162,7 @@ export default () => {
     <Paper className="cc-BottomNavigation" sx={sx_bottom} elevation={3}>
       <BottomNavigation value={menuActiveIndex.get()} showLabels onChange={onChangeBottomNav}>
         <BottomNavigationAction label="WAN" icon={<SpeedIcon />} />
-        <BottomNavigationAction label="LAN" icon={<WorkspacesIcon />} />
+        <BottomNavigationAction label="LAN" icon={<ClientsIcon />} />
         <BottomNavigationAction label="Security" icon={<MailIcon />} />
         <BottomNavigationAction label="SMS" icon={<CallIcon />} />
         <BottomNavigationAction label="System" icon={<SettingsIcon />} />

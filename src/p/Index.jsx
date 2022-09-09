@@ -16,7 +16,7 @@ import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc, secondsToWatch } from './utils';
+import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch } from './utils';
 
 const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,
@@ -69,13 +69,7 @@ const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSecon
 const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
 const bytesToMiB = (bytes) => (bytes / Math.pow(1024, 2)).toFixed(2)
 // const bytesToGiB = (bytes) => (bytes / Math.pow(1024, 3)).toFixed(2)
-const bytesToHuman = (value, size = "B") => {
-  if (!value || value === 0) return '0 B';
-  const unit = 1024
-  const sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-  const times = Math.floor(Math.log(value) / Math.log(unit))
-  return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)]
-}
+
 const getRemainDaysOfMonthUsage = start => {
   const now = (new Date()).getTime()
   var setDateDone = (new Date()).setDate(start)
@@ -171,7 +165,7 @@ export default () => {
   createEffect(async () => {
     //login process
     await fetching(FormBuilder({
-      "luci_username": "root", "luci_password": "1",
+      "luci_username": "root", "luci_password": "123456",
     }), 'login'
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
 
