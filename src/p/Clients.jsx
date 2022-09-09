@@ -12,12 +12,12 @@ export default () => {
   /*********constants**********/
   const columns = [
     { field: 'id', headerName: 'ID', },
-    { field: 'hostname', headerName: 'hostname', flex: 1, },
+    { field: 'hostname', headerName: 'HOST', flex: 1, },
     { field: 'macaddr', headerName: 'MAC/OS', flex: 1, },
     { field: 'ipaddr', headerName: 'IPv4/IPv6', flex: 1, },
-    { field: 'expires', headerName: 'expires', },
-    { field: 'PhyMode', headerName: 'TYPE/MODE', },
-    { field: 'AvgRssi0', headerName: 'SIGNAL', },
+    { field: 'expires', headerName: 'Expires', },
+    { field: 'PhyMode', headerName: 'TYPE/MODE', flex: 1, },
+    { field: 'AvgRssi0', headerName: 'SIGNAL', flex: 1, },
     {
       field: 'actions',
       type: 'actions',
@@ -26,10 +26,10 @@ export default () => {
         <GridActionsCellItem icon={<LockIcon color="info" />} label="Lock" />,
       ]
     },
-    { field: 'rx_s', headerName: 'RX_S', valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'tx_s', headerName: 'TX_S', valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'rx', headerName: 'RX', valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'tx', headerName: 'TX', valueGetter: ({ value }) => value && bytesToHuman(value), },
+    { field: 'rx_s', headerName: 'RX_S', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
+    { field: 'tx_s', headerName: 'TX_S', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
+    { field: 'rx', headerName: 'RX', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
+    { field: 'tx', headerName: 'TX', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
     // { field: 'CONNECT', headerName: 'CONNECT' },
   ]
   const luci_rpc_getDHCPLeases = Define([])
