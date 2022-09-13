@@ -37,7 +37,10 @@ export async function fetching(body, type = `login`, subpath = ``) {
     case 'wifi':
       path = `/cgi-bin/luci/admin/mtk/wifi${subpath}`
       method = 'get'
-      body = null
+      break;
+    case 'usage':
+      path = `/cgi-bin/luci/admin/network/usage/usage_data`
+      method = 'get'
       break;
     default:
       break;

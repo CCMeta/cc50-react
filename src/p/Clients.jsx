@@ -27,9 +27,7 @@ export default () => {
       ]
     },
     { field: 'rx_s', headerName: 'RX_S', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'tx_s', headerName: 'TX_S', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
     { field: 'rx', headerName: 'RX', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'tx', headerName: 'TX', flex: 1, valueGetter: ({ value }) => value && bytesToHuman(value), },
     // { field: 'CONNECT', headerName: 'CONNECT' },
   ]
   const luci_rpc_getDHCPLeases = Define([])
@@ -40,28 +38,33 @@ export default () => {
     // setInterval api below 
     const interval_apis = async () => {
       luci_rpc_getDHCPLeases.set(await (async () => {
-        const rai0_clients = await fetching(``, 'wifi', `/sta_info/rai0`)
-        const ra0_clients = await fetching(``, 'wifi', `/sta_info/ra0`)
-        const fuck = await fetching_clients_traffic()
+        const rai0_clients = await fetching(null, 'wifi', `/sta_info/rai0`)
+        const ra0_clients = await fetching(null, 'wifi', `/sta_info/ra0`)
         const clients = [...rai0_clients, ...ra0_clients]
+        const fuck = await fetching(null, 'usage')
+
+        const traffics = eval(
+          fuck.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
+        // console.log(traffics)
 
         return (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases?.map((v, i) => {
-          const last_value = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
-          const item_traffic = fuck.data.find(client => client[0].toUpperCase() === v.macaddr)
+          const recent_value = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
 
-          const rx = item_traffic ? item_traffic[2] : 0
-          const tx = item_traffic ? item_traffic[4] : 0
-          const rx_s = last_value?.rx && item_traffic ? (rx - last_value.rx) / 2 : 0
-          const tx_s = last_value?.tx && item_traffic ? (tx - last_value.tx) / 2 : 0
+          const rx = traffics.reduce((_t, _v) => _v[2] === v.ipaddr ? _t + _v[5] : _t, 0)
+          const rx_s = recent_value ? ((rx - recent_value.rx) * 0.5) : 0
+          if (!Number.isInteger(rx_s)) {
+            console.log(rx)
+            console.log(recent_value.rx)
+          }
+          // const tx = item_traffic ? item_traffic[4] : 0
+          // const tx_s = recent_value?.tx && item_traffic ? (tx - recent_value.tx) / 2 : 0
 
           return {
             ...v,
             PhyMode: `Wire`,
             ...clients.find(client => client.MacAddr === v.macaddr),
-            rx,
-            tx,
-            rx_s,
-            tx_s,
+            rx: rx || 0,
+            rx_s: rx_s || 0,
             id: i,
             expires: secondsToWatch(v.expires),
           }
@@ -74,12 +77,6 @@ export default () => {
 
   })
   /*********functions**********/
-  const fetching_clients_traffic = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `nlbw -c json -g mac`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd')
-  }
 
   /*********styles**********/
 

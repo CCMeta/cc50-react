@@ -177,8 +177,8 @@ export default () => {
     data_iwinfo_24G.set(await fetching_iwinfo_24G())
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
-    data_clients_info_5G.set(await fetching(``, 'wifi', `/sta_info/rai0`))
-    data_clients_info_24G.set(await fetching(``, 'wifi', `/sta_info/ra0`))
+    data_clients_info_5G.set(await fetching(null, 'wifi', `/sta_info/rai0`))
+    data_clients_info_24G.set(await fetching(null, 'wifi', `/sta_info/ra0`))
 
     data_wan_network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
