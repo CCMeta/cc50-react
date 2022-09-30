@@ -41,21 +41,21 @@ export default () => {
         const rai0_clients = await fetching(null, 'wifi', `/sta_info/rai0`)
         const ra0_clients = await fetching(null, 'wifi', `/sta_info/ra0`)
         const clients = [...rai0_clients, ...ra0_clients]
-        const fuck = await fetching(null, 'usage')
+        const traffics_str = await fetching(null, 'usage')
 
         const traffics = eval(
-          fuck.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
-        // console.log(traffics)
+          traffics_str.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
+        console.log(traffics)
 
         return (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases?.map((v, i) => {
-          const recent_value = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
+          const recent = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
 
-          const rx = traffics.reduce((_t, _v) => _v[2] === v.ipaddr ? _t + _v[5] : _t, 0)
-          const rx_s = recent_value ? ((rx - recent_value.rx) * 0.5) : 0
-          if (!Number.isInteger(rx_s)) {
-            console.log(rx)
-            console.log(recent_value.rx)
-          }
+          const rx = traffics.reduce(
+            (_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ?
+              _t + _v[5] : _t, 0)
+          const rx_s = recent ?
+            parseInt((rx - recent.rx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
+
           // const tx = item_traffic ? item_traffic[4] : 0
           // const tx_s = recent_value?.tx && item_traffic ? (tx - recent_value.tx) / 2 : 0
 
@@ -67,6 +67,7 @@ export default () => {
             rx_s: rx_s || 0,
             id: i,
             expires: secondsToWatch(v.expires),
+            uptime: (new Date()).getTime(),
           }
         })
       })())
