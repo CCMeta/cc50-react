@@ -567,7 +567,7 @@ export default () => {
                     <Stack direction={'row'}>
                       <Stack p={1} alignItems={'flex-start'}>
                         <Typography component={'div'} variant={'caption'} color={'#AAA'}>
-                          Month Data
+                          {`Month Data`}
                         </Typography>
                         <Typography component={'div'} variant={'subtitle1'}>
                           {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
