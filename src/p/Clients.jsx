@@ -35,7 +35,7 @@ export default () => {
       headerName: 'Action',
       getActions: (params) => [
         <GridActionsCellItem icon={<LockIcon color="info" />} label="Lock" />,
-        <GridActionsCellItem icon={<EditIcon color="info" />} label="Lock" />,
+        <GridActionsCellItem onClick={e => QoS_PopoverOpen.set(e.currentTarget)} icon={<EditIcon color="info" />} label="QoS" />,
       ]
     },
     // { field: 'CONNECT', headerName: 'CONNECT' },
