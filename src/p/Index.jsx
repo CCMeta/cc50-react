@@ -667,7 +667,7 @@ export default () => {
                       open={planPopoverOpen.get() !== null}
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                       transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List>
+                      <List sx={{ width: `20vw` }} dense>
                         <ListItem>
                           <TextField size='small' fullWidth label="Set Limit of GB" type="number" InputLabelProps={{
                             shrink: true,
@@ -676,7 +676,7 @@ export default () => {
                         <ListItem>
                           <FormControl size="small" fullWidth>
                             <InputLabel>Start Date</InputLabel>
-                            <Select label="Start Date" size="small" autoWidth>
+                            <Select MenuProps={{ PaperProps: { style: { maxHeight: "25vh" } } }} label="Start Date" size="small" fullWidth>
                               {(() => {
                                 let items = []
                                 for (let index = 1; index < 32; index++) {
@@ -690,7 +690,7 @@ export default () => {
                           </FormControl>
                         </ListItem>
                         <ListItem>
-                          <Button fullWidth variant="contained">Confirm</Button>
+                          <Button color="secondary" fullWidth variant="contained">Confirm</Button>
                         </ListItem>
                       </List>
                     </Popover>
