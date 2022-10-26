@@ -66,8 +66,8 @@ const MaterialUISwitch = styled(Switch)(() => ({
 }));
 const normalise = (value, MAX = 100, MIN = 0) => ((value - MIN) * 100) / (MAX - MIN);
 const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`
-const bytesToMbit = (bytes) => (bytes / 125000).toFixed(2)
-const bytesToMiB = (bytes) => (bytes / Math.pow(1024, 2)).toFixed(2)
+const bytesToMbit = (bytes) => Math.round(100 * bytes / 125000) / 100
+const bytesToMiB = (bytes) => Math.round(100 * bytes / Math.pow(1024, 2)) / 100
 // const bytesToGiB = (bytes) => (bytes / Math.pow(1024, 3)).toFixed(2)
 
 const getRemainDaysOfMonthUsage = start => {
@@ -158,7 +158,7 @@ export default () => {
     ]
     const textData = {
       free: bytesToHuman(free, `KiB`),
-      ratio: (free / (tx + rx + free)).toFixed(2) * 100
+      ratio: Math.round(100 * free / (tx + rx + free))
     }
     return { chartData, textData }
   }
@@ -236,7 +236,7 @@ export default () => {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
-      return parseInt(res.split('\n')[0] / 1000)
+      return Math.round(res.split('\n')[0] / 1000)
     })
   }
 
@@ -315,11 +315,11 @@ export default () => {
     }), 'webcmd'
     ).then(res => {
       const localCmdResultParser = (res) => {
-        let cpu_idle = parseInt(CmdResultParser(res, `nic `, `% idle`))
+        let cpu_idle = Math.round(CmdResultParser(res, `nic `, `% idle`))
         let mem_used = parseInt(CmdResultParser(res, `Mem:`, `used, `))
         let mem_free = parseInt(CmdResultParser(res, `used, `, `free, `))
-        let cpu = parseInt(100 - cpu_idle)
-        let mem = parseInt(100 * mem_used / (mem_free + mem_used))
+        let cpu = Math.round(100 - cpu_idle)
+        let mem = Math.round(100 * mem_used / (mem_free + mem_used))
         return { cpu, mem, }
       }
       return localCmdResultParser(res)
@@ -723,7 +723,7 @@ export default () => {
                       <Typography variant={`caption`} component="div" color={`#AAA`}>
                         {`2.4G Clients`}
                       </Typography>
-                      {`${(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_24G.get().length})`}<br />
+                      {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_24G.get().length})`}<br />
                       {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                     </Typography>
                   </Box>
@@ -857,7 +857,7 @@ export default () => {
                       <Typography variant={`caption`} component="div" color={`#AAA`}>
                         {`5G Clients`}
                       </Typography>
-                      {`${(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)).toFixed(0)}% (${data_clients_info_5G.get().length})`}<br />
+                      {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_5G.get().length})`}<br />
                       {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                     </Typography>
                   </Box>
