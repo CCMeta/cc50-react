@@ -10,6 +10,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import TimerIcon from '@mui/icons-material/Schedule';
 import UploadIcon from '@mui/icons-material/Upload';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
 
 import 'animate.css';
@@ -668,7 +669,7 @@ export default () => {
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} color={'secondary'} fullWidth size='small' variant={'outlined'}>
+                    <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color={'secondary'} fullWidth size='small' variant={'outlined'}>
                       Set Usage Plan
                     </Button>
 
@@ -984,7 +985,7 @@ export default () => {
               </Stack>
               {/* content */}
             </Paper>
-            
+
           </Stack>
           {/* end of right side row 2; WIFI5 && WIFI 24 */}
 
