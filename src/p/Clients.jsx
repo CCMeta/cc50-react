@@ -1,12 +1,17 @@
-import { AppBar, Divider, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import {
+  AppBar, Button, Divider, FormControl, IconButton, InputAdornment, InputLabel, List,
+  ListItem, MenuItem, Popover, Select, Stack, TextField, Toolbar, Typography
+} from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
-import LockIcon from '@mui/icons-material/Lock';
-import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import EditIcon from '@mui/icons-material/Edit';
+import LockIcon from '@mui/icons-material/Lock';
+import PublicIcon from '@mui/icons-material/Public';
+
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
-import { Define, rpc as $rpc, secondsToWatch, FormBuilder, bytesToHuman, fetching } from './utils';
+import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch } from './utils';
 
 
 export default () => {
@@ -36,6 +41,7 @@ export default () => {
     // { field: 'CONNECT', headerName: 'CONNECT' },
   ]
   const luci_rpc_getDHCPLeases = Define([])
+  const QoS_PopoverOpen = Define(null)
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -108,6 +114,34 @@ export default () => {
 
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
       <Stack className='styled-scrollbars' height={`calc(100vh - 64px)`} sx={{ flexBasis: 0, flexGrow: 4 }}>
+        <Stack sx={{ m: 2 }}>
+          <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="contained" sx={{ width: `20vw` }}>
+            Set Global QoS
+          </Button>
+
+          <Popover
+            onClose={e => QoS_PopoverOpen.set(null)}
+            anchorEl={QoS_PopoverOpen.get()}
+            open={QoS_PopoverOpen.get() !== null}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+            transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+            <List sx={{ width: `20vw` }} dense>
+              <ListItem>
+                <TextField color="info" size='small' fullWidth label="Down Rate per Client" InputProps={{
+                  endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,
+                }} />
+              </ListItem>
+              <ListItem>
+                <TextField color="success" size='small' fullWidth label="Up Rate per Client" InputProps={{
+                  endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,
+                }} />
+              </ListItem>
+              <ListItem>
+                <Button fullWidth variant="contained">Confirm</Button>
+              </ListItem>
+            </List>
+          </Popover>
+        </Stack>
         <DataGrid rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
       </Stack>
 

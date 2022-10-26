@@ -669,9 +669,7 @@ export default () => {
                       transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
                       <List sx={{ width: `20vw` }} dense>
                         <ListItem>
-                          <TextField size='small' fullWidth label="Set Limit of GB" type="number" InputLabelProps={{
-                            shrink: true,
-                          }} />
+                          <TextField size='small' fullWidth label="Set Limit of GB" type="number" />
                         </ListItem>
                         <ListItem>
                           <FormControl size="small" fullWidth>
@@ -680,7 +678,7 @@ export default () => {
                               {(() => {
                                 let items = []
                                 for (let index = 1; index < 32; index++) {
-                                   items.push(
+                                  items.push(
                                     <MenuItem value={index}>{index}</MenuItem>
                                   )
                                 }
