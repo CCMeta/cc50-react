@@ -435,7 +435,7 @@ export default () => {
               </ListItemSecondaryAction>
             </ListItem>
             <ListItem>
-              <ListItemText primary="Servicer" />
+              <ListItemText primary="Operator" />
               <ListItemSecondaryAction>
                 <Typography variant='caption' color='secondary'>
                   {`${data_sim_network_info.get()?.long_eons} (${data_sim_network_info.get()?.short_eons})`}
@@ -451,10 +451,10 @@ export default () => {
               </ListItemSecondaryAction>
             </ListItem>
             <ListItem>
-              <ListItemText primary="PIN LOCK" />
+              <ListItemText primary="PIN State" />
               <ListItemSecondaryAction>
                 <Typography variant='caption' color='secondary'>
-                  WHOPS
+                  {`N/A`}
                 </Typography>
               </ListItemSecondaryAction>
             </ListItem>
