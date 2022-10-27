@@ -108,11 +108,11 @@ export default () => {
   const data_iwinfo_5G = Define()
   const data_lan_speed_chart = Define([{
     "id": "rx", data: [
-      { x: current_time(), y: 0.01 }
+      { x: current_time(), y: 0.00 }
     ]
   }, {
     "id": "tx", data: [
-      { x: current_time(), y: 0.01 }
+      { x: current_time(), y: 0.00 }
     ]
   }])
   const data_lan_speed_now = Define({ rx: 0, tx: 0 })
