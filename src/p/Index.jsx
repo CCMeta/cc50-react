@@ -209,12 +209,14 @@ export default () => {
       //concat speed
       data_lan_speed_now.set(await fetching_realtime_traffic())
       data_lan_speed_chart.set([{
-        "id": "rx", data: [
+        id: "rx",
+        data: [
           ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
         ]
       }, {
-        "id": "tx", data: [
+        id: "tx", 
+        data: [
           ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
         ]
