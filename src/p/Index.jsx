@@ -91,8 +91,8 @@ const getRemainDaysOfMonthUsage = start => {
 export default () => {
   /*********constants**********/
   const data_for_month_usage = Define({
-    start: 19,
-    limit: 40,
+    start: 1,
+    limit: 150,
   })
 
   const data_for_week_chart = Define((() => {
@@ -647,7 +647,7 @@ export default () => {
                   </ListItem>
                   <ListItem>
                     <Badge color={'secondary'} variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="Start Date" />
+                    <ListItemText primary="Start Day" />
                     <ListItemSecondaryAction>
                       <Typography variant="caption" color={`primary`}>
                         {`Day ${data_for_month_usage.get().start}`}
