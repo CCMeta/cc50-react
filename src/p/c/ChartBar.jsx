@@ -32,13 +32,16 @@ export const MyResponsiveBar = ({ data }) => (
       'rx',
       'tx'
     ]}
+    theme={{ textColor: "#888888" }}
     axisLeft={{ tickValues: 6 }}
     layers={['grid', 'axes', 'bars', '', '']}
     borderRadius={2}
     indexBy="id"
     margin={{ top: 10, right: 5, bottom: 25, left: 50 }}
     padding={0.5}
-    colors={{ scheme: 'pastel2' }}
+    colors={{ scheme: 'paired' }}
     enableLabel={false}
+    enableGridY={false}
+
   />
 )

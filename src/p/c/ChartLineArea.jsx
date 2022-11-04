@@ -105,18 +105,18 @@ export const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine
     data={data ?? _data}
     margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
+    theme={{ textColor: "#888888" }}
     areaOpacity={0.5}
     axisLeft={{ tickValues: 6 }}
     curve="linear"
-    colors={{ scheme: 'pastel1' }}
+    colors={{ scheme: 'paired' }}
     lineWidth={1}
-    pointSize={8}
-    pointColor={"white"}
     pointBorderWidth={2}
     pointBorderColor={{ from: 'serieColor' }}
     pointLabelYOffset={-12}
     enableArea={true}
     useMesh={true}
     enableGridX={false}
+    enableGridY={false}
   />
 )

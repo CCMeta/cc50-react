@@ -116,7 +116,7 @@ export default () => {
     transition: 'width 225ms ease-in-out 0ms',
     '& .MuiDrawer-paper': {
       overflowX: 'hidden',
-      backgroundColor: "rgba(0,255,255,0.1)",
+      // backgroundColor: "rgba(0,255,255,0.1)",
       // boxSizing: 'border-box',
       width: '4rem',
       transition: 'width 225ms ease-in-out 0ms',

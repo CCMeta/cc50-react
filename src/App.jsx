@@ -1,4 +1,5 @@
 import { CssBaseline, Box } from "@mui/material";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Route, Routes } from "react-router-dom";
 
 import './App.css';
@@ -18,33 +19,40 @@ import PasswordPage from './p/Password';
 import ClientsPage from "./p/Clients";
 import SettingsPage from "./p/Settings";
 
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 const App = () => {
 
   return <div className="App">
-
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <div style={{ flexGrow: 1, order: 1 }}>
-        <Routes>
-          <Route path="/" element={<IndexPage />} />
-          <Route path="clients" element={<ClientsPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="wifi" element={<WiFiPage />} />
-          <Route path="sim" element={<SIMPage />} />
-          <Route path="dhcp" element={<DHCPPage />} />
-          <Route path="protection" element={<ProtectionPage />} />
-          <Route path="pin" element={<PinPage />} />
-          <Route path="network_info" element={<NetworkInfoPage />} />
-          <Route path="sim_info" element={<SimInfoPage />} />
-          <Route path="device_info" element={<DevicePage />} />
-          <Route path="operation" element={<OperationPage />} />
-          <Route path="password" element={<PasswordPage />} />
-        </Routes>
-      </div>
-      <NavigateComponent />
-    </Box>
-
+    <ThemeProvider theme={darkTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <div style={{ flexGrow: 1, order: 1 }}>
+          <Routes>
+            <Route path="/" element={<IndexPage />} />
+            <Route path="clients" element={<ClientsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="wifi" element={<WiFiPage />} />
+            <Route path="sim" element={<SIMPage />} />
+            <Route path="dhcp" element={<DHCPPage />} />
+            <Route path="protection" element={<ProtectionPage />} />
+            <Route path="pin" element={<PinPage />} />
+            <Route path="network_info" element={<NetworkInfoPage />} />
+            <Route path="sim_info" element={<SimInfoPage />} />
+            <Route path="device_info" element={<DevicePage />} />
+            <Route path="operation" element={<OperationPage />} />
+            <Route path="password" element={<PasswordPage />} />
+          </Routes>
+        </div>
+        <NavigateComponent />
+      </Box>
+    </ThemeProvider>
   </div>
 }
 export default App

@@ -23,7 +23,7 @@ export const MyResponsivePie = ({ data, scheme }) => (
     padAngle={1}
     cornerRadius={5}
     activeOuterRadiusOffset={8}
-    colors={{ scheme: scheme ?? 'pastel2' }}
+    colors={{ scheme: scheme ?? 'paired' }}
     enableArcLinkLabels={false}
     arcLinkLabelsSkipAngle={10}
     arcLinkLabelsTextColor="#333333"
