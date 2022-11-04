@@ -106,9 +106,9 @@ export const MyResponsiveLine = ({ data }) => (
     data={data ?? _data}
     margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
     theme={{ textColor: "#888888" }}
-    areaOpacity={0.5}
+    areaOpacity={0.2}
     axisLeft={{ tickValues: 6 }}
-    curve="linear"
+    curve="catmullRom"
     colors={{ scheme: 'paired' }}
     lineWidth={1}
     pointBorderWidth={2}

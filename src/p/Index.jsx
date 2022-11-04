@@ -211,12 +211,14 @@ export default () => {
       data_lan_speed_now.set(await fetching_realtime_traffic())
       data_lan_speed_chart.set([{
         id: "rx",
+        "color": "hsl(355, 70%, 50%)",
         data: [
           ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
         ]
       }, {
         id: "tx",
+        "color": "hsl(355, 70%, 50%)",
         data: [
           ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
