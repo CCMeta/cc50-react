@@ -15,7 +15,7 @@ const _data = [
   }
 ]
 
-export const MyResponsivePie = ({ data, scheme }) => (
+export const MyResponsivePie = ({ data, scheme, theme }) => (
   <ResponsivePie
     data={data ?? _data}
     margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
@@ -31,5 +31,6 @@ export const MyResponsivePie = ({ data, scheme }) => (
     arcLinkLabelsColor={{ from: 'color' }}
     enableArcLabels={false}
     arcLabelsSkipAngle={10}
+    theme={theme}
   />
 )

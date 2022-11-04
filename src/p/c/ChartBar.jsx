@@ -25,14 +25,14 @@ const _data = [
   }
 ]
 
-export const MyResponsiveBar = ({ data }) => (
+export const MyResponsiveBar = ({ data, theme }) => (
   <ResponsiveBar
     data={data ?? _data}
     keys={[
       'rx',
       'tx'
     ]}
-    theme={{ textColor: "#888888" }}
+    theme={theme}
     axisLeft={{ tickValues: 6 }}
     layers={['grid', 'axes', 'bars', '', '']}
     borderRadius={2}

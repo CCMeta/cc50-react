@@ -20,6 +20,18 @@ import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
 import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch } from './utils';
 
+
+
+const chart_theme = {
+  "textColor": "#888888",
+  "tooltip": {
+    "container": {
+      "background": "#0a0a0a",
+      "color": "#ffffff",
+      "fontSize": 12
+    }
+  }
+}
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -211,14 +223,12 @@ export default () => {
       data_lan_speed_now.set(await fetching_realtime_traffic())
       data_lan_speed_chart.set([{
         id: "rx",
-        "color": "hsl(355, 70%, 50%)",
         data: [
           ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
         ]
       }, {
         id: "tx",
-        "color": "hsl(355, 70%, 50%)",
         data: [
           ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
           { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
@@ -508,7 +518,7 @@ export default () => {
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
                     value={data_luci_conntrack.get().length} />
-                  <Typography variant="caption" color="info" sx={{ width: "2rem" }}>
+                  <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                     {data_luci_conntrack.get().length}
                   </Typography>
                 </Stack>
@@ -532,13 +542,13 @@ export default () => {
                 <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
                   <Stack direction={'row'} >
                     <DownloadIcon color={'info'} fontSize={'small'} />
-                    <Typography variant={'caption'}>
+                    <Typography variant={'caption'} color='text.secondary'>
                       {bytesToHuman(data_traffic_5G.get()?.days?.[0].tx, `KiB`)}
                     </Typography>
                   </Stack>
                   <Stack direction={'row'} >
                     <UploadIcon color={'success'} fontSize={'small'} />
-                    <Typography variant={'caption'}>
+                    <Typography variant={'caption'} color='text.secondary'>
                       {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
                     </Typography>
                   </Stack>
@@ -549,7 +559,7 @@ export default () => {
               </Stack>
               <Stack direction={'row'}>
                 <Stack sx={{ height: '20vh', width: "60%" }}>
-                  <MyResponsiveBar data={data_for_week_chart.get()} />
+                  <MyResponsiveBar theme={chart_theme} data={data_for_week_chart.get()} />
                 </Stack>
                 <Stack sx={{ width: "40%" }}>
                   <Box m={1} >
@@ -558,7 +568,7 @@ export default () => {
                         <Typography component={'div'} variant={'caption'}>
                           Week Data
                         </Typography>
-                        <Typography component={'div'} variant={'subtitle1'}>
+                        <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
                           {`${bytesToHuman(
                             data_traffic_5G.get()?.weeks?.[0].tx +
                             data_traffic_5G.get()?.weeks?.[0].rx
@@ -568,13 +578,13 @@ export default () => {
                       <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
                         <Stack direction={'row'} >
                           <DownloadIcon color={'info'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                             {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
                           </Typography>
                         </Stack>
                         <Stack direction={'row'} >
                           <UploadIcon color={'success'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                             {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
                           </Typography>
                         </Stack>
@@ -587,7 +597,7 @@ export default () => {
                         <Typography component={'div'} variant={'caption'}>
                           {`Month Data`}
                         </Typography>
-                        <Typography component={'div'} variant={'subtitle1'}>
+                        <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
                           {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
                             data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
                         </Typography>
@@ -595,13 +605,13 @@ export default () => {
                       <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
                         <Stack direction={'row'} >
                           <DownloadIcon color={'info'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                             {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
                           </Typography>
                         </Stack>
                         <Stack direction={'row'} >
                           <UploadIcon color={'success'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'}>
+                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                             {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
                           </Typography>
                         </Stack>
@@ -634,7 +644,7 @@ export default () => {
                       {`${data_data_Usage_count().textData.free}`}
                     </Typography>
                   </Box>
-                  <MyResponsivePie data={data_data_Usage_count().chartData} />
+                  <MyResponsivePie theme={chart_theme} data={data_data_Usage_count().chartData} />
                 </Stack>
 
                 <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
@@ -744,7 +754,7 @@ export default () => {
                       {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                     </Typography>
                   </Box>
-                  <MyResponsivePie data={data_wifi_clients_5G()} />
+                  <MyResponsivePie theme={chart_theme} data={data_wifi_clients_5G()} />
                 </Stack>
 
                 <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
@@ -770,7 +780,7 @@ export default () => {
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                         <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={95} />
-                        <Typography variant="caption" sx={{ width: "2rem" }}>
+                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                           {data_iwinfo_5G.get()?.signal}
                         </Typography>
                       </Stack>
@@ -879,7 +889,7 @@ export default () => {
                       {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                     </Typography>
                   </Box>
-                  <MyResponsivePie data={data_wifi_clients_24G()} />
+                  <MyResponsivePie theme={chart_theme} data={data_wifi_clients_24G()} />
                 </Stack>
 
                 <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
@@ -905,7 +915,7 @@ export default () => {
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                         <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={45} />
-                        <Typography variant="caption" sx={{ width: "2rem" }}>
+                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                           {data_iwinfo_24G.get()?.signal}
                         </Typography>
                       </Stack>
@@ -1012,13 +1022,13 @@ export default () => {
                 </Stack>
                 <Stack direction={'row'} >
                   <DownloadIcon color={'info'} fontSize={'small'} />
-                  <Typography variant={'caption'}>
+                  <Typography variant={'caption'} color={'info.main'}>
                     {`${bytesToMbit(data_lan_speed_now.get()?.tx)} Mbit/S`}
                   </Typography>
                 </Stack>
                 <Stack direction={'row'} >
                   <UploadIcon color={'success'} fontSize={'small'} />
-                  <Typography variant={'caption'}>
+                  <Typography variant={'caption'} color={'success.main'}>
                     {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
                   </Typography>
                 </Stack>
@@ -1029,7 +1039,7 @@ export default () => {
             </Stack>
 
             <Stack sx={{ height: '25vh' }} justifyContent="center">
-              <MyResponsiveLine data={data_lan_speed_chart.get()} />
+              <MyResponsiveLine theme={chart_theme} data={data_lan_speed_chart.get()} />
             </Stack>
           </Stack>
           {/* end of right side row 3; REALTIME TRAFFIC CHART */}
