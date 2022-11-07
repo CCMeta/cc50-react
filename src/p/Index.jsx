@@ -535,7 +535,7 @@ export default () => {
         <Stack sx={{ flexBasis: 0, flexGrow: 4 }}>
 
           <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
-            <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
               <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
                 <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
 
@@ -621,7 +621,7 @@ export default () => {
                 </Stack>
               </Stack>
             </Paper>
-            <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
               <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
                 <Typography pl={1} variant={`subtitle1`}>
                   {`Month Data Usage`}
@@ -730,7 +730,7 @@ export default () => {
 
           <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
 
-            <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
               <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
                 <Typography pl={1} variant={`subtitle1`}>
                   {`WiFi Overview 5G`}
@@ -865,7 +865,7 @@ export default () => {
               {/* content */}
             </Paper>
 
-            <Paper style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
               <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
                 <Typography pl={1} variant={`subtitle1`}>
                   {`WiFi Overview 2.4G`}
