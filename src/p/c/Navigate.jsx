@@ -98,10 +98,10 @@ export default () => {
   const sx_bottom = {
     display: { md: "none" },
     "& .MuiBottomNavigationAction-root": {
-      minWidth: "auto"
+      minWidth: "auto",
     },
     "& .MuiBottomNavigationAction-root, svg": {
-      color: "#000"
+      // color: "#000"
     },
     "& .MuiBottomNavigationAction-root .Mui-selected,.Mui-selected svg": {
       color: "#1976d2"

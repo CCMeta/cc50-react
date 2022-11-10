@@ -373,7 +373,7 @@ export default () => {
         divider={<Divider orientation="vertical" flexItem />}>
 
 
-        <Stack sx={{ flexBasis: 0, flexGrow: 1 }}>
+        <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
           <List dense>
             <Divider>Device</Divider>
 
@@ -534,9 +534,9 @@ export default () => {
 
         <Stack sx={{ flexBasis: 0, flexGrow: 4 }}>
 
-          <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
+          <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
             <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
-              <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
                 <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
 
                 <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
@@ -557,67 +557,63 @@ export default () => {
                   </IconButton>
                 </Stack>
               </Stack>
-              <Stack direction={'row'}>
-                <Stack sx={{ height: '20vh', width: "60%" }}>
+              <Stack direction={{ xs: "column", md: "row" }}>
+                <Stack sx={{ height: '20vh', flexGrow: 6 }}>
                   <MyResponsiveBar theme={chart_theme} data={data_for_week_chart.get()} />
                 </Stack>
-                <Stack sx={{ width: "40%" }}>
-                  <Box m={1} >
-                    <Stack direction={'row'}>
-                      <Stack p={1} alignItems={'flex-start'}>
-                        <Typography component={'div'} variant={'caption'}>
-                          Week Data
-                        </Typography>
-                        <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
-                          {`${bytesToHuman(
-                            data_traffic_5G.get()?.weeks?.[0].tx +
-                            data_traffic_5G.get()?.weeks?.[0].rx
-                            , `KiB`)}`}
+                <Stack justifyContent={'space-evenly'} sx={{ flexGrow: 4 }}>
+                  <Stack justifyContent={'space-evenly'} direction={'row'}>
+                    <Stack p={1} alignItems={'flex-start'}>
+                      <Typography component={'div'} variant={'caption'}>
+                        Week Data
+                      </Typography>
+                      <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
+                        {`${bytesToHuman(
+                          data_traffic_5G.get()?.weeks?.[0].tx +
+                          data_traffic_5G.get()?.weeks?.[0].rx
+                          , `KiB`)}`}
+                      </Typography>
+                    </Stack>
+                    <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
+                      <Stack direction={'row'} >
+                        <DownloadIcon color={'info'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
                         </Typography>
                       </Stack>
-                      <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
-                        <Stack direction={'row'} >
-                          <DownloadIcon color={'info'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                            {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
-                          </Typography>
-                        </Stack>
-                        <Stack direction={'row'} >
-                          <UploadIcon color={'success'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                            {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
-                          </Typography>
-                        </Stack>
+                      <Stack direction={'row'} >
+                        <UploadIcon color={'success'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
+                        </Typography>
                       </Stack>
                     </Stack>
-                  </Box>
-                  <Box m={1}>
-                    <Stack direction={'row'}>
-                      <Stack p={1} alignItems={'flex-start'}>
-                        <Typography component={'div'} variant={'caption'}>
-                          {`Month Data`}
-                        </Typography>
-                        <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
-                          {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
-                            data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
+                  </Stack>
+                  <Stack justifyContent={'space-evenly'} direction={'row'}>
+                    <Stack p={1} alignItems={'flex-start'}>
+                      <Typography component={'div'} variant={'caption'}>
+                        {`Month Data`}
+                      </Typography>
+                      <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
+                        {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
+                          data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
+                      </Typography>
+                    </Stack>
+                    <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
+                      <Stack direction={'row'} >
+                        <DownloadIcon color={'info'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
                         </Typography>
                       </Stack>
-                      <Stack sx={{ flexGrow: 1 }} justifyContent={'space-evenly'} alignItems={'stretch'}>
-                        <Stack direction={'row'} >
-                          <DownloadIcon color={'info'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                            {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
-                          </Typography>
-                        </Stack>
-                        <Stack direction={'row'} >
-                          <UploadIcon color={'success'} fontSize={'small'} />
-                          <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                            {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
-                          </Typography>
-                        </Stack>
+                      <Stack direction={'row'} >
+                        <UploadIcon color={'success'} fontSize={'small'} />
+                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
+                        </Typography>
                       </Stack>
                     </Stack>
-                  </Box>
+                  </Stack>
                 </Stack>
               </Stack>
             </Paper>
@@ -631,9 +627,9 @@ export default () => {
                 </IconButton>
               </Stack>
 
-              <Stack direction={`row`}>
+              <Stack direction={{ xs: "column", md: "row" }}>
 
-                <Stack sx={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <Stack sx={{ height: '20vh', minWidth: '20vh', position: 'relative' }}>
                   <Box sx={{
                     top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
@@ -683,7 +679,7 @@ export default () => {
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant={'outlined'}>
+                    <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant={'contained'}>
                       Set Usage Plan
                     </Button>
 
@@ -693,7 +689,7 @@ export default () => {
                       open={planPopoverOpen.get() !== null}
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                       transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List sx={{ width: `20vw` }} dense>
+                      <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                         <ListItem>
                           <TextField size='small' fullWidth label="Set Limit of GB" type="number" />
                         </ListItem>
@@ -726,9 +722,9 @@ export default () => {
               {/* content */}
             </Paper>
           </Stack>
-          {/* end of right side row 1; TRAFFIC &&PLAN */}
+          {/* end of right side row 1; TRAFFIC && PLAN */}
 
-          <Stack direction="row" style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
+          <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
 
             <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
               <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
@@ -740,9 +736,9 @@ export default () => {
                 </IconButton>
               </Stack>
 
-              <Stack direction={`row`}>
+              <Stack direction={{ xs: "column", md: "row" }}>
 
-                <Stack sx={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
                   <Box sx={{
                     top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
@@ -797,7 +793,7 @@ export default () => {
                       open={wifi5GPopoverOpen.get() !== null}
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                       transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List sx={{ width: `20vw` }} dense>
+                      <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                         <ListItem>
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Auth" />
@@ -875,9 +871,9 @@ export default () => {
                 </IconButton>
               </Stack>
 
-              <Stack direction={`row`}>
+              <Stack direction={{ xs: "column", md: "row" }}>
 
-                <Stack sx={{ height: '20vh', width: "20vh", position: 'relative' }}>
+                <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
                   <Box sx={{
                     top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
@@ -932,7 +928,7 @@ export default () => {
                       open={wifi24GPopoverOpen.get() !== null}
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                       transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List sx={{ width: `20vw` }} dense>
+                      <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                         <ListItem>
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Auth" />
@@ -1001,11 +997,10 @@ export default () => {
             </Paper>
 
           </Stack>
-          {/* end of right side row 2; WIFI5 && WIFI 24 */}
+          {/* end of right side row 2; WIFI5 && WIFI24 */}
 
           <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2 }}>
-
-            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+            <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
               <Typography pl={1} variant={`subtitle1`}>
                 {`Speed Flow  `}
                 <Typography variant={'caption'} color='text.secondary'>
@@ -1013,7 +1008,7 @@ export default () => {
                 </Typography>
               </Typography>
 
-              <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
+              <Stack spacing={1} direction={'row'} alignSelf={`flex-end`} justifyContent={'space-evenly'} alignItems={'center'}>
                 <Stack direction={'row'} >
                   <HourglassEmptyIcon color='info' fontSize={'small'} sx={{ zoom: 0.9 }} />
                   <Typography variant={'caption'}>
@@ -1038,7 +1033,7 @@ export default () => {
               </Stack>
             </Stack>
 
-            <Stack sx={{ height: '25vh' }} justifyContent="center">
+            <Stack sx={{ height: '25vh', mb: { xs: "10vh", md: "0" } }} justifyContent="center">
               <MyResponsiveLine theme={chart_theme} data={data_lan_speed_chart.get()} />
             </Stack>
           </Stack>
