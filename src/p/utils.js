@@ -84,5 +84,35 @@ export const bytesToHuman = (value, size = "B") => {
   return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)]
 }
 
+/**
+ * This function is for webcmd hello only 22/11/23 
+ * @param {*} action API method you want call
+ * @param {*} data API datas object will be pack to JSON
+ * @returns API response data
+ */
+export async function webcmd(action, data = ``) {
+  let path = `/cgi-bin/luci/admin/mtk/webcmd`
+  let method = 'post'
+  let data_json = data ? `"${JSON.stringify(data)}"` : ``
+  let body = FormBuilder({
+    "cmd": `hello ${action} ${data_json}`,
+    "token": sessionStorage.getItem('sid'),
+  })
+  const options = {
+    method, body, mode: 'cors', credentials: 'include', // headers,
+  }
 
+  const res = await fetch(path, options)
+  const res_text = await res.text()
+
+  try {
+    const result = JSON.parse(res_text)
+    if (result.code === 200)
+      return result
+    alert(`Error: ${res_text}`)
+  } catch (e) {
+    // console.log(e)
+  }
+  return res_text
+}
 

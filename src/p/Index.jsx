@@ -18,7 +18,7 @@ import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch } from './utils';
+import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch } from './utils';
 
 
 
@@ -138,7 +138,7 @@ export default () => {
   const wifi5GPopoverOpen = Define(null)
   const planPopoverOpen = Define(null)
   const data_wan_network_interface_dump = Define()
-  const data_system_info = Define({ "localtime": 0, "uptime": 0 })
+  const data_system_info = Define({ "uptime": 0 })
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
   const data_wifi_clients_5G = () => {
@@ -198,7 +198,8 @@ export default () => {
 
     // Once api without interval
     data_sim_network_info.set(await fetching_sim_network_info())
-    data_device_operation_info.set(await fetching_device_operation_info())
+    // data_device_operation_info.set(await fetching_device_operation_info())
+    data_device_operation_info.set(await webcmd(`system.info.get`))
 
     data_iwinfo_5G.set(await fetching_iwinfo_5G())
     data_iwinfo_24G.set(await fetching_iwinfo_24G())
@@ -352,6 +353,8 @@ export default () => {
       return localCmdResultParser(res)
     })
   }
+
+
   /*********styles**********/
 
   /*********component**********/
@@ -394,10 +397,10 @@ export default () => {
               </ListItemSecondaryAction>
             </ListItem>
             <ListItem>
-              <ListItemText primary="Software" />
+              <ListItemText primary="Model" />
               <ListItemSecondaryAction>
                 <Typography variant="caption" color='text.secondary'>
-                  RG500LEUACR02A04M8G
+                  {data_device_operation_info.get()?.model}
                 </Typography>
               </ListItemSecondaryAction>
             </ListItem>
