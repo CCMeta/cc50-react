@@ -18,7 +18,7 @@ import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch } from './utils';
+import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch, dBmToQuality } from './utils';
 
 
 
@@ -783,9 +783,9 @@ export default () => {
                     <ListItemText primary="Signal" />
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={parseInt(data_iwinfo_5G.get()?.signal) + 100} />
-                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                          {data_iwinfo_5G.get()?.signal}
+                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
+                        <Typography variant="caption" color='text.secondary'>
+                          {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}% (${data_iwinfo_5G.get()?.signal} dBm)`}
                         </Typography>
                       </Stack>
                     </ListItemSecondaryAction>
@@ -918,9 +918,9 @@ export default () => {
                     <ListItemText primary="Signal" />
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={parseInt(data_iwinfo_24G.get()?.signal) + 100} />
-                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                          {data_iwinfo_24G.get()?.signal}
+                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
+                        <Typography variant="caption" color='text.secondary'>
+                          {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}% (${data_iwinfo_24G.get()?.signal} dBm)`}
                         </Typography>
                       </Stack>
                     </ListItemSecondaryAction>

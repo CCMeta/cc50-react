@@ -84,6 +84,8 @@ export const bytesToHuman = (value, size = "B") => {
   return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)]
 }
 
+export const dBmToQuality = dBm => (dBm + 100) * 2
+
 /**
  * This function is for webcmd hello only 22/11/23 
  * @param {*} action API method you want call
