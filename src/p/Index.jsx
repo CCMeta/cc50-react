@@ -18,7 +18,7 @@ import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch, dBmToQuality } from './utils';
+import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch, dBmToQuality, MAP_WirelessMode } from './utils';
 
 
 
@@ -835,7 +835,7 @@ export default () => {
                           <ListItemText primary="Bandwidth" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_5G.get()?.bandwidth}
+                              {`${data_iwinfo_5G.get()?.bandwidth} MHz`}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -844,7 +844,7 @@ export default () => {
                           <ListItemText primary="Channel" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_5G.get()?.channel}
+                              {`Ch.${data_iwinfo_5G.get()?.channel}`}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -853,7 +853,7 @@ export default () => {
                           <ListItemText primary="Mode" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_5G.get()?.wirelessMode}
+                              {MAP_WirelessMode[data_iwinfo_5G.get()?.wirelessMode]}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -970,7 +970,7 @@ export default () => {
                           <ListItemText primary="Bandwidth" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_24G.get()?.bandwidth}
+                              {`${data_iwinfo_24G.get()?.bandwidth} MHz`}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -979,7 +979,7 @@ export default () => {
                           <ListItemText primary="Channel" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_24G.get()?.channel}
+                              {`Ch.${data_iwinfo_24G.get()?.channel}`}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -988,7 +988,7 @@ export default () => {
                           <ListItemText primary="Mode" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_24G.get()?.wirelessMode}
+                              {MAP_WirelessMode[data_iwinfo_24G.get()?.wirelessMode]}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>

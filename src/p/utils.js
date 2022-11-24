@@ -86,6 +86,19 @@ export const bytesToHuman = (value, size = "B") => {
 
 export const dBmToQuality = dBm => (dBm + 100) * 2
 
+export const MAP_WirelessMode = {
+  "0": "B/G mixed",
+  "1": "B only",
+  "4": "G only",
+  "9": "B/G/GN mode",
+  "16": "HE_2G mode",
+  "2": "A only",
+  "8": "A/N in 5 band",
+  "17": "HE_5G mode",
+  "14": "A/AC/AN mixed",
+  "15": "AC/AN mixed",
+}
+
 /**
  * This function is for webcmd hello only 22/11/23 
  * @param {*} action API method you want call
