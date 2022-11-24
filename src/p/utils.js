@@ -93,7 +93,12 @@ export const bytesToHuman = (value, size = "B") => {
 export async function webcmd(action, data = ``) {
   let path = `/cgi-bin/luci/admin/mtk/webcmd`
   let method = 'post'
-  let data_json = data ? `"${JSON.stringify(data)}"` : ``
+
+  // This replace is for char slash and char quote.
+  // To replace single char and the result will be `hello xxx.xxx "{\"key\":\"value\"}"`
+  let data_json = data ?
+    `"${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}"` : ``
+
   let body = FormBuilder({
     "cmd": `hello ${action} ${data_json}`,
     "token": sessionStorage.getItem('sid'),
@@ -108,7 +113,7 @@ export async function webcmd(action, data = ``) {
   try {
     const result = JSON.parse(res_text)
     if (result.code === 200)
-      return result
+      return result.data
     alert(`Error: ${res_text}`)
   } catch (e) {
     // console.log(e)

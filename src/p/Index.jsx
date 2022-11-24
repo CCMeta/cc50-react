@@ -200,6 +200,9 @@ export default () => {
     data_sim_network_info.set(await fetching_sim_network_info())
     // data_device_operation_info.set(await fetching_device_operation_info())
     data_device_operation_info.set(await webcmd(`system.info.get`))
+    await webcmd(`wifi.test`, {
+      "enable": `motherfucker[]\\'"`
+    })
 
     data_iwinfo_5G.set(await fetching_iwinfo_5G())
     data_iwinfo_24G.set(await fetching_iwinfo_24G())
