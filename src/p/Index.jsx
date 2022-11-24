@@ -200,12 +200,14 @@ export default () => {
     data_sim_network_info.set(await fetching_sim_network_info())
     // data_device_operation_info.set(await fetching_device_operation_info())
     data_device_operation_info.set(await webcmd(`system.info.get`))
-    await webcmd(`wifi.test`, {
-      "enable": `motherfucker[]\\'"`
-    })
+    // await webcmd(`wifi.test`, {
+    //   "enable": `motherfucker[]\\'"`
+    // })
 
-    data_iwinfo_5G.set(await fetching_iwinfo_5G())
-    data_iwinfo_24G.set(await fetching_iwinfo_24G())
+    // data_iwinfo_5G.set(await fetching_iwinfo_5G())
+    data_iwinfo_5G.set(await webcmd(`wifi.status.5g.get`))
+    // data_iwinfo_24G.set(await fetching_iwinfo_24G())
+    data_iwinfo_24G.set(await webcmd(`wifi.status.24g.get`))
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
     data_clients_info_5G.set(await fetching(null, 'wifi', `/sta_info/rai0`))
@@ -764,7 +766,7 @@ export default () => {
                     <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                     <ListItemText primary="ON / OFF" />
                     <ListItemSecondaryAction>
-                      <MaterialUISwitch />
+                      <MaterialUISwitch checked={data_iwinfo_5G.get()?.enable === `1`} />
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -772,7 +774,7 @@ export default () => {
                     <ListItemText primary="WiFi Name" />
                     <ListItemSecondaryAction>
                       <Typography variant="caption" color='text.secondary'>
-                        {data_iwinfo_5G.get()?.ssid}
+                        {data_iwinfo_5G.get()?.name}
                       </Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
@@ -781,7 +783,7 @@ export default () => {
                     <ListItemText primary="Signal" />
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={95} />
+                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={parseInt(data_iwinfo_5G.get()?.signal) + 100} />
                         <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                           {data_iwinfo_5G.get()?.signal}
                         </Typography>
@@ -805,11 +807,11 @@ export default () => {
                           <ListItemText primary="Auth" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              WPA2PSK/WPA3
+                              {data_iwinfo_5G.get()?.authMode}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
-                        <ListItem>
+                        {/* <ListItem>
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Encryption" />
                           <ListItemSecondaryAction>
@@ -817,13 +819,13 @@ export default () => {
                               AES
                             </Typography>
                           </ListItemSecondaryAction>
-                        </ListItem>
+                        </ListItem> */}
                         <ListItem>
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Password" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              YES
+                              {data_iwinfo_5G.get()?.password}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -833,7 +835,7 @@ export default () => {
                           <ListItemText primary="Bandwidth" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              80 Mhz
+                              {data_iwinfo_5G.get()?.bandwidth}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -842,7 +844,7 @@ export default () => {
                           <ListItemText primary="Channel" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              12
+                              {data_iwinfo_5G.get()?.channel}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -851,7 +853,7 @@ export default () => {
                           <ListItemText primary="Mode" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              802.11 a/n/ac/ax
+                              {data_iwinfo_5G.get()?.wirelessMode}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -899,7 +901,7 @@ export default () => {
                     <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                     <ListItemText primary="ON / OFF" />
                     <ListItemSecondaryAction>
-                      <MaterialUISwitch />
+                      <MaterialUISwitch checked={data_iwinfo_24G.get()?.enable === `1`} />
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -907,7 +909,7 @@ export default () => {
                     <ListItemText primary="WiFi Name" />
                     <ListItemSecondaryAction>
                       <Typography variant="caption" color='text.secondary'>
-                        {data_iwinfo_24G.get()?.ssid}
+                        {data_iwinfo_24G.get()?.name}
                       </Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
@@ -916,7 +918,7 @@ export default () => {
                     <ListItemText primary="Signal" />
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={45} />
+                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={parseInt(data_iwinfo_24G.get()?.signal) + 100} />
                         <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                           {data_iwinfo_24G.get()?.signal}
                         </Typography>
@@ -940,11 +942,11 @@ export default () => {
                           <ListItemText primary="Auth" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              WPA2PSK/WPA3
+                              {data_iwinfo_24G.get()?.authMode}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
-                        <ListItem>
+                        {/* <ListItem>
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Encryption" />
                           <ListItemSecondaryAction>
@@ -952,13 +954,13 @@ export default () => {
                               AES
                             </Typography>
                           </ListItemSecondaryAction>
-                        </ListItem>
+                        </ListItem> */}
                         <ListItem>
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Password" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              YES
+                              {data_iwinfo_24G.get()?.password}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -968,7 +970,7 @@ export default () => {
                           <ListItemText primary="Bandwidth" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              80 Mhz
+                              {data_iwinfo_24G.get()?.bandwidth}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -977,7 +979,7 @@ export default () => {
                           <ListItemText primary="Channel" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              12
+                              {data_iwinfo_24G.get()?.channel}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -986,7 +988,7 @@ export default () => {
                           <ListItemText primary="Mode" />
                           <ListItemSecondaryAction>
                             <Typography variant="caption" color='text.secondary'>
-                              802.11 a/n/ac/ax
+                              {data_iwinfo_24G.get()?.wirelessMode}
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem>
