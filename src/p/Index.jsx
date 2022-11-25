@@ -18,7 +18,7 @@ import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch, dBmToQuality, MAP_WirelessMode } from './utils';
+import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch, dBmToQuality, MAP_WirelessMode, intToColor } from './utils';
 
 
 
@@ -208,7 +208,7 @@ export default () => {
     data_iwinfo_5G.set(await webcmd(`wifi.status.5g.get`))
     // data_iwinfo_24G.set(await fetching_iwinfo_24G())
     data_iwinfo_24G.set(await webcmd(`wifi.status.24g.get`))
-    
+
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
     // data_clients_info_5G.set(await fetching(null, 'wifi', `/sta_info/rai0`))
@@ -417,7 +417,7 @@ export default () => {
               <ListItemText primary="CPU Rate" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
+                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.cpu)} variant="determinate"
                     value={data_device_performance.get()?.cpu} />
                   <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
                     {`${data_device_performance.get()?.cpu}%`}
@@ -430,7 +430,7 @@ export default () => {
               <ListItemText primary="Memory" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
+                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.mem)} variant="determinate"
                     value={data_device_performance.get()?.mem} />
                   <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
                     {`${data_device_performance.get()?.mem}%`}
@@ -442,8 +442,7 @@ export default () => {
               <ListItemText primary="Temperature" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
-                    value={data_device_heat.get()} />
+                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_heat.get())} variant="determinate" value={data_device_heat.get()} />
                   <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
                     {`${data_device_heat.get()}℃`}
                   </Typography>
@@ -513,22 +512,26 @@ export default () => {
               </ListItemSecondaryAction>
             </ListItem>
             <ListItem>
-              <ListItemText primary="Signal (dBm)" />
+              <ListItemText primary="Signal" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={45} />
-                  <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
-                    {data_sim_network_info.get()?.signal}
+                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal))} />
+                  <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                    {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal))}%`}
                   </Typography>
                 </Stack>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <ListItem>
+              <ListItemSecondaryAction>
+
               </ListItemSecondaryAction>
             </ListItem>
             <ListItem>
               <ListItemText primary="Connection" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
-                    value={data_luci_conntrack.get().length} />
+                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_luci_conntrack.get().length)} variant="determinate" value={data_luci_conntrack.get().length} />
                   <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                     {data_luci_conntrack.get().length}
                   </Typography>
@@ -786,9 +789,9 @@ export default () => {
                     <ListItemText primary="Signal" />
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
-                        <Typography variant="caption" color='text.secondary'>
-                          {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}% (${data_iwinfo_5G.get()?.signal} dBm)`}
+                        <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
+                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                          {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}%`}
                         </Typography>
                       </Stack>
                     </ListItemSecondaryAction>
@@ -921,9 +924,9 @@ export default () => {
                     <ListItemText primary="Signal" />
                     <ListItemSecondaryAction>
                       <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
-                        <Typography variant="caption" color='text.secondary'>
-                          {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}% (${data_iwinfo_24G.get()?.signal} dBm)`}
+                        <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
+                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                          {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}%`}
                         </Typography>
                       </Stack>
                     </ListItemSecondaryAction>

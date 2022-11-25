@@ -86,6 +86,11 @@ export const bytesToHuman = (value, size = "B") => {
 
 export const dBmToQuality = dBm => (dBm + 100) * 2
 
+export const intToColor = (value, mode = `asc`) =>
+  mode === `asc` ?
+    (value > 75 ? `error` : value > 50 ? `warning` : value > 25 ? `info` : `success`) :
+    (value > 75 ? `success` : value > 50 ? `info` : value > 25 ? `warning` : `error`)
+
 export const MAP_WirelessMode = {
   "0": "B/G mixed",
   "1": "B only",
