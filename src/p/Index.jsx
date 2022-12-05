@@ -527,11 +527,6 @@ export default () => {
               </ListItemSecondaryAction>
             </ListItem>
             <ListItem>
-              <ListItemSecondaryAction>
-
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
               <ListItemText primary="Connection" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" spacing={1}>
