@@ -8,6 +8,14 @@ html body {
   /* animation: App-logo-spin 10s linear infinite; */
 }
 
+:root {
+  --a: 1;
+}
+
+body {
+  zoom: var(--a);
+}
+
 .MuiDataGrid-root * {
   outline: none !important;
 }

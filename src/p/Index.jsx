@@ -190,6 +190,12 @@ export default () => {
 
   /*********createEffect**********/
   createEffect(async () => {
+
+    // to be continued
+    var bodyZoom = (((window.innerWidth / 1500) - 1) / 2) + 1
+    document.body.style.setProperty(`--a`, bodyZoom)
+    console.log(bodyZoom)
+
     //login process
     await fetching(FormBuilder({
       "luci_username": "root", "luci_password": "123456",
