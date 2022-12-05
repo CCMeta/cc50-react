@@ -120,7 +120,7 @@ export async function webcmd(action, data = ``) {
     `"${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}"` : ``
 
   let body = FormBuilder({
-    "cmd": `hello ${action} ${data_json}`,
+    "cmd": `hellapi ${action} ${data_json}`,
     "token": sessionStorage.getItem('sid'),
   })
   const options = {

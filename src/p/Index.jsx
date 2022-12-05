@@ -197,7 +197,6 @@ export default () => {
     ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
 
     // Once api without interval
-    data_sim_network_info.set(await fetching_sim_network_info())
     // data_device_operation_info.set(await fetching_device_operation_info())
     data_device_operation_info.set(await webcmd(`system.info.get`))
     // await webcmd(`wifi.test`, {
@@ -225,6 +224,9 @@ export default () => {
       data_device_performance.set(await fetching_device_performance())
       data_device_heat.set(await fetching_device_heat())
       data_system_info.set((await $rpc.post("system", "info"))?.[1])
+
+      data_sim_network_info.set(await fetching_sim_network_info())
+
       data_luci_conntrack.set((await $rpc.post(`luci`, "getConntrackList"))?.[1].result)
       data_traffic_5G.set(await fetching_traffic_5G())
 
@@ -287,7 +289,7 @@ export default () => {
         long_eons: CmdResultParser(res, 'long_eons = '),
         short_eons: CmdResultParser(res, 'short_eons = '),
         radio_tech: CmdResultParser(res, 'radio_tech ='),
-        signal: CmdResultParser(res, 'rssi=', ','),
+        signal: CmdResultParser(res, 'rsrp=', ','),
       }
     })
   }
@@ -515,9 +517,11 @@ export default () => {
               <ListItemText primary="Signal" />
               <ListItemSecondaryAction>
                 <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal))} />
+                  {/* Why signal need to add 25?  this is the SIM RSRP counting algorithm */}
+                  {/* (x+125)*2 => 100+((x+75)*2) */}
+                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)} />
                   <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                    {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal))}%`}
+                    {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)}%`}
                   </Typography>
                 </Stack>
               </ListItemSecondaryAction>
