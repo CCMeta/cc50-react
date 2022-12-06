@@ -1,130 +1,102 @@
-import { AppBar, Divider, IconButton, Stack, Toolbar, Typography, 
-    Tabs, Tab, Box, FormGroup, FormControlLabel, Checkbox, TextField, Select, 
-    MenuItem, Switch, Button  } from '@mui/material';
+
+import {
+  AppBar, Box, Checkbox, Divider, IconButton, Stack, Tab, Tabs, Toolbar, Typography
+} from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
-import WifiIcon from '@mui/icons-material/Wifi';
-import CastIcon from '@mui/icons-material/Cast';
-import WifiCalling3Icon from '@mui/icons-material/WifiCalling3';
-import SmsIcon from '@mui/icons-material/Sms';
-import SimCardIcon from '@mui/icons-material/SimCard';
-import SettingsIcon from '@mui/icons-material/Settings';
-import SecurityIcon from '@mui/icons-material/Security';
-import InfoIcon from '@mui/icons-material/Info';
-import CopyrightIcon from '@mui/icons-material/Copyright';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import PublicIcon from '@mui/icons-material/Public';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CastIcon from '@mui/icons-material/Cast';
+import CopyrightIcon from '@mui/icons-material/Copyright';
+import InfoIcon from '@mui/icons-material/InfoOutlined';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccountsOutlined';
+import LanguageIcon from '@mui/icons-material/LanguageOutlined';
+import SecurityIcon from '@mui/icons-material/ShieldOutlined';
+import SettingsIcon from '@mui/icons-material/RouterOutlined';
+import SimCardIcon from '@mui/icons-material/SimCardOutlined';
+import WifiIcon from '@mui/icons-material/Wifi';
+
 import 'animate.css';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import Grid from '@mui/material/Unstable_Grid2';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
+import { Define } from './utils';
 
-import SetWiFi from './SettingsWiFi'
-import SetAbout from './SettingsAbout'
-import SetSIM from './SettingsSIM'
-import SetSystem from './SettingsSystem'
-import SetInternet from './SettingsInternet'
-import SetNetwork from './SettingsNetwork'
+import SettingsAbout from './SettingsAbout';
+import SettingsInternet from './SettingsInternet';
+import SettingsNetwork from './SettingsNetwork';
+import SettingsSIM from './SettingsSIM';
+import SettingsSystem from './SettingsSystem';
+import SettingsWiFi from './SettingsWiFi';
 
 function BpCheckbox(props) {
-    return (
-      <Checkbox
-        sx={{
-          '&:hover': { bgcolor: 'transparent' },
-        }}
-        disableRipple
-        inputProps={{ 'aria-label': 'Checkbox demo' }}
-        {...props}
-      />
-    );
-  }
-  function Item(props) {
-    const { children, ...other } = props;
-    return (
-      <Box
-        sx={{height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: {xs:"15px", md:"1rem"}}}
-        {...other}
-      >
-          <Box>
-            <Stack>{children}</Stack>
-          </Box>
-      </Box>
-    );
-  }
+  return (
+    <Checkbox
+      sx={{
+        '&:hover': { bgcolor: 'transparent' },
+      }}
+      disableRipple
+      inputProps={{ 'aria-label': 'Checkbox demo' }}
+      {...props}
+    />
+  );
+}
 
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`vertical-tabpanel-${index}`}
-        aria-labelledby={`vertical-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3, width: {md: "70vw", xs:"100vw"} }}>
-            <Stack>{children}</Stack>
-          </Box>
-        )}
-      </div>
-    );
-  }
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-  function a11yProps(index) {
-    return {
-      id: `vertical-tab-${index}`,
-      'aria-controls': `vertical-tabpanel-${index}`,
-      style: {width: "calc(20vw - 20px)"},
-      value: index
-    };
-  }
+function Item(props) {
+  const { children, ...other } = props;
+  return (
+    <Box
+      sx={{ height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: { xs: "15px", md: "1rem" } }}
+      {...other}
+    >
+      <Box>
+        <Stack>{children}</Stack>
+      </Box>
+    </Box>
+  );
+}
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+  return (
+    <Box hidden={value !== index} {...other} sx={{ p: 3, width: { md: "70vw", xs: "100vw" }, height: `100vh` }}>
+      {children}
+    </Box>
+  )
+}
 
 export default () => {
   /*********constants**********/
   //定义动态变量
-  const tabValue = Define(0);
-  const TabChange = (event, newValue) => {
-    tabValue.set(newValue)
-  };
+  const tabValue = Define(`wifi`);
 
   /*********createEffect**********/
   createEffect(async () => {
-    
+
   })
+
   /*********functions**********/
 
   /*********styles**********/
   const sx_nav_btn = {
-    borderRight: 1, 
-    borderColor: 'divider', 
-    height: "calc(100vh - 80px)",
+    borderRight: 1,
+    borderColor: 'divider',
+    height: "calc(100vh - 5vh)",
     "& .css-1h9z7r5-MuiButtonBase-root-MuiTab-root": {
-      margin: "10px",
-      borderRadius: "10px"
+      // margin: "10px",
+      // borderRadius: "10px"
     },
     "& .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected": {
-        color: "#fff",
-        // backgroundImage: "linear-gradient( 135deg, #72EDF2 10%, #5151E5 100%)"
-        backgroundImage: "linear-gradient(to right, rgb(86, 204, 242), rgb(47, 128, 237))"
+      color: "#fff",
+      backgroundImage: "linear-gradient(to right, rgb(47, 128, 237), rgb(86, 204, 242))"
     },
     "& .css-j7evbw-MuiButtonBase-root-MuiTab-root": {
-      margin: "10px",
-      borderRadius: "10px",
-      minHeight: "48px",
-      justifyContent: "left"
+      margin: 1,
+      borderRadius: 1,
+      minHeight: 0,
+      justifyContent: "left",
+      textTransform: `none`,
     },
     "& .css-j7evbw-MuiButtonBase-root-MuiTab-root.Mui-selected": {
-        color: "#fff",
-       // backgroundImage: "linear-gradient( 135deg, #72EDF2 10%, #5151E5 100%)"
-        backgroundImage: "linear-gradient(to right, rgb(86, 204, 242), rgb(47, 128, 237))"
+      color: "#fff",
+      backgroundImage: "linear-gradient(to right, rgb(47, 128, 237), rgb(86, 204, 242))"
     }
   }
 
@@ -132,7 +104,7 @@ export default () => {
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
     <AppBar position="sticky">
-      <Toolbar>
+      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
         <IconButton onClick={_ => window.history.go(-1)} edge="start" color="inherit" sx={{ mr: 2 }}>
           <ArrowBackIcon />
         </IconButton>
@@ -144,67 +116,47 @@ export default () => {
 
     <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start" divider={<Divider orientation="vertical" flexItem />}>
 
-      <Stack sx={{ flexBasis: 0, flexGrow: 1, width: "calc(100vw - 80px)" }} direction="row">
-        <Stack direction="row" sx={{ pr: 2, pl: 2, height: "100%" ,display:{xs:"none",md:"block"}}}>
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={tabValue.get()}
-                onChange={TabChange}
-                aria-label="Vertical tabs example"
-                sx={sx_nav_btn}
-            >
-                <Tab label="WiFi" icon={<WifiIcon />} iconPosition="start" {...a11yProps(0)} />
-                <Tab label="Network" icon={<CastIcon />} iconPosition="start" {...a11yProps(1)} />
-                <Tab label="Internet" icon={<PublicIcon />} iconPosition="start" {...a11yProps(2)} />
-                <Tab label="SIM" icon={<SimCardIcon />} iconPosition="start" {...a11yProps(3)} />
-                <Divider/>
-                <Tab label="Security" icon={<SecurityIcon />} iconPosition="start"{...a11yProps(4)} />
-                {/* <Tab label="VPN" icon={<WifiCalling3Icon />} iconPosition="start" {...a11yProps(5)} />
-                <Tab label="SMS" icon={<SmsIcon />} iconPosition="start" {...a11yProps(6)} /> */}
-                <Divider/>
-                <Tab label="System" icon={<SettingsIcon />} iconPosition="start" {...a11yProps(7)} />
-                <Tab label="About" icon={<InfoIcon />} iconPosition="start" {...a11yProps(8)} />
-                <Tab label="Legals" icon={<CopyrightIcon />} iconPosition="start" {...a11yProps(9)} />
-                <Tab label="Accounts" icon={<ManageAccountsIcon />} iconPosition="start" {...a11yProps(10)} />
-            </Tabs>
-        </Stack>
-        <Stack direction="row">
-            <TabPanel value={tabValue.get()} index={0}>
-                <SetWiFi />
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={1}>
-                <SetNetwork />
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={2}>
-                <SetInternet/>
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={3}>
-                <SetSIM/>
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={4}>
-                Item Five
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={5}>
-                Item Six
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={6}>
-
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={7}>
-                <SetSystem/>
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={8}>
-                <SetAbout/>
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={9}>
-                Item Seven
-            </TabPanel>
-            <TabPanel value={tabValue.get()} index={10}>
-                Item Seven
-            </TabPanel>
-        </Stack>
+      <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
+        <Tabs orientation="vertical" variant="scrollable" value={tabValue.get()} onChange={(e, v) => tabValue.set(v)} sx={sx_nav_btn}>
+          <Tab label="WiFi" icon={<WifiIcon />} iconPosition="start" value="wifi" />
+          <Tab label="Network" icon={<CastIcon />} iconPosition="start" value="network" />
+          <Tab label="Internet" icon={<LanguageIcon />} iconPosition="start" value="internet" />
+          <Tab label="SIM" icon={<SimCardIcon />} iconPosition="start" value="sim" />
+          <Divider />
+          <Tab label="Security" icon={<SecurityIcon />} iconPosition="start" value="security" />
+          <Divider />
+          {/* <Tab label="Accounts" icon={<ManageAccountsIcon />} iconPosition="start" value="accounts" /> */}
+          <Tab label="System" icon={<SettingsIcon />} iconPosition="start" value="system" />
+          <Tab label="About" icon={<InfoIcon />} iconPosition="start" value="about" />
+        </Tabs>
       </Stack>
+      {/* Tabs */}
+
+      <Stack sx={{ flexBasis: 0, flexGrow: 4, height: `95vh`, overflowY: `scroll` }}>
+        <TabPanel value={tabValue.get()} index="wifi">
+          <SettingsWiFi />
+        </TabPanel>
+        <TabPanel value={tabValue.get()} index="network">
+          <SettingsNetwork />
+        </TabPanel>
+        <TabPanel value={tabValue.get()} index="internet">
+          <SettingsInternet />
+        </TabPanel>
+        <TabPanel value={tabValue.get()} index="sim">
+          <SettingsSIM />
+        </TabPanel>
+        <TabPanel value={tabValue.get()} index="security">
+          <SettingsSIM />
+        </TabPanel>
+        <TabPanel value={tabValue.get()} index="system">
+          <SettingsSystem />
+        </TabPanel>
+        <TabPanel value={tabValue.get()} index="about">
+          <SettingsAbout />
+        </TabPanel>
+      </Stack>
+      {/* content */}
+
 
     </Stack>
   </div >))

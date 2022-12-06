@@ -31,15 +31,17 @@ body *::-webkit-scrollbar {
 }
 
 body *::-webkit-scrollbar-thumb {
+  opacity: 0.8;
   border-radius: 100px;
-  background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
-  transition: background-image 1.3s ease-out;
+  background-image: linear-gradient(180deg, #517fff88 0%, #517fff88 99%);
+  transition: opacity 3.3s ease-out;
   box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
 }
 
 body *::-webkit-scrollbar-thumb:hover {
-  background-image: linear-gradient(180deg, #708ad4 0%, #d0368a 99%);
-  transition: background-image 1.3s ease-out;
+  opacity: 1;
+  background-image: linear-gradient(180deg, #517fff 0%, #517fff 99%);
+  transition: opacity 3.3s ease-out;
 }
 
 body *::-webkit-scrollbar-track {
