@@ -26,37 +26,10 @@ import SettingsSIM from './SettingsSIM';
 import SettingsSystem from './SettingsSystem';
 import SettingsWiFi from './SettingsWiFi';
 
-function BpCheckbox(props) {
-  return (
-    <Checkbox
-      sx={{
-        '&:hover': { bgcolor: 'transparent' },
-      }}
-      disableRipple
-      inputProps={{ 'aria-label': 'Checkbox demo' }}
-      {...props}
-    />
-  );
-}
-
-function Item(props) {
-  const { children, ...other } = props;
-  return (
-    <Box
-      sx={{ height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: { xs: "15px", md: "1rem" } }}
-      {...other}
-    >
-      <Box>
-        <Stack>{children}</Stack>
-      </Box>
-    </Box>
-  );
-}
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
-    <Box hidden={value !== index} {...other} sx={{ p: 3, width: { md: "70vw", xs: "100vw" }, height: `100vh` }}>
+    <Box hidden={value !== index} {...other} sx={{ height: `100vh` }}>
       {children}
     </Box>
   )
@@ -89,10 +62,11 @@ export default () => {
     },
     "& .css-j7evbw-MuiButtonBase-root-MuiTab-root": {
       margin: 1,
-      borderRadius: 1,
+      borderRadius: 2,
       minHeight: 0,
       justifyContent: "left",
       textTransform: `none`,
+      fontSize: `1rem`,
     },
     "& .css-j7evbw-MuiButtonBase-root-MuiTab-root.Mui-selected": {
       color: "#fff",
@@ -132,7 +106,7 @@ export default () => {
       </Stack>
       {/* Tabs */}
 
-      <Stack sx={{ flexBasis: 0, flexGrow: 4, height: `95vh`, overflowY: `scroll` }}>
+      <Stack sx={{ py: 5, px: 15, flexBasis: 0, flexGrow: 4, height: `95vh`, overflowY: `scroll` }}>
         <TabPanel value={tabValue.get()} index="wifi">
           <SettingsWiFi />
         </TabPanel>
@@ -156,7 +130,6 @@ export default () => {
         </TabPanel>
       </Stack>
       {/* content */}
-
 
     </Stack>
   </div >))

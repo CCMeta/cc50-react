@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, MenuItem, Select, Stack, Switch, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, MenuItem, Select, Stack, Switch, TextField, Typography } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
 import Grid from '@mui/material/Unstable_Grid2';
@@ -112,6 +112,7 @@ export default function SetWiFi() {
       }
     }
   };
+
   const HandleChangeBoolean = (dom, event, key) => {
     dom.set(event.target.checked); //滑动按钮、勾选框等
     if (key && commonCheck.get()) {
@@ -122,6 +123,7 @@ export default function SetWiFi() {
       }
     }
   };
+
   const Synchronize = (event) => {
     //同步2.4G与5G
     commonCheck.set(event.target.checked);
@@ -133,6 +135,7 @@ export default function SetWiFi() {
     security_5.set(security.get());
     Disable5G.set(event.target.checked ? true : false);
   };
+
   const ShowOrHide5G = (event) => {
     //显示高级设置
     show5GCheck.set(event.target.checked);
@@ -198,7 +201,8 @@ export default function SetWiFi() {
 
   /*********component**********/
   return useObserver(() => (
-    <Stack >
+    <Stack>
+
       <Grid container spacing={2}>
         <Grid xs={0.5} />
         <Grid sx={{ textAlign: "left" }}>
@@ -212,10 +216,14 @@ export default function SetWiFi() {
           </FormGroup>
         </Grid>
       </Grid>
-      <Stack sx={{ marginLeft: "4%", fontSize: "24px", marginTop: "20px", textAlign: "left", color: "#8dc8f7" }}>
-        <b>Common Configuration</b>
-      </Stack>
-      <Divider />
+      {/* Title */}
+
+      <Divider textAlign="left" sx={{ my:6 }}>
+        <Typography variant="h6">
+          <b>Common Configuration</b>
+        </Typography>
+      </Divider>
+
       {/* <DividerBlue label="Common Configuration"/> */}
       {/* <Divider textAlign="left" sx={{mt: "30px", color: "#90caf9", "& .css-1lu65d9-MuiDivider-root::before, .css-1lu65d9-MuiDivider-root::after": {borderTop: "thin solid #90caf9"}}}>Common Configuration</Divider> */}
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
@@ -282,6 +290,7 @@ export default function SetWiFi() {
           </Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
         <Grid xs={4} md={4} >
           <Item></Item>
@@ -303,6 +312,7 @@ export default function SetWiFi() {
             onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} /></Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
         <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
           <Item>WiFi Name</Item>
@@ -315,6 +325,7 @@ export default function SetWiFi() {
                         onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{maxLength: "50"}}/></Item>
             </Grid> */}
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
         <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
           <Item>Hide WiFi Name</Item>
@@ -324,6 +335,7 @@ export default function SetWiFi() {
             onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} /></Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
           <Item>WiFi Password</Item>
@@ -333,6 +345,7 @@ export default function SetWiFi() {
             type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" /></Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
         <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
           <Item>AP Isolation</Item>
@@ -342,6 +355,7 @@ export default function SetWiFi() {
             onChange={(e) => HandleChangeBoolean(ap_5, e)} /></Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
           <Item>Security Protocol</Item>
@@ -361,8 +375,11 @@ export default function SetWiFi() {
           </Item>
         </Grid>
       </Grid>
-      <Divider textAlign="left" sx={{ mt: "30px", display: showHigh.get(), marginTop: "60px" }}>
-        <b>Advanced Configuration</b>
+
+      <Divider textAlign="left" sx={{ m: 2, mt: 8, display: showHigh.get() }}>
+        <Typography variant="h6">
+          <b>Advanced Configuration</b>
+        </Typography>
       </Divider>
 
       <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
@@ -459,6 +476,7 @@ export default function SetWiFi() {
           <Item><b>5G</b></Item>
         </Grid>
       </Grid>
+      
       <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
         <Grid xs={4} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
           <Item>Wireless Mode</Item>
@@ -477,6 +495,7 @@ export default function SetWiFi() {
           </Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
         <Grid xs={4} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
           <Item>Channel Bandwidth</Item>
@@ -497,6 +516,7 @@ export default function SetWiFi() {
           </Item>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
         <Grid xs={4} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
           <Item>Channels</Item>
@@ -515,11 +535,13 @@ export default function SetWiFi() {
           </Item>
         </Grid>
       </Grid>
+
       <Grid container sx={{ mt: "15px" }}>
         <Grid xs={12} md={12} sx={{ textAlign: "center", marginTop: "30px" }} >
           <Button variant="contained">Save</Button>
         </Grid>
       </Grid>
+      
     </Stack>
 
   ))

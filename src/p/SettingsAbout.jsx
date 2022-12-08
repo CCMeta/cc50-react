@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, styled, TextField } from '@mui/material';
+import { Box, Button, Divider, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { createEffect, useObserver } from 'react-solid-state';
 
@@ -22,22 +22,26 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Box
-      sx={{ height: "65px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: { xs: "15px", md: "1rem" } }}
-      {...other}
-    >
-      <Box>
-        <Stack>{children}</Stack>
-      </Box>
+    <Box {...other}>
+      <Stack>{children}</Stack>
     </Box>
   );
 }
-function AboutTextField(props) {
+
+function AboutTextFieldBak(props) {
   return (
     <TextField
       label="" InputProps={{ readOnly: true }} variant="filled"
       sx={{ padding: "5px", maxWidth: "410px", "& input": { textAlign: "center" } }} {...props}
     />
+  );
+}
+
+function AboutTextField(props) {
+  return (
+    <Typography>
+      {props.value}
+    </Typography>
   );
 }
 
@@ -74,151 +78,178 @@ export default function SetAbout() {
   }
   /*********styles**********/
 
-  
+
   /*********component**********/
   return useObserver(() => (
     <Stack>
-      <Divider textAlign="center" sx={{ mt: "30px" }}><b>Version</b></Divider>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>Hardware Version</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={hardwareV.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>Software Version</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={softwareV.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>Firmware Version</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={firmwareV.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>UI Version</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={uiV.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Divider textAlign="center" sx={{ mt: "30px" }}><b>Hardware</b></Divider>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={3} sx={{ textAlign: "left" }}>
-          <Item>Model</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={model.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={3} sx={{ textAlign: "left" }}>
-          <Item>MAC</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={mac.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={3} sx={{ textAlign: "left" }}>
-          <Item>IMEI</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={IMEI.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={3} sx={{ textAlign: "left" }}>
-          <Item>IMSI</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={IMSI.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>Serial Number</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={sn.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>Model</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={model.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>MAC</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={mac.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>IMEI</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={IMEI.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>IMSI</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={IMSI.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5} />
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>Serial Number</Item>
-        </Grid>
-        <Grid xs={12} md={8} sx={{ textAlign: "center" }}>
-          <Item><AboutTextField value={sn.get()} /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={3} sx={{ textAlign: "left" }}><Item>Storage</Item></Grid>
-        <Grid xs={8} md={3} sx={{ textAlign: "right" }}><Item>{romFree.get()} / {rom.get()}</Item></Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={12} md={7}><Item><BorderLinearProgress variant="determinate" value={storage.get()} /></Item></Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid><Button variant="outlined">Click to free space</Button></Grid>
-      </Grid>
+
+      <Divider textAlign="left" sx={{ my:6 }}>
+        <Typography variant="h6">
+          <b>About Information</b>
+        </Typography>
+      </Divider>
+
+      <Stack direction="row" spacing={5}>
+
+        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Box p={5}>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <Typography>Hardware Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{hardwareV.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography>Software Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{softwareV.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography>Firmware Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{firmwareV.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography>UI Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{uiV.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Box>
+        </Paper>
+
+        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Box p={5}>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <Typography>Model Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{model.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography>IMEI Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{IMEI.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography>Serial Number</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{sn.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography>MAC Address</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{mac.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Box>
+        </Paper>
+
+      </Stack>
+
+      <Stack direction="row" spacing={5} py={5}>
+        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Box p={5}>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>operator</TableCell>
+                  <TableCell><Typography color="text.secondary">{IMSI.get()}</Typography></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>IMSI Version</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>WAN_IP Number</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>RSRP RSRQ RSSI SINR</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Box>
+        </Paper>
+
+        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Box p={5}>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>IMSI Version</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>IMSI Version</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>IMSI Number</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>IMSI Version</TableCell>
+                  <TableCell>{IMSI.get()}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Box>
+        </Paper>
+      </Stack>
+
+      <Stack direction="row" spacing={5} >
+        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Box p={5}>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell width={200}>
+                    <Typography>Storage</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <BorderLinearProgress variant="determinate" value={storage.get()} />
+                  </TableCell>
+                  <TableCell width={200}>
+                    <Typography>{romFree.get()} / {rom.get()}</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <Button fullWidth variant="outlined">Click to free space</Button>
+          </Box>
+        </Paper>
+      </Stack>
+
     </Stack>
   ))
 }

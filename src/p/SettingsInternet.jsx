@@ -1,4 +1,4 @@
-import { Stack, Box, FormControl, FormControlLabel, Radio, RadioGroup  } from '@mui/material';
+import { Stack, Box, FormControl, FormControlLabel, Radio, RadioGroup, Typography, Divider } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
 import 'animate.css';
@@ -6,19 +6,19 @@ import * as React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
 
-  function Item(props) {
-    const { children, ...other } = props;
-    return (
-      <Box
-        sx={{height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: {xs:"15px", md:"1rem"}}}
-        {...other}
-      >
-          <Box>
-            <Stack>{children}</Stack>
-          </Box>
+function Item(props) {
+  const { children, ...other } = props;
+  return (
+    <Box
+      sx={{ height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: { xs: "15px", md: "1rem" } }}
+      {...other}
+    >
+      <Box>
+        <Stack>{children}</Stack>
       </Box>
-    );
-  }
+    </Box>
+  );
+}
 
 
 export default function SetInternet() {
@@ -37,27 +37,34 @@ export default function SetInternet() {
   }
   /*********styles**********/
 
-  return useObserver(()=>(
+  return useObserver(() => (
     <Stack>
-        <Grid container spacing={2}>
-            <Grid xs={0} md={0.5}/>
-            <Grid md={4}  xs={8} sx={{textAlign: "left",}}>Connect Type</Grid>
-            <Grid md={4} xs={12}>
-                <FormControl>
-                    <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="auto"
-                        name="radio-buttons-group"
-                    >
-                        <FormControlLabel value="auto" control={<Radio />} label="Auto" />
-                        <FormControlLabel value="PPPOE" control={<Radio />} label="PPPOE" />
-                        <FormControlLabel value="autoIP" control={<Radio />} label="Automatic IP" />
-                        <FormControlLabel value="staIP" control={<Radio />} label="Static IP" />
-                        <FormControlLabel value="wire" control={<Radio />} label="Wireless broadband(SIM)" />
-                    </RadioGroup>
-                </FormControl>
-            </Grid>
+
+      <Divider textAlign="left" sx={{ my:6 }}>
+        <Typography variant="h6">
+          <b>Internet Configuration</b>
+        </Typography>
+      </Divider>
+
+      <Grid container spacing={2}>
+        <Grid xs={0} md={0.5} />
+        <Grid md={4} xs={8} sx={{ textAlign: "left", }}>Connect Type</Grid>
+        <Grid md={4} xs={12}>
+          <FormControl>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="auto"
+              name="radio-buttons-group"
+            >
+              <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+              <FormControlLabel value="PPPOE" control={<Radio />} label="PPPOE" />
+              <FormControlLabel value="autoIP" control={<Radio />} label="Automatic IP" />
+              <FormControlLabel value="staIP" control={<Radio />} label="Static IP" />
+              <FormControlLabel value="wire" control={<Radio />} label="Wireless broadband(SIM)" />
+            </RadioGroup>
+          </FormControl>
         </Grid>
+      </Grid>
     </Stack>
   ))
 }
