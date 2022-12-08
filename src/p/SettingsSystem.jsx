@@ -136,7 +136,7 @@ export default function SetSystem() {
         <StackButton onClick={(e) => OpenDialog("reset")}>RESET</StackButton>
         <Stack width={`50%`}>
           <Alert variant="filled" severity="error">
-            {`Tips: Though your approach works fine in this sandbox, it is not the approach I would recommend.`}
+            {`Tips: Though your approach works fine in this sandbox.`}
           </Alert>
         </Stack>
 

@@ -5,28 +5,28 @@ import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
 import { Define, fetching, FormBuilder } from './utils';
+import { CheckCircle, Done } from '@mui/icons-material';
 
 function BpCheckbox(props) {
   return (
-    <Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} disableRipple {...props} />
+    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} disableRipple {...props} />}
+    />
   );
 }
 
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Box
+    <Stack justifyContent={`center`}
       sx={{ height: { md: "60px", xs: "40px" }, lineHeight: { md: "60px", xs: "40px" }, mb: "5px", fontSize: { xs: "12px", md: "1rem" } }} {...other} >
-      <Stack>{children}</Stack>
-    </Box>
+      {children}
+    </Stack>
   );
 }
 
 function TextFieldSelf(props) {
   return (
-    <TextField
-      label="" variant="outlined" sx={{ padding: "5px" }} size="small" {...props}
-    />
+    <TextField label="" variant="outlined" sx={{ py: "5px" }} size="small" {...props} />
   );
 }
 
@@ -207,18 +207,16 @@ export default function SetWiFi() {
         <Grid xs={0.5} />
         <Grid sx={{ textAlign: "left" }}>
           <FormGroup>
-            <FormGroup>
-              <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
-                onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G common configuration" />
-              <FormControlLabel checked={show5GCheck.get()} control={<Checkbox disableRipple />}
-                onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
-            </FormGroup>
+            <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
+              onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G common configuration" />
+            <FormControlLabel checked={show5GCheck.get()} control={<Checkbox disableRipple />}
+              onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
           </FormGroup>
         </Grid>
       </Grid>
       {/* Title */}
 
-      <Divider textAlign="left" sx={{ my:6 }}>
+      <Divider textAlign="left" sx={{ mt: 6 }}>
         <Typography variant="h6">
           <b>Common Configuration</b>
         </Typography>
@@ -226,322 +224,321 @@ export default function SetWiFi() {
 
       {/* <DividerBlue label="Common Configuration"/> */}
       {/* <Divider textAlign="left" sx={{mt: "30px", color: "#90caf9", "& .css-1lu65d9-MuiDivider-root::before, .css-1lu65d9-MuiDivider-root::after": {borderTop: "thin solid #90caf9"}}}>Common Configuration</Divider> */}
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} >
-          <Item></Item>
+      <Box px={10}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" >
+          <Grid xs={4} md={4} >
+            <Item></Item>
+          </Grid>
+          <Grid xs={4} md={4} >
+            <Item><b>2.4G</b></Item>
+          </Grid>
+          <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "block" } }}>
+            <Item><b>5G</b></Item>
+          </Grid>
         </Grid>
-        <Grid xs={4} md={4} >
-          <Item>2.4G</Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "block" } }}>
-          <Item><b>5G</b></Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid xs={4} sx={{ textAlign: "center", whiteSpace: "nowrap" }}>
-          <Item>WiFi Enable</Item>
-          <Item>WiFi Name</Item>
-          <Item>Hide WiFi Name</Item>
-          <Item>WiFi Password</Item>
-          <Item>AP Isolation</Item>
-          <Item>Security Protocol</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
+            <Item>WiFi Enable</Item>
+            <Item>WiFi Name</Item>
+            <Item>Hide WiFi Name</Item>
+            <Item>WiFi Password</Item>
+            <Item>AP Isolation</Item>
+            <Item>Security Protocol</Item>
+          </Grid>
+          <Grid xs={8} md={4} sx={{ textAlign: "left", "& input": { fontSize: { xs: "13px", md: "1rem" } } }}>
+            <Item><Switch sx={{ margin: "0 auto" }} checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} /></Item>
+            <Item><TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} placeholder="Enter Your WiFi name" /></Item>
+            <Item><BpCheckbox label="Enable" checked={hide_wifi_name.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name, e, "hide")} /></Item>
+            <Item><TextFieldSelf value={wifi_pwd.get()} type="password" onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" /></Item>
+            <Item><BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} /></Item>
+            <Item>
+              <Select size="small"
+                value={security.get()}
+                onChange={(e) => HandleChangeValue(security, e, "security")}
+              >
+                {securities.map((sec) => (
+                  <MenuItem value={sec.value}>{sec.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
+          <Grid xs={4} sx={{ display: { xs: "none", md: "block" } }}>
+            <Item><Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
+              onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} /></Item>
+            <Item><TextFieldSelf value={wifi_name_5.get()} disabled={Disable5G.get()}
+              onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{ maxLength: "50" }} /></Item>
+            <Item><BpCheckbox label="Enable" checked={hide_wifi_name_5.get()} disabled={Disable5G.get()}
+              onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} /></Item>
+            <Item><TextFieldSelf value={wifi_pwd_5.get()} disabled={Disable5G.get()}
+              type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" /></Item>
+            <Item><BpCheckbox label="Enable" checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(ap_5, e)} /></Item>
+            <Item>
+              <Select size="small"
+                value={security_5.get()}
+                onChange={(e) => HandleChangeValue(security_5, e)}
+                disabled={Disable5G.get()}
+              >
+                {securities.map((security) => (
+                  <MenuItem value={security.value}>{security.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={4} sx={{ textAlign: "left", "& input": { fontSize: { xs: "13px", md: "1rem" } } }}>
-          <Item><Switch sx={{ margin: "0 auto" }} checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} /></Item>
-          <Item><TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} placeholder="Enter Your WiFi name" /></Item>
-          <Item><BpCheckbox checked={hide_wifi_name.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name, e, "hide")} /></Item>
-          <Item><TextFieldSelf value={wifi_pwd.get()} type="password" onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" /></Item>
-          <Item><BpCheckbox checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} /></Item>
-          <Item>
-            <Select
-              value={security.get()}
-              onChange={(e) => HandleChangeValue(security, e, "security")}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "12px", md: "1rem" } }}
-            >
-              {securities.map((sec) => (
-                <MenuItem value={sec.value}>{sec.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-        <Grid xs={4} sx={{ display: { xs: "none", md: "block" } }}>
-          <Item><Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} /></Item>
-          <Item><TextFieldSelf value={wifi_name_5.get()} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{ maxLength: "50" }} /></Item>
-          <Item><BpCheckbox checked={hide_wifi_name_5.get()} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} /></Item>
-          <Item><TextFieldSelf value={wifi_pwd_5.get()} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
-            type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" /></Item>
-          <Item><BpCheckbox checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeBoolean(ap_5, e)} /></Item>
-          <Item>
-            <Select
-              value={security_5.get()}
-              onChange={(e) => HandleChangeValue(security_5, e)}
-              sx={{ height: "40px", margin: "5px" }}
-              disabled={Disable5G.get()}
-            >
-              {securities.map((security) => (
-                <MenuItem value={security.value}>{security.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
+      </Box>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} >
-          <Item></Item>
+      {/* This is from chenyan start */}
+      <Stack display={`none`}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" >
+          <Grid xs={4} md={4} >
+            <Item></Item>
+          </Grid>
+          <Grid xs={4} md={4} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item>5G</Item>
+          </Grid>
+          <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "none" } }}>
+            <Item><b>5G</b></Item>
+          </Grid>
         </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>5G</Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "none" } }}>
-          <Item><b>5G</b></Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>WiFi Enable</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" >
+          <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
+            <Item>WiFi Enable</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item><Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto" }} disabled={Disable5G.get()}
+              onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} /></Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item><Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto" }} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} /></Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>WiFi Name</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item><TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} placeholder="Enter Your WiFi name" /></Item>
-        </Grid>
-        {/* <Grid xs={6} md={4}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" >
+          <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
+            <Item>WiFi Name</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item><TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} placeholder="Enter Your WiFi name" /></Item>
+          </Grid>
+          {/* <Grid xs={6} md={4}>
                 <Item><TextFieldSelf value={wifi_name_5.get()} sx={{height: "30px", padding: "5px","& input":{fontSize: {xs:"15px", md:"1rem"}}}} disabled={Disable5G.get()}
                         onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{maxLength: "50"}}/></Item>
             </Grid> */}
-      </Grid>
+        </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>Hide WiFi Name</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" >
+          <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
+            <Item>Hide WiFi Name</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item><BpCheckbox label="Enable" checked={hide_wifi_name_5.get()} disabled={Disable5G.get()}
+              onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} /></Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item><BpCheckbox checked={hide_wifi_name_5.get()} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} /></Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>WiFi Password</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
+            <Item>WiFi Password</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item><TextFieldSelf value={wifi_pwd_5.get()} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
+              type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" /></Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item><TextFieldSelf value={wifi_pwd_5.get()} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
-            type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" /></Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>AP Isolation</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" >
+          <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
+            <Item>AP Isolation</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item><BpCheckbox label="Enable" checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()}
+              onChange={(e) => HandleChangeBoolean(ap_5, e)} /></Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item><BpCheckbox checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()}
-            onChange={(e) => HandleChangeBoolean(ap_5, e)} /></Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid xs={4} md={4} sx={{ textAlign: "center", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>Security Protocol</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
+            <Item>Security Protocol</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item>
+              <Select size="small"
+                value={security_5.get()}
+                onChange={(e) => HandleChangeValue(security_5, e)}
+                disabled={Disable5G.get()}
+              >
+                {securities.map((security) => (
+                  <MenuItem value={security.value}>{security.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select
-              value={security_5.get()}
-              onChange={(e) => HandleChangeValue(security_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-              disabled={Disable5G.get()}
-            >
-              {securities.map((security) => (
-                <MenuItem value={security.value}>{security.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
+      </Stack>
+      {/* This is from chenyan end */}
 
-      <Divider textAlign="left" sx={{ m: 2, mt: 8, display: showHigh.get() }}>
+      <Divider textAlign="left" sx={{ mt: 6, display: showHigh.get() }}>
         <Typography variant="h6">
           <b>Advanced Configuration</b>
         </Typography>
       </Divider>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} sx={{ textAlign: "center", whiteSpace: "nowrap" }}>
-          <Item></Item>
-          <Item>Wireless Mode</Item>
-          <Item>Channel Bandwidth</Item>
-          <Item>Channels</Item>
+      <Box px={10}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
+          <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
+            <Item></Item>
+            <Item>Wireless Mode</Item>
+            <Item>Channel Bandwidth</Item>
+            <Item>Channels</Item>
+          </Grid>
+          <Grid xs={8} md={4}>
+            <Item><b>2.4G</b></Item>
+            <Item>
+              <Select size="small"
+                value={wireless.get()}
+                onChange={(e) => HandleChangeValue(wireless, e)}
+              >
+                {wirelessModes.map((wirelessMode) => (
+                  <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+            <Item>
+              <Select size="small"
+                value={bandwidth.get()}
+                onChange={(e) => HandleChangeValue(bandwidth, e)}
+              >
+                <MenuItem value={"20"}>20M</MenuItem>
+                <MenuItem value={"40"}>40M</MenuItem>
+                <MenuItem value={"0"}>Auto</MenuItem>
+              </Select>
+            </Item>
+            <Item>
+              <Select size="small"
+                value={channel.get()}
+                onChange={(e) => HandleChangeValue(channel, e)}
+              >
+                {channels.map((channel) => (
+                  <MenuItem value={channel.value}>{channel.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
+          <Grid xs={4} sx={{ display: { xs: "none", md: "block" } }}>
+            <Item><b>5G</b></Item>
+            <Item>
+              <Select size="small"
+                value={wireless_5.get()}
+                onChange={(e) => HandleChangeValue(wireless_5, e)}
+              >
+                {wirelessModes.map((wirelessMode) => (
+                  <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+            <Item>
+              <Select size="small"
+                value={bandwidth_5.get()}
+                onChange={(e) => HandleChangeValue(bandwidth_5, e)}
+              >
+                <MenuItem value={"20"}>20M</MenuItem>
+                <MenuItem value={"40"}>40M</MenuItem>
+                <MenuItem value={"80"}>80M</MenuItem>
+                <MenuItem value={"160"}>160M</MenuItem>
+                <MenuItem value={"0"}>Auto</MenuItem>
+              </Select>
+            </Item>
+            <Item>
+              <Select size="small"
+                value={channel_5.get()}
+                onChange={(e) => HandleChangeValue(channel_5, e)}
+              >
+                {channels2.map((channel) => (
+                  <MenuItem value={channel.value}>{channel.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={4}>
-          <Item><b>2.4G</b></Item>
-          <Item>
-            <Select
-              value={wireless.get()}
-              onChange={(e) => HandleChangeValue(wireless, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              {wirelessModes.map((wirelessMode) => (
-                <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-          <Item>
-            <Select
-              value={bandwidth.get()}
-              onChange={(e) => HandleChangeValue(bandwidth, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"0"}>Auto</MenuItem>
-            </Select>
-          </Item>
-          <Item>
-            <Select
-              value={channel.get()}
-              onChange={(e) => HandleChangeValue(channel, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              {channels.map((channel) => (
-                <MenuItem value={channel.value}>{channel.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-        <Grid xs={4} sx={{ display: { xs: "none", md: "block" } }}>
-          <Item><b>5G</b></Item>
-          <Item>
-            <Select
-              value={wireless_5.get()}
-              onChange={(e) => HandleChangeValue(wireless_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              {wirelessModes.map((wirelessMode) => (
-                <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-          <Item>
-            <Select
-              value={bandwidth_5.get()}
-              onChange={(e) => HandleChangeValue(bandwidth_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"80"}>80M</MenuItem>
-              <MenuItem value={"160"}>160M</MenuItem>
-              <MenuItem value={"0"}>Auto</MenuItem>
-            </Select>
-          </Item>
-          <Item>
-            <Select
-              value={channel_5.get()}
-              onChange={(e) => HandleChangeValue(channel_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              {channels2.map((channel) => (
-                <MenuItem value={channel.value}>{channel.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
+      </Box>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} >
-          <Item></Item>
+      {/* This is from chenyan start */}
+      <Stack display={`none`}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
+          <Grid xs={4} md={4} >
+            <Item></Item>
+          </Grid>
+          <Grid xs={4} md={4} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item>5G</Item>
+          </Grid>
+          <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "none" } }}>
+            <Item><b>5G</b></Item>
+          </Grid>
         </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>5G</Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "none" } }}>
-          <Item><b>5G</b></Item>
-        </Grid>
-      </Grid>
-      
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
-          <Item>Wireless Mode</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select
-              value={wireless_5.get()}
-              onChange={(e) => HandleChangeValue(wireless_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              {wirelessModes.map((wirelessMode) => (
-                <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
-          <Item>Channel Bandwidth</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
+          <Grid xs={4} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
+            <Item>Wireless Mode</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item>
+              <Select size="small"
+                value={wireless_5.get()}
+                onChange={(e) => HandleChangeValue(wireless_5, e)}
+              >
+                {wirelessModes.map((wirelessMode) => (
+                  <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select
-              value={bandwidth_5.get()}
-              onChange={(e) => HandleChangeValue(bandwidth_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem", whiteSpace: "nowrap" } }}
-            >
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"80"}>80M</MenuItem>
-              <MenuItem value={"160"}>160M</MenuItem>
-              <MenuItem value={"0"}>Auto</MenuItem>
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
-          <Item>Channels</Item>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
+          <Grid xs={4} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
+            <Item>Channel Bandwidth</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item>
+              <Select size="small"
+                value={bandwidth_5.get()}
+                onChange={(e) => HandleChangeValue(bandwidth_5, e)}
+                sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem", } }}
+              >
+                <MenuItem value={"20"}>20M</MenuItem>
+                <MenuItem value={"40"}>40M</MenuItem>
+                <MenuItem value={"80"}>80M</MenuItem>
+                <MenuItem value={"160"}>160M</MenuItem>
+                <MenuItem value={"0"}>Auto</MenuItem>
+              </Select>
+            </Item>
+          </Grid>
         </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select
-              value={channel_5.get()}
-              onChange={(e) => HandleChangeValue(channel_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
-              {channels2.map((channel) => (
-                <MenuItem value={channel.value}>{channel.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
 
-      <Grid container sx={{ mt: "15px" }}>
-        <Grid xs={12} md={12} sx={{ textAlign: "center", marginTop: "30px" }} >
-          <Button variant="contained">Save</Button>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
+          <Grid xs={4} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
+            <Item>Channels</Item>
+          </Grid>
+          <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
+            <Item>
+              <Select
+                value={channel_5.get()}
+                onChange={(e) => HandleChangeValue(channel_5, e)}
+                sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
+              >
+                {channels2.map((channel) => (
+                  <MenuItem value={channel.value}>{channel.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+          </Grid>
         </Grid>
-      </Grid>
-      
+      </Stack>
+      {/* This is from chenyan end */}
+
+      <Box px={20} py={6}>
+        <Button fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
+      </Box>
+
     </Stack>
 
   ))

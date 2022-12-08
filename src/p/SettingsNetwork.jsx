@@ -8,39 +8,29 @@ import 'animate.css';
 import * as React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
+import { CheckCircle } from '@mui/icons-material';
 
 
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Box
-      sx={{ height: "50px", lineHeight: "50px", fontSize: { xs: "15px", md: "1rem" }, marginBottom: "15px" }}
-      {...other}
-    >
-      <Box>
-        <Stack>{children}</Stack>
-      </Box>
-    </Box>
+    <Stack justifyContent={`center`}
+      sx={{ height: "60px", lineHeight: "60px", fontSize: { xs: "15px", md: "1rem" }, marginBottom: "0" }}
+      {...other} >
+      {children}
+    </Stack>
   );
 }
+
 function TextFieldSelf(props) {
   return (
-
-    <TextField
-      label="" variant="outlined" sx={{ padding: "5px", maxWidth: "410px" }} size="small" {...props}
-    />
+    <TextField label="" variant="outlined" size="small" {...props} />
   );
 }
+
 function TextField1(props) {
   return (
-    <TextField
-      label="" variant="outlined" type="number"
-      sx={{
-        padding: "2px", width: "45px", height: "40px", color: "#fff", webkitAppearance: "none", fontSize: { xs: "5px", md: "1rem" },
-        "& .css-myb2s4-MuiInputBase-input-MuiOutlinedInput-input": { padding: "2px", height: "36px", textAlign: "center" }
-      }}
-      size="small" {...props}
-    />
+    <TextField label="" variant="outlined" type="number" size="small" {...props} />
   );
 }
 
@@ -116,107 +106,105 @@ export default function SetNetwork() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my:6 }}>
+      <Divider textAlign="left" sx={{ my: 6 }}>
         <Typography variant="h6">
           <b>Network Configuration</b>
         </Typography>
       </Divider>
 
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
-          <Item>Device Name</Item>
+      <Box px={10}>
+        <Grid container spacing={2}>
+          <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
+            <Item>Device Name</Item>
+          </Grid>
+          <Grid xs={8} md={6} sx={{ textAlign: "left", "& input": { fontSize: { xs: "15px", md: "1rem" } } }} >
+            <Item><TextFieldSelf placeholder="Device Name" /></Item>
+          </Grid>
         </Grid>
-        <Grid xs={6.5} sx={{ textAlign: "left", "& input": { fontSize: { xs: "15px", md: "1rem" } } }} >
-          <Item><TextFieldSelf placeholder="Device Name" /></Item>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={5} md={3} sx={{ textAlign: "left" }}>
-          <Item>DHCP Enable</Item>
-        </Grid>
-        <Grid xs={3} md={8.5} sx={{ textAlign: "center", marginTop: "5px" }}>
-          <Item><Switch value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} /></Item>
-        </Grid>
-      </Grid>
-      <Divider variant="middle" />
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
-          <Item>DHCP Range</Item>
-        </Grid>
-        <Grid xs={12} md={8.5} sx={{ textAlign: "left", marginTop: "10px" }}>
-          <Item>
-            <Stack sx={{ display: "inline-block", paddingLeft: "9px", fontSize: { xs: "15px", md: "1rem" } }}>
-              192.168.<TextField1 value={start1.get()} onChange={(e) => HandleJudgeValue(start1, e)} />.
-              <TextField1 value={start2.get()} onChange={(e) => HandleJudgeValue(end1, e)} /> --
 
-              192.168.<TextField1 value={end1.get()} onChange={(e) => HandleJudgeValue(start2, e)} />.
-              <TextField1 value={end2.get()} onChange={(e) => HandleJudgeValue(end2, e)} />
-            </Stack>
-          </Item>
+        <Grid container spacing={2}>
+          <Grid xs={5} md={3} sx={{ textAlign: "left" }}>
+            <Item>DHCP Enable</Item>
+          </Grid>
+          <Grid xs={7} md={9}>
+            <Item><Switch value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} /></Item>
+          </Grid>
         </Grid>
-      </Grid>
-      <Divider variant="middle" />
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
-          <Item>DHCP Lease</Item>
-        </Grid>
-        <Grid xs={12} md={8.5} sx={{ textAlign: "left", marginTop: "10px" }}>
-          <Item>
-            <Select
-              value={lease.get()}
-              onChange={(e) => HandleChangeValue(lease, e)}
-              sx={{ height: "40px", margin: "5px", maxWidth: "410px", textAlign: "center", fontSize: { xs: "15px", md: "1rem" } }}
-            >
-              {modes.map((mode) => (
-                <MenuItem value={mode.value}>{mode.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
 
+        <Grid container spacing={2}>
+          <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Item>DHCP Range</Item>
+          </Grid>
+          <Grid xs={12} md={9} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Item>
+              <Stack direction={`row`} alignItems="center">
+                <Typography component={`span`}>
+                  192.168.
+                </Typography>
+                <TextField1 value={start1.get()} onChange={(e) => HandleJudgeValue(start1, e)} />.
+                <TextField1 value={start2.get()} onChange={(e) => HandleJudgeValue(end1, e)} />
+              </Stack>
+            </Item>
+            <Item>
+              <Stack direction={`row`} alignItems="center">
+                <Typography component={`span`}>
+                  192.168.
+                </Typography>
+                <TextField1 value={end1.get()} onChange={(e) => HandleJudgeValue(start2, e)} />.
+                <TextField1 value={end2.get()} onChange={(e) => HandleJudgeValue(end2, e)} />
+              </Stack>
+            </Item>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-          <Item>DHCP Gateway</Item>
-        </Grid>
-        <Grid xs={12} md={8.5} sx={{ textAlign: "left", fontSize: { xs: "15px", md: "1rem" } }}>
-          <Item>
-            <FormControl sx={{ paddingLeft: "9px", flexDirection: "row" }}>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={mode.get()}
-                onChange={(e) => HandleChangeValue(mode, e)}
+
+        <Grid container spacing={2}>
+          <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Item>DHCP Lease</Item>
+          </Grid>
+          <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Item>
+              <Select size="small"
+                value={lease.get()}
+                onChange={(e) => HandleChangeValue(lease, e)}
               >
-                <FormControlLabel value="auto" control={<Radio />} label="Auto" />
-                <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
-              </RadioGroup>
-              <FormControlLabel
-                value={gateway.get()}
-                control={<TextFieldSelf sx={{ "& input": { fontSize: { xs: "15px", md: "1rem" } } }} placeholder="192.168.10.1" />}
-                disabled={mode.get() == "auto"}
-                onChange={(e) => HandleChangeValue(gateway, e)}
-              />
-            </FormControl>
-          </Item>
+                {modes.map((mode) => (
+                  <MenuItem value={mode.value}>{mode.name}</MenuItem>
+                ))}
+              </Select>
+            </Item>
+
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={0.5}></Grid>
-        <Grid xs={12} sx={{ textAlign: "center", marginTop: "30px" }}>
-          <Button variant="contained">Save</Button>
+
+        <Grid container spacing={2}>
+          <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
+            <Item>DHCP Gateway</Item>
+          </Grid>
+          <Grid xs={12} md={9} sx={{ textAlign: "left", fontSize: { xs: "15px", md: "1rem" } }}>
+            <Item>
+              <FormControl sx={{ flexDirection: "row" }}>
+                <RadioGroup row value={mode.get()} onChange={(e) => HandleChangeValue(mode, e)} >
+                  <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+                  <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
+                </RadioGroup>
+                <FormControlLabel
+                  value={gateway.get()}
+                  control={<TextFieldSelf sx={{ "& input": { fontSize: { xs: "15px", md: "1rem" } } }} placeholder="192.168.10.1" />}
+                  disabled={mode.get() == "auto"}
+                  onChange={(e) => HandleChangeValue(gateway, e)}
+                />
+              </FormControl>
+            </Item>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
+
+      <Box px={20} py={6}>
+        <Button fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
+      </Box>
       {/* <Divider sx={{marginBottom: "10px", marginTop: "10px"}}/>
         <Grid container spacing={2}>
-            <Grid xs={0.5}></Grid>
-            <Grid xs={3} sx={{textAlign: "left"}}>
+                <Grid xs={3} sx={{textAlign: "left"}}>
                 <Item>NAT</Item>
                 <Item>MTU</Item>
                 <Item>MSS</Item>
