@@ -100,7 +100,7 @@ export default () => {
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
     <AppBar position="sticky">
-      <Toolbar>
+      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
         <IconButton onClick={_ => window.history.go(-1)} edge="start" color="inherit" sx={{ mr: 2 }}>
           <ArrowBackIcon />
         </IconButton>

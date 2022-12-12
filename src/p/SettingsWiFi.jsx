@@ -4,7 +4,7 @@ import { createEffect, useObserver } from 'react-solid-state';
 import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
-import { Define, fetching, FormBuilder } from './utils';
+import { Define, fetching, FormBuilder, webcmd } from './utils';
 import { CheckCircle, Done } from '@mui/icons-material';
 
 function BpCheckbox(props) {
@@ -17,8 +17,7 @@ function BpCheckbox(props) {
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Stack justifyContent={`center`}
-      sx={{ height: { md: "60px", xs: "40px" }, lineHeight: { md: "60px", xs: "40px" }, mb: "5px", fontSize: { xs: "12px", md: "1rem" } }} {...other} >
+    <Stack justifyContent={`center`} sx={{ height: { md: "60px", xs: "40px" }, lineHeight: { md: "60px", xs: "40px" } }} {...other} >
       {children}
     </Stack>
   );
@@ -30,44 +29,34 @@ function TextFieldSelf(props) {
   );
 }
 
-function DividerBlue(props) {
-  return (
-    <Divider textAlign="left"
-      sx={{
-        mt: "30px", color: "#90caf9",
-        "& ::before": { borderTop: "thin solid #90caf9" },
-        "& ::after": { borderTop: "thin solid #90caf9" }
-      }}
-    >{props.label}</Divider>
-  );
-}
-
 export default function SetWiFi() {
   /*********constants**********/
   //定义动态变量
-  const showHigh = Define("none");
-  const commonCheck = Define(true), show5GCheck = Define(false), Disable5G = Define(true);
+  const showHigh = Define("flex");
+  const commonCheck = Define(true), show5GCheck = Define(true), Disable5G = Define(true);
   const wifi_enable = Define(true), wifi_enable_5 = Define(true);
   const wifi_name = Define(""), wifi_name_5 = Define("");
   const hide_wifi_name = Define(true), hide_wifi_name_5 = Define(true);
   const wifi_pwd = Define(""), wifi_pwd_5 = Define("");
   const ap = Define(true), ap_5 = Define(true);
   const security = Define("WPA2PSK"), security_5 = Define("WPA2PSK");
-  const wireless = Define("1"), wireless_5 = Define("1");
+  const wireless = Define("1"), wireless_5 = Define("0");
   const bandwidth = Define("20"), bandwidth_5 = Define("20");
   const channel = Define("1"), channel_5 = Define("0");
 
   const securities = [
-    { value: "WPAPSK/WPA2PSK", name: "WPAPSK/WPA2PSK" },
+    { value: "WPAPSKWPA2PSK", name: "WPAPSK/WPA2PSK" },
     { value: "WPA2PSK", name: "WPA2PSK" },
-    { value: "WPA2PSK/WPA3PSK", name: "WPA2PSK/WPA3PSK" },
+    { value: "WPA2PSKWPA3PSK", name: "WPA2PSK/WPA3PSK" },
     { value: "WPA3PSK", name: "WPA3PSK" }
   ]
-  const wirelessModes = [
+  const wirelessModes_24G = [
     { value: "1", name: "B only" },
     { value: "4", name: "G only" },
     { value: "9", name: "B/G/GN mode" },
     { value: "16", name: "HE_2G mode" },
+  ]
+  const wirelessModes_5G = [
     { value: "0", name: "B/G mixed" },
     { value: "2", name: "A only" },
     { value: "8", name: "A/N in 5 band" },
@@ -75,7 +64,8 @@ export default function SetWiFi() {
     { value: "14", name: "A/AC/AN mixed" },
     { value: "15", name: "AC/AN mixed" }
   ]
-  const channels = [
+  const channels_24G = [
+    { value: 0, name: "Channel 0 (Auto)" },
     { value: 1, name: "Channel 1" },
     { value: 2, name: "Channel 2" },
     { value: 3, name: "Channel 3" },
@@ -90,7 +80,7 @@ export default function SetWiFi() {
     { value: 12, name: "Channel 12" },
     { value: 13, name: "Channel 13" }
   ]
-  const channels2 = [
+  const channels_5G = [
     { value: 0, name: "Channel 0 (Auto)" },
     { value: 36, name: "Channel 36 (5.180GHz)" },
     { value: 40, name: "Channel 40 (5.200GHz)" },
@@ -144,58 +134,35 @@ export default function SetWiFi() {
 
   /*********createEffect**********/
   createEffect(async () => {
+
+    await webcmd(`wifi.setting.get`).then(res => {
+
+      security.set(res['2g'].authMode)
+      bandwidth.set(res['2g'].bandwidth)
+      channel.set(res['2g'].channel)
+      wifi_enable.set(res['2g'].enable)
+      hide_wifi_name.set(res['2g'].hideName)
+      ap.set(res['2g'].isolation)
+      wifi_name.set(res['2g'].name)
+      wifi_pwd.set(res['2g'].password)
+      wireless.set(res['2g'].wirelessMode)
+ 
+      security_5.set(res['5g'].authMode)
+      bandwidth_5.set(res['5g'].bandwidth)
+      channel_5.set(res['5g'].channel)
+      wifi_enable_5.set(res['5g'].enable)
+      hide_wifi_name_5.set(res['5g'].hideName)
+      ap_5.set(res['5g'].isolation)
+      wifi_name_5.set(res['5g'].name)
+      wifi_pwd_5.set(res['5g'].password)
+      wireless_5.set(res['5g'].wirelessMode)
+    })
+
     // await fetching_get_wifi_setting();
   })
 
   /*********functions**********/
-  const fetching_get_wifi_setting = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `wifi.setting.get`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      wifi_enable.set(res["2g"].enable); wifi_name.set(res["2g"].name);
-      hide_wifi_name.set(res["2g"].hideName == "0" ? false : true);
-      wifi_pwd.set(res["2g"].password); ap.set(res["2g"].isolation == "0" ? false : true);
-      security.set(res["2g"].authMode); channel.set(res["2g"].channel);
-      bandwidth.set(res["2g"].bandwidth); wireless.set(res["2g"].wirelessMode);
-      wifi_enable_5.set(res["5g"].enable); wifi_name_5.set(res["5g"].name);
-      hide_wifi_name_5.set(res["5g"].hideName == "0" ? false : true);
-      wifi_pwd_5.set(res["5g"].password); ap_5.set(res["5g"].isolation == "0" ? false : true);
-      security_5.set(res["5g"].authMode); channel_5.set(res["5g"].channel);
-      bandwidth_5.set(res["5g"].bandwidth); wireless_5.set(res["5g"].wirelessMode);
-      commonCheck.set(res.sync == "0" ? false : true);
-    })
-  }
-  const fetching_set_wifi_setting = async () => {
-    const G2 = {
-      enable: wifi_enable.get() ? "0" : "1",
-      name: wifi_name.get(),
-      hideName: hide_wifi_name.get() ? "0" : "1",
-      password: wifi_pwd.get(),
-      isolation: ap.get() ? "0" : "1",
-      authMode: security.get(),
-      channel: channel.get(),
-      bandwidth: bandwidth.get(),
-      wireless: wireless.get()
-    }
-    const G5 = {
-      enable: wifi_enable_5.get() ? "0" : "1",
-      name: wifi_name_5.get(),
-      hideName: hide_wifi_name_5.get() ? "0" : "1",
-      password: wifi_pwd_5.get(),
-      isolation: ap_5.get() ? "0" : "1",
-      authMode: security_5.get(),
-      channel: channel_5.get(),
-      bandwidth: bandwidth_5.get(),
-      wireless: wireless_5.get()
-    }
-    return await fetching(FormBuilder({
-      "cmd": `wifi.setting.set` + { "2g": G2, "5g": G5 },
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    )
-  }
+
 
   /*********styles**********/
 
@@ -204,7 +171,6 @@ export default function SetWiFi() {
     <Stack>
 
       <Grid container spacing={2}>
-        <Grid xs={0.5} />
         <Grid sx={{ textAlign: "left" }}>
           <FormGroup>
             <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
@@ -222,8 +188,6 @@ export default function SetWiFi() {
         </Typography>
       </Divider>
 
-      {/* <DividerBlue label="Common Configuration"/> */}
-      {/* <Divider textAlign="left" sx={{mt: "30px", color: "#90caf9", "& .css-1lu65d9-MuiDivider-root::before, .css-1lu65d9-MuiDivider-root::after": {borderTop: "thin solid #90caf9"}}}>Common Configuration</Divider> */}
       <Box px={10}>
         <Grid container spacing={2} alignItems="center" justifyContent="center" >
           <Grid xs={4} md={4} >
@@ -397,7 +361,7 @@ export default function SetWiFi() {
                 value={wireless.get()}
                 onChange={(e) => HandleChangeValue(wireless, e)}
               >
-                {wirelessModes.map((wirelessMode) => (
+                {wirelessModes_24G.map((wirelessMode) => (
                   <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
                 ))}
               </Select>
@@ -407,9 +371,10 @@ export default function SetWiFi() {
                 value={bandwidth.get()}
                 onChange={(e) => HandleChangeValue(bandwidth, e)}
               >
+                <MenuItem value={"0"}>Auto</MenuItem>
                 <MenuItem value={"20"}>20M</MenuItem>
                 <MenuItem value={"40"}>40M</MenuItem>
-                <MenuItem value={"0"}>Auto</MenuItem>
+                <MenuItem value={"60"}>40M</MenuItem>
               </Select>
             </Item>
             <Item>
@@ -417,7 +382,7 @@ export default function SetWiFi() {
                 value={channel.get()}
                 onChange={(e) => HandleChangeValue(channel, e)}
               >
-                {channels.map((channel) => (
+                {channels_24G.map((channel) => (
                   <MenuItem value={channel.value}>{channel.name}</MenuItem>
                 ))}
               </Select>
@@ -430,7 +395,7 @@ export default function SetWiFi() {
                 value={wireless_5.get()}
                 onChange={(e) => HandleChangeValue(wireless_5, e)}
               >
-                {wirelessModes.map((wirelessMode) => (
+                {wirelessModes_5G.map((wirelessMode) => (
                   <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
                 ))}
               </Select>
@@ -440,11 +405,11 @@ export default function SetWiFi() {
                 value={bandwidth_5.get()}
                 onChange={(e) => HandleChangeValue(bandwidth_5, e)}
               >
+                <MenuItem value={"0"}>Auto</MenuItem>
                 <MenuItem value={"20"}>20M</MenuItem>
                 <MenuItem value={"40"}>40M</MenuItem>
                 <MenuItem value={"80"}>80M</MenuItem>
                 <MenuItem value={"160"}>160M</MenuItem>
-                <MenuItem value={"0"}>Auto</MenuItem>
               </Select>
             </Item>
             <Item>
@@ -452,7 +417,7 @@ export default function SetWiFi() {
                 value={channel_5.get()}
                 onChange={(e) => HandleChangeValue(channel_5, e)}
               >
-                {channels2.map((channel) => (
+                {channels_5G.map((channel) => (
                   <MenuItem value={channel.value}>{channel.name}</MenuItem>
                 ))}
               </Select>
@@ -485,7 +450,7 @@ export default function SetWiFi() {
                 value={wireless_5.get()}
                 onChange={(e) => HandleChangeValue(wireless_5, e)}
               >
-                {wirelessModes.map((wirelessMode) => (
+                {wirelessModes_24G.map((wirelessMode) => (
                   <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
                 ))}
               </Select>
@@ -525,7 +490,7 @@ export default function SetWiFi() {
                 onChange={(e) => HandleChangeValue(channel_5, e)}
                 sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
               >
-                {channels2.map((channel) => (
+                {channels_5G.map((channel) => (
                   <MenuItem value={channel.value}>{channel.name}</MenuItem>
                 ))}
               </Select>

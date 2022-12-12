@@ -52,23 +52,14 @@ export default () => {
     borderRight: 1,
     borderColor: 'divider',
     height: "calc(100vh - 5vh)",
-    "& .css-1h9z7r5-MuiButtonBase-root-MuiTab-root": {
-      // margin: "10px",
-      // borderRadius: "10px"
-    },
-    "& .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected": {
-      color: "#fff",
-      backgroundImage: "linear-gradient(to right, rgb(47, 128, 237), rgb(86, 204, 242))"
-    },
-    "& .css-j7evbw-MuiButtonBase-root-MuiTab-root": {
+    "& .MuiButtonBase-root.MuiTab-root": {
       margin: 1,
       borderRadius: 2,
       minHeight: 0,
       justifyContent: "left",
       textTransform: `none`,
-      fontSize: `1rem`,
     },
-    "& .css-j7evbw-MuiButtonBase-root-MuiTab-root.Mui-selected": {
+    "& .MuiButtonBase-root.MuiTab-root.Mui-selected": {
       color: "#fff",
       backgroundImage: "linear-gradient(to right, rgb(47, 128, 237), rgb(86, 204, 242))"
     }
@@ -94,10 +85,10 @@ export default () => {
         <Tabs orientation="vertical" variant="scrollable" value={tabValue.get()} onChange={(e, v) => tabValue.set(v)} sx={sx_nav_btn}>
           <Tab label="WiFi" icon={<WifiIcon />} iconPosition="start" value="wifi" />
           <Tab label="Network" icon={<CastIcon />} iconPosition="start" value="network" />
-          <Tab label="Internet" icon={<LanguageIcon />} iconPosition="start" value="internet" />
+          <Tab disabled label="Internet" icon={<LanguageIcon />} iconPosition="start" value="internet" />
           <Tab label="SIM" icon={<SimCardIcon />} iconPosition="start" value="sim" />
           <Divider />
-          <Tab label="Security" icon={<SecurityIcon />} iconPosition="start" value="security" />
+          <Tab disabled label="Security" icon={<SecurityIcon />} iconPosition="start" value="security" />
           <Divider />
           {/* <Tab label="Accounts" icon={<ManageAccountsIcon />} iconPosition="start" value="accounts" /> */}
           <Tab label="System" icon={<SettingsIcon />} iconPosition="start" value="system" />
@@ -106,28 +97,30 @@ export default () => {
       </Stack>
       {/* Tabs */}
 
-      <Stack sx={{ py: 5, px: 15, flexBasis: 0, flexGrow: 4, height: `95vh`, overflowY: `scroll` }}>
-        <TabPanel value={tabValue.get()} index="wifi">
-          <SettingsWiFi />
-        </TabPanel>
-        <TabPanel value={tabValue.get()} index="network">
-          <SettingsNetwork />
-        </TabPanel>
-        <TabPanel value={tabValue.get()} index="internet">
-          <SettingsInternet />
-        </TabPanel>
-        <TabPanel value={tabValue.get()} index="sim">
-          <SettingsSIM />
-        </TabPanel>
-        <TabPanel value={tabValue.get()} index="security">
-          <SettingsSIM />
-        </TabPanel>
-        <TabPanel value={tabValue.get()} index="system">
-          <SettingsSystem />
-        </TabPanel>
-        <TabPanel value={tabValue.get()} index="about">
-          <SettingsAbout />
-        </TabPanel>
+      <Stack sx={{ flexBasis: 0, flexGrow: 4, height: `95vh`, overflowY: `scroll` }}>
+        <Box sx={{ py: 5, px: 15, }}>
+          <TabPanel value={tabValue.get()} index="wifi">
+            <SettingsWiFi />
+          </TabPanel>
+          <TabPanel value={tabValue.get()} index="network">
+            <SettingsNetwork />
+          </TabPanel>
+          <TabPanel value={tabValue.get()} index="internet">
+            <SettingsInternet />
+          </TabPanel>
+          <TabPanel value={tabValue.get()} index="sim">
+            <SettingsSIM />
+          </TabPanel>
+          <TabPanel value={tabValue.get()} index="security">
+            <SettingsSIM />
+          </TabPanel>
+          <TabPanel value={tabValue.get()} index="system">
+            <SettingsSystem />
+          </TabPanel>
+          <TabPanel value={tabValue.get()} index="about">
+            <SettingsAbout />
+          </TabPanel>
+        </Box>
       </Stack>
       {/* content */}
 

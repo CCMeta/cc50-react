@@ -194,7 +194,7 @@ export default () => {
     // to be continued
     var bodyZoom = (((window.innerWidth / 1500) - 1) / 2) + 1
     document.body.style.setProperty(`--a`, bodyZoom)
-    console.log(bodyZoom)
+    // console.log(bodyZoom)
 
     //login process
     await fetching(FormBuilder({
@@ -375,675 +375,199 @@ export default () => {
 
   /*********component**********/
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
-    <Stack height={`100vh`}>
 
-      <AppBar position="sticky">
-        <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
-          <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
+    <AppBar position="sticky">
+      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
+        <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
 
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-            Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
+        </IconButton>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
+          Dashboard
+        </Typography>
+      </Toolbar>
+    </AppBar>
 
-      <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start"
-        divider={<Divider orientation="vertical" flexItem />}>
-
-
-        <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
-          <List dense>
-            <Divider>Device</Divider>
-
-            <ListItem>
-              <ListItemText primary="Uptime" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {`${secondsToWatch(data_system_info.get().uptime)}`}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="IMEI" />
-              <ListItemSecondaryAction>
-                <Typography variant="caption" color='text.secondary'>
-                  {data_device_operation_info.get()?.imei}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Model" />
-              <ListItemSecondaryAction>
-                <Typography variant="caption" color='text.secondary'>
-                  {data_device_operation_info.get()?.model}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-
-            <ListItem>
-              <ListItemText primary="CPU Rate" />
-              <ListItemSecondaryAction>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.cpu)} variant="determinate"
-                    value={data_device_performance.get()?.cpu} />
-                  <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
-                    {`${data_device_performance.get()?.cpu}%`}
-                  </Typography>
-                </Stack>
-              </ListItemSecondaryAction>
-            </ListItem>
-
-            <ListItem>
-              <ListItemText primary="Memory" />
-              <ListItemSecondaryAction>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.mem)} variant="determinate"
-                    value={data_device_performance.get()?.mem} />
-                  <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
-                    {`${data_device_performance.get()?.mem}%`}
-                  </Typography>
-                </Stack>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Temperature" />
-              <ListItemSecondaryAction>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_heat.get())} variant="determinate" value={data_device_heat.get()} />
-                  <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
-                    {`${data_device_heat.get()}℃`}
-                  </Typography>
-                </Stack>
-              </ListItemSecondaryAction>
-            </ListItem>
-
-          </List>
-          <Divider>Internet</Divider>
-          <List dense>
-            <ListItem>
-              <ListItemText primary="Internet" />
-              <ListItemSecondaryAction>
-                <MaterialUISwitch checked={data_device_operation_info.get()?.modem === `ONLINE`} />
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Operator" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {`${data_sim_network_info.get()?.long_eons} (${data_sim_network_info.get()?.short_eons})`}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Net Mode" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {data_sim_network_info.get()?.radio_tech}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Roaming" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {data_sim_network_info.get()?.pref_roaming}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="WAN IP" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.address}
-                  {`/`}
-                  {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.mask}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Gateway" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.nexthop}
-                  {`/`}
-                  {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.mask}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="PIN State" />
-              <ListItemSecondaryAction>
-                <Typography variant='caption' color='text.secondary'>
-                  {`N/A`}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Signal" />
-              <ListItemSecondaryAction>
-                <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                  {/* Why signal need to add 25?  this is the SIM RSRP counting algorithm */}
-                  {/* (x+125)*2 => 100+((x+75)*2) */}
-                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)} />
-                  <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                    {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)}%`}
-                  </Typography>
-                </Stack>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Connection" />
-              <ListItemSecondaryAction>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_luci_conntrack.get().length)} variant="determinate" value={data_luci_conntrack.get().length} />
-                  <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                    {data_luci_conntrack.get().length}
-                  </Typography>
-                </Stack>
-              </ListItemSecondaryAction>
-            </ListItem>
+    <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start"
+      divider={<Divider orientation="vertical" flexItem />}>
 
 
+      <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
+        <List dense>
+          <Divider>Device</Divider>
 
-          </List>
-        </Stack>
-        {/* end of left side content */}
-
-
-        <Stack sx={{ flexBasis: 0, flexGrow: 4 }}>
-
-          <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
-            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
-              <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
-                <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
-
-                <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
-                  <Stack direction={'row'} >
-                    <DownloadIcon color={'info'} fontSize={'small'} />
-                    <Typography variant={'caption'} color='text.secondary'>
-                      {bytesToHuman(data_traffic_5G.get()?.days?.[0].tx, `KiB`)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction={'row'} >
-                    <UploadIcon color={'success'} fontSize={'small'} />
-                    <Typography variant={'caption'} color='text.secondary'>
-                      {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
-                    </Typography>
-                  </Stack>
-                  <IconButton variant="outlined" color='info' size="small">
-                    <ChevronRightRoundedIcon />
-                  </IconButton>
-                </Stack>
-              </Stack>
-              <Stack direction={{ xs: "column", md: "row" }}>
-                <Stack sx={{ height: '20vh', flexGrow: 6 }}>
-                  <MyResponsiveBar theme={chart_theme} data={data_for_week_chart.get()} />
-                </Stack>
-                <Stack justifyContent={'space-evenly'} sx={{ flexGrow: 4 }}>
-                  <Stack justifyContent={'space-evenly'} direction={'row'}>
-                    <Stack p={1} alignItems={'flex-start'}>
-                      <Typography component={'div'} variant={'caption'}>
-                        Week Data
-                      </Typography>
-                      <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
-                        {`${bytesToHuman(
-                          data_traffic_5G.get()?.weeks?.[0].tx +
-                          data_traffic_5G.get()?.weeks?.[0].rx
-                          , `KiB`)}`}
-                      </Typography>
-                    </Stack>
-                    <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
-                      <Stack direction={'row'} >
-                        <DownloadIcon color={'info'} fontSize={'small'} />
-                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
-                        </Typography>
-                      </Stack>
-                      <Stack direction={'row'} >
-                        <UploadIcon color={'success'} fontSize={'small'} />
-                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                          {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                  <Stack justifyContent={'space-evenly'} direction={'row'}>
-                    <Stack p={1} alignItems={'flex-start'}>
-                      <Typography component={'div'} variant={'caption'}>
-                        {`Month Data`}
-                      </Typography>
-                      <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
-                        {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
-                          data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
-                      </Typography>
-                    </Stack>
-                    <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
-                      <Stack direction={'row'} >
-                        <DownloadIcon color={'info'} fontSize={'small'} />
-                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
-                        </Typography>
-                      </Stack>
-                      <Stack direction={'row'} >
-                        <UploadIcon color={'success'} fontSize={'small'} />
-                        <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
-                          {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </Stack>
-              </Stack>
-            </Paper>
-            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
-              <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-                <Typography pl={1} variant={`subtitle1`}>
-                  {`Month Data Usage`}
-                </Typography>
-                <IconButton variant="outlined" color='info' size="small">
-                  <ChevronRightRoundedIcon />
-                </IconButton>
-              </Stack>
-
-              <Stack direction={{ xs: "column", md: "row" }}>
-
-                <Stack sx={{ height: '20vh', minWidth: '20vh', position: 'relative' }}>
-                  <Box sx={{
-                    top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <Typography variant={`subtitle2`} component="div">
-                      <Typography variant={`caption`} component="div">
-                        {`Free (${data_data_Usage_count().textData.ratio}%)`}
-                      </Typography>
-                      {`${data_data_Usage_count().textData.free}`}
-                    </Typography>
-                  </Box>
-                  <MyResponsivePie theme={chart_theme} data={data_data_Usage_count().chartData} />
-                </Stack>
-
-                <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
-                  <ListItem>
-                    <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="Data Limit" />
-                    <ListItemSecondaryAction>
-                      <Typography variant="caption" color='text.secondary'>
-                        {`${data_for_month_usage.get().limit} GB`}
-                      </Typography>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="Start Day" />
-                    <ListItemSecondaryAction>
-                      <Typography variant="caption" color='text.secondary'>
-                        {`Day ${data_for_month_usage.get().start}`}
-                      </Typography>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="Remains" />
-                    <ListItemSecondaryAction>
-                      <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
-                          value={normalise(
-                            getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[0],
-                            getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[1],
-                          )} />
-                        <Typography variant="caption">
-                          {`${getRemainDaysOfMonthUsage(data_for_month_usage.get().start).join(' / ')}`}
-                        </Typography>
-                      </Stack>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant={'contained'}>
-                      Set Usage Plan
-                    </Button>
-
-                    <Popover
-                      onClose={e => planPopoverOpen.set(null)}
-                      anchorEl={planPopoverOpen.get()}
-                      open={planPopoverOpen.get() !== null}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
-                        <ListItem>
-                          <TextField size='small' fullWidth label="Set Limit of GB" type="number" />
-                        </ListItem>
-                        <ListItem>
-                          <FormControl size="small" fullWidth>
-                            <InputLabel>Start Date</InputLabel>
-                            <Select MenuProps={{ PaperProps: { style: { maxHeight: "25vh" } } }} label="Start Date" size="small" fullWidth>
-                              {(() => {
-                                let items = []
-                                for (let index = 1; index < 32; index++) {
-                                  items.push(
-                                    <MenuItem value={index}>{index}</MenuItem>
-                                  )
-                                }
-                                return items
-                              })()}
-                            </Select>
-                          </FormControl>
-                        </ListItem>
-                        <ListItem>
-                          <Button color="info" fullWidth variant="contained">Confirm</Button>
-                        </ListItem>
-                      </List>
-                    </Popover>
-                  </ListItem>
-                </List>
-
-
-              </Stack>
-              {/* content */}
-            </Paper>
-          </Stack>
-          {/* end of right side row 1; TRAFFIC && PLAN */}
-
-          <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
-
-            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
-              <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-                <Typography pl={1} variant={`subtitle1`}>
-                  {`WiFi Overview 5G`}
-                </Typography>
-                <IconButton variant="outlined" color='info' size="small">
-                  <ChevronRightRoundedIcon />
-                </IconButton>
-              </Stack>
-
-              <Stack direction={{ xs: "column", md: "row" }}>
-
-                <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
-                  <Box sx={{
-                    top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <Typography variant={`subtitle2`} component="div">
-                      <Typography variant={`caption`} component="div">
-                        {`5G Clients`}
-                      </Typography>
-                      {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_5G.get().length})`}<br />
-                      {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
-                    </Typography>
-                  </Box>
-                  <MyResponsivePie theme={chart_theme} data={data_wifi_clients_5G()} />
-                </Stack>
-
-                <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
-                  <ListItem>
-                    <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="ON / OFF" />
-                    <ListItemSecondaryAction>
-                      <MaterialUISwitch checked={data_iwinfo_5G.get()?.enable === `1`} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="WiFi Name" />
-                    <ListItemSecondaryAction>
-                      <Typography variant="caption" color='text.secondary'>
-                        {data_iwinfo_5G.get()?.name}
-                      </Typography>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="Signal" />
-                    <ListItemSecondaryAction>
-                      <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
-                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                          {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}%`}
-                        </Typography>
-                      </Stack>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Button onClick={e => wifi5GPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} color='info' fullWidth size='small' variant={'outlined'}>
-                      More 5G Detail
-                    </Button>
-
-                    <Popover
-                      onClose={e => wifi5GPopoverOpen.set(null)}
-                      anchorEl={wifi5GPopoverOpen.get()}
-                      open={wifi5GPopoverOpen.get() !== null}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Auth" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_5G.get()?.authMode}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        {/* <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Encryption" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              AES
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem> */}
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Password" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_5G.get()?.password}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider variant="middle" />
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Bandwidth" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {`${data_iwinfo_5G.get()?.bandwidth} MHz`}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Channel" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {`Ch.${data_iwinfo_5G.get()?.channel}`}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Mode" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {MAP_WirelessMode[data_iwinfo_5G.get()?.wirelessMode]}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-
-                      </List>
-
-                    </Popover>
-                  </ListItem>
-                </List>
-
-
-              </Stack>
-              {/* content */}
-            </Paper>
-
-            <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
-              <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-                <Typography pl={1} variant={`subtitle1`}>
-                  {`WiFi Overview 2.4G`}
-                </Typography>
-                <IconButton variant="outlined" color='info' size="small">
-                  <ChevronRightRoundedIcon />
-                </IconButton>
-              </Stack>
-
-              <Stack direction={{ xs: "column", md: "row" }}>
-
-                <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
-                  <Box sx={{
-                    top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <Typography variant={`subtitle2`} component="div">
-                      <Typography variant={`caption`} component="div">
-                        {`2.4G Clients`}
-                      </Typography>
-                      {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_24G.get().length})`}<br />
-                      {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
-                    </Typography>
-                  </Box>
-                  <MyResponsivePie theme={chart_theme} data={data_wifi_clients_24G()} />
-                </Stack>
-
-                <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
-                  <ListItem>
-                    <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="ON / OFF" />
-                    <ListItemSecondaryAction>
-                      <MaterialUISwitch checked={data_iwinfo_24G.get()?.enable === `1`} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="WiFi Name" />
-                    <ListItemSecondaryAction>
-                      <Typography variant="caption" color='text.secondary'>
-                        {data_iwinfo_24G.get()?.name}
-                      </Typography>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                    <ListItemText primary="Signal" />
-                    <ListItemSecondaryAction>
-                      <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                        <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
-                        <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                          {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}%`}
-                        </Typography>
-                      </Stack>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <Button onClick={e => wifi24GPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} color='info' fullWidth size='small' variant={'outlined'}>
-                      More 2.4G Detail
-                    </Button>
-
-                    <Popover
-                      onClose={e => wifi24GPopoverOpen.set(null)}
-                      anchorEl={wifi24GPopoverOpen.get()}
-                      open={wifi24GPopoverOpen.get() !== null}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-                      <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Auth" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_24G.get()?.authMode}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        {/* <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Encryption" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              AES
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem> */}
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Password" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {data_iwinfo_24G.get()?.password}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider variant="middle" />
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Bandwidth" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {`${data_iwinfo_24G.get()?.bandwidth} MHz`}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Channel" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {`Ch.${data_iwinfo_24G.get()?.channel}`}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <ListItem>
-                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                          <ListItemText primary="Mode" />
-                          <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
-                              {MAP_WirelessMode[data_iwinfo_24G.get()?.wirelessMode]}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-
-                      </List>
-
-                    </Popover>
-                  </ListItem>
-                </List>
-
-
-              </Stack>
-              {/* content */}
-            </Paper>
-
-          </Stack>
-          {/* end of right side row 2; WIFI5 && WIFI24 */}
-
-          <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2 }}>
-            <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
-              <Typography pl={1} variant={`subtitle1`}>
-                {`Speed Flow  `}
-                <Typography variant={'caption'} color='text.secondary'>
-                  {`(1 minute window, 3 second interval)`}
-                </Typography>
+          <ListItem>
+            <ListItemText primary="Uptime" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {`${secondsToWatch(data_system_info.get().uptime)}`}
               </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="IMEI" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption" color='text.secondary'>
+                {data_device_operation_info.get()?.imei}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Model" />
+            <ListItemSecondaryAction>
+              <Typography variant="caption" color='text.secondary'>
+                {data_device_operation_info.get()?.model}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
 
-              <Stack spacing={1} direction={'row'} alignSelf={`flex-end`} justifyContent={'space-evenly'} alignItems={'center'}>
-                <Stack direction={'row'} >
-                  <HourglassEmptyIcon color='info' fontSize={'small'} sx={{ zoom: 0.9 }} />
-                  <Typography variant={'caption'}>
-                    {`26 ms`}
-                  </Typography>
-                </Stack>
+          <ListItem>
+            <ListItemText primary="CPU Rate" />
+            <ListItemSecondaryAction>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.cpu)} variant="determinate"
+                  value={data_device_performance.get()?.cpu} />
+                <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                  {`${data_device_performance.get()?.cpu}%`}
+                </Typography>
+              </Stack>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+          <ListItem>
+            <ListItemText primary="Memory" />
+            <ListItemSecondaryAction>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.mem)} variant="determinate"
+                  value={data_device_performance.get()?.mem} />
+                <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                  {`${data_device_performance.get()?.mem}%`}
+                </Typography>
+              </Stack>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Temperature" />
+            <ListItemSecondaryAction>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_heat.get())} variant="determinate" value={data_device_heat.get()} />
+                <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                  {`${data_device_heat.get()}℃`}
+                </Typography>
+              </Stack>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+        </List>
+        <Divider>Internet</Divider>
+        <List dense>
+          <ListItem>
+            <ListItemText primary="Internet" />
+            <ListItemSecondaryAction>
+              <MaterialUISwitch checked={data_device_operation_info.get()?.modem === `ONLINE`} />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Operator" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {`${data_sim_network_info.get()?.long_eons} (${data_sim_network_info.get()?.short_eons})`}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Net Mode" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {data_sim_network_info.get()?.radio_tech}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Roaming" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {data_sim_network_info.get()?.pref_roaming}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="WAN IP" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.address}
+                {`/`}
+                {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.mask}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Gateway" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.nexthop}
+                {`/`}
+                {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.mask}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="PIN State" />
+            <ListItemSecondaryAction>
+              <Typography variant='caption' color='text.secondary'>
+                {`N/A`}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Signal" />
+            <ListItemSecondaryAction>
+              <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                {/* Why signal need to add 25?  this is the SIM RSRP counting algorithm */}
+                {/* (x+125)*2 => 100+((x+75)*2) */}
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)} />
+                <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                  {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)}%`}
+                </Typography>
+              </Stack>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Connection" />
+            <ListItemSecondaryAction>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_luci_conntrack.get().length)} variant="determinate" value={data_luci_conntrack.get().length} />
+                <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                  {data_luci_conntrack.get().length}
+                </Typography>
+              </Stack>
+            </ListItemSecondaryAction>
+          </ListItem>
+
+
+
+        </List>
+      </Stack>
+      {/* end of left side content */}
+
+
+      <Stack sx={{ flexBasis: 0, flexGrow: 4 }}>
+
+        <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
+          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
+              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+
+              <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
                 <Stack direction={'row'} >
                   <DownloadIcon color={'info'} fontSize={'small'} />
-                  <Typography variant={'caption'} color={'info.main'}>
-                    {`${bytesToMbit(data_lan_speed_now.get()?.tx)} Mbit/S`}
+                  <Typography variant={'caption'} color='text.secondary'>
+                    {bytesToHuman(data_traffic_5G.get()?.days?.[0].tx, `KiB`)}
                   </Typography>
                 </Stack>
                 <Stack direction={'row'} >
                   <UploadIcon color={'success'} fontSize={'small'} />
-                  <Typography variant={'caption'} color={'success.main'}>
-                    {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
+                  <Typography variant={'caption'} color='text.secondary'>
+                    {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
                   </Typography>
                 </Stack>
                 <IconButton variant="outlined" color='info' size="small">
@@ -1051,17 +575,491 @@ export default () => {
                 </IconButton>
               </Stack>
             </Stack>
-
-            <Stack sx={{ height: '25vh', mb: { xs: "10vh", md: "0" } }} justifyContent="center">
-              <MyResponsiveLine theme={chart_theme} data={data_lan_speed_chart.get()} />
+            <Stack direction={{ xs: "column", md: "row" }}>
+              <Stack sx={{ height: '20vh', flexGrow: 6 }}>
+                <MyResponsiveBar theme={chart_theme} data={data_for_week_chart.get()} />
+              </Stack>
+              <Stack justifyContent={'space-evenly'} sx={{ flexGrow: 4 }}>
+                <Stack justifyContent={'space-evenly'} direction={'row'}>
+                  <Stack p={1} alignItems={'flex-start'}>
+                    <Typography component={'div'} variant={'caption'}>
+                      Week Data
+                    </Typography>
+                    <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
+                      {`${bytesToHuman(
+                        data_traffic_5G.get()?.weeks?.[0].tx +
+                        data_traffic_5G.get()?.weeks?.[0].rx
+                        , `KiB`)}`}
+                    </Typography>
+                  </Stack>
+                  <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
+                    <Stack direction={'row'} >
+                      <DownloadIcon color={'info'} fontSize={'small'} />
+                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                        {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
+                      </Typography>
+                    </Stack>
+                    <Stack direction={'row'} >
+                      <UploadIcon color={'success'} fontSize={'small'} />
+                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                        {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+                <Stack justifyContent={'space-evenly'} direction={'row'}>
+                  <Stack p={1} alignItems={'flex-start'}>
+                    <Typography component={'div'} variant={'caption'}>
+                      {`Month Data`}
+                    </Typography>
+                    <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
+                      {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
+                        data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
+                    </Typography>
+                  </Stack>
+                  <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
+                    <Stack direction={'row'} >
+                      <DownloadIcon color={'info'} fontSize={'small'} />
+                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                        {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
+                      </Typography>
+                    </Stack>
+                    <Stack direction={'row'} >
+                      <UploadIcon color={'success'} fontSize={'small'} />
+                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                        {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </Stack>
             </Stack>
-          </Stack>
-          {/* end of right side row 3; REALTIME TRAFFIC CHART */}
+          </Paper>
+          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`Month Data Usage`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={{ xs: "column", md: "row" }}>
+
+              <Stack sx={{ height: '20vh', minWidth: '20vh', position: 'relative' }}>
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div">
+                      {`Free (${data_data_Usage_count().textData.ratio}%)`}
+                    </Typography>
+                    {`${data_data_Usage_count().textData.free}`}
+                  </Typography>
+                </Box>
+                <MyResponsivePie theme={chart_theme} data={data_data_Usage_count().chartData} />
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Data Limit" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color='text.secondary'>
+                      {`${data_for_month_usage.get().limit} GB`}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Start Day" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color='text.secondary'>
+                      {`Day ${data_for_month_usage.get().start}`}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Remains" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
+                        value={normalise(
+                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[0],
+                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[1],
+                        )} />
+                      <Typography variant="caption">
+                        {`${getRemainDaysOfMonthUsage(data_for_month_usage.get().start).join(' / ')}`}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant={'contained'}>
+                    Set Usage Plan
+                  </Button>
+
+                  <Popover
+                    onClose={e => planPopoverOpen.set(null)}
+                    anchorEl={planPopoverOpen.get()}
+                    open={planPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
+                      <ListItem>
+                        <TextField size='small' fullWidth label="Set Limit of GB" type="number" />
+                      </ListItem>
+                      <ListItem>
+                        <FormControl size="small" fullWidth>
+                          <InputLabel>Start Date</InputLabel>
+                          <Select MenuProps={{ PaperProps: { style: { maxHeight: "25vh" } } }} label="Start Date" size="small" fullWidth>
+                            {(() => {
+                              let items = []
+                              for (let index = 1; index < 32; index++) {
+                                items.push(
+                                  <MenuItem value={index}>{index}</MenuItem>
+                                )
+                              }
+                              return items
+                            })()}
+                          </Select>
+                        </FormControl>
+                      </ListItem>
+                      <ListItem>
+                        <Button color="info" fullWidth variant="contained">Confirm</Button>
+                      </ListItem>
+                    </List>
+                  </Popover>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+          </Paper>
+        </Stack>
+        {/* end of right side row 1; TRAFFIC && PLAN */}
+
+        <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
+
+          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`WiFi Overview 5G`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={{ xs: "column", md: "row" }}>
+
+              <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div">
+                      {`5G Clients`}
+                    </Typography>
+                    {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_5G.get().length})`}<br />
+                    {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
+                  </Typography>
+                </Box>
+                <MyResponsivePie theme={chart_theme} data={data_wifi_clients_5G()} />
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="ON / OFF" />
+                  <ListItemSecondaryAction>
+                    <MaterialUISwitch checked={data_iwinfo_5G.get()?.enable === `1`} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="WiFi Name" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color='text.secondary'>
+                      {data_iwinfo_5G.get()?.name}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Signal" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
+                      <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                        {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}%`}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => wifi5GPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} color='info' fullWidth size='small' variant={'outlined'}>
+                    More 5G Detail
+                  </Button>
+
+                  <Popover
+                    onClose={e => wifi5GPopoverOpen.set(null)}
+                    anchorEl={wifi5GPopoverOpen.get()}
+                    open={wifi5GPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Auth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {data_iwinfo_5G.get()?.authMode}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      {/* <ListItem>
+                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                          <ListItemText primary="Encryption" />
+                          <ListItemSecondaryAction>
+                            <Typography variant="caption" color='text.secondary'>
+                              AES
+                            </Typography>
+                          </ListItemSecondaryAction>
+                        </ListItem> */}
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Password" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {data_iwinfo_5G.get()?.password}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" />
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Bandwidth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {`${data_iwinfo_5G.get()?.bandwidth} MHz`}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Channel" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {`Ch.${data_iwinfo_5G.get()?.channel}`}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Mode" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {MAP_WirelessMode[data_iwinfo_5G.get()?.wirelessMode]}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                    </List>
+
+                  </Popover>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+          </Paper>
+
+          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+            <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
+              <Typography pl={1} variant={`subtitle1`}>
+                {`WiFi Overview 2.4G`}
+              </Typography>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            <Stack direction={{ xs: "column", md: "row" }}>
+
+              <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
+                <Box sx={{
+                  top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography variant={`subtitle2`} component="div">
+                    <Typography variant={`caption`} component="div">
+                      {`2.4G Clients`}
+                    </Typography>
+                    {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_24G.get().length})`}<br />
+                    {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
+                  </Typography>
+                </Box>
+                <MyResponsivePie theme={chart_theme} data={data_wifi_clients_24G()} />
+              </Stack>
+
+              <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="ON / OFF" />
+                  <ListItemSecondaryAction>
+                    <MaterialUISwitch checked={data_iwinfo_24G.get()?.enable === `1`} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="WiFi Name" />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" color='text.secondary'>
+                      {data_iwinfo_24G.get()?.name}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                  <ListItemText primary="Signal" />
+                  <ListItemSecondaryAction>
+                    <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                      <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
+                      <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                        {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}%`}
+                      </Typography>
+                    </Stack>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <Button onClick={e => wifi24GPopoverOpen.set(e.currentTarget)} startIcon={<ReadMoreIcon />} color='info' fullWidth size='small' variant={'outlined'}>
+                    More 2.4G Detail
+                  </Button>
+
+                  <Popover
+                    onClose={e => wifi24GPopoverOpen.set(null)}
+                    anchorEl={wifi24GPopoverOpen.get()}
+                    open={wifi24GPopoverOpen.get() !== null}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
+                    <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Auth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {data_iwinfo_24G.get()?.authMode}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      {/* <ListItem>
+                          <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                          <ListItemText primary="Encryption" />
+                          <ListItemSecondaryAction>
+                            <Typography variant="caption" color='text.secondary'>
+                              AES
+                            </Typography>
+                          </ListItemSecondaryAction>
+                        </ListItem> */}
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Password" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {data_iwinfo_24G.get()?.password}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" />
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Bandwidth" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {`${data_iwinfo_24G.get()?.bandwidth} MHz`}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Channel" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {`Ch.${data_iwinfo_24G.get()?.channel}`}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <Badge color="info" variant="dot" sx={{ mr: 2 }} />
+                        <ListItemText primary="Mode" />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color='text.secondary'>
+                            {MAP_WirelessMode[data_iwinfo_24G.get()?.wirelessMode]}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                    </List>
+
+                  </Popover>
+                </ListItem>
+              </List>
+
+
+            </Stack>
+            {/* content */}
+          </Paper>
 
         </Stack>
-        {/* end of right side content */}
-      </Stack>
+        {/* end of right side row 2; WIFI5 && WIFI24 */}
 
+        <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2 }}>
+          <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
+            <Typography pl={1} variant={`subtitle1`}>
+              {`Speed Flow  `}
+              <Typography variant={'caption'} color='text.secondary'>
+                {`(1 minute window, 3 second interval)`}
+              </Typography>
+            </Typography>
+
+            <Stack spacing={1} direction={'row'} alignSelf={`flex-end`} justifyContent={'space-evenly'} alignItems={'center'}>
+              <Stack direction={'row'} >
+                <HourglassEmptyIcon color='info' fontSize={'small'} sx={{ zoom: 0.9 }} />
+                <Typography variant={'caption'}>
+                  {`26 ms`}
+                </Typography>
+              </Stack>
+              <Stack direction={'row'} >
+                <DownloadIcon color={'info'} fontSize={'small'} />
+                <Typography variant={'caption'} color={'info.main'}>
+                  {`${bytesToMbit(data_lan_speed_now.get()?.tx)} Mbit/S`}
+                </Typography>
+              </Stack>
+              <Stack direction={'row'} >
+                <UploadIcon color={'success'} fontSize={'small'} />
+                <Typography variant={'caption'} color={'success.main'}>
+                  {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
+                </Typography>
+              </Stack>
+              <IconButton variant="outlined" color='info' size="small">
+                <ChevronRightRoundedIcon />
+              </IconButton>
+            </Stack>
+          </Stack>
+
+          <Stack sx={{ height: '25vh', mb: { xs: "10vh", md: "0" } }} justifyContent="center">
+            <MyResponsiveLine theme={chart_theme} data={data_lan_speed_chart.get()} />
+          </Stack>
+        </Stack>
+        {/* end of right side row 3; REALTIME TRAFFIC CHART */}
+
+      </Stack>
+      {/* end of right side content */}
     </Stack>
+
   </div >))
 }

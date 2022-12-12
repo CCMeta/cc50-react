@@ -5,7 +5,7 @@ import { createEffect, useObserver } from 'react-solid-state';
 import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
-import { Define, fetching, FormBuilder } from './utils';
+import { Define, fetching, FormBuilder, webcmd } from './utils';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 15,
@@ -56,26 +56,18 @@ export default function SetAbout() {
   const IMSI = Define("123456789"), sn = Define("123456789");
   const storage = Define(15);
   const rom = Define("100MB"), romFree = Define("15MB");
+  const data_system_info = Define()
 
   /*********createEffect**********/
   createEffect(async () => {
-    // await fetching_get_wifi_setting();
+
+    data_system_info.set(await webcmd(`system.info.get`))
+
   })
 
   /*********functions**********/
-  const fetching_get_wifi_setting = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `system.info.get`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      hardwareV.set(res.hardwareVersion); softwareV.set(res.softwareVersion);
-      firmwareV.set(res.firmwareVersion); model.set(res, model);
-      mac.set(res.mac); IMEI.set(res.imei);
-      IMSI.set(res.imsi); sn.set(res.sn);
-      rom.set(res.rom); romFree.set(res.romFree);
-    })
-  }
+
+
   /*********styles**********/
 
 
@@ -83,7 +75,7 @@ export default function SetAbout() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my:6 }}>
+      <Divider textAlign="left" sx={{ my: 6 }}>
         <Typography variant="h6">
           <b>About Information</b>
         </Typography>
@@ -97,51 +89,10 @@ export default function SetAbout() {
               <TableBody>
                 <TableRow>
                   <TableCell>
-                    <Typography>Hardware Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{hardwareV.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Software Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{softwareV.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Firmware Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{firmwareV.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>UI Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{uiV.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
-        </Paper>
-
-        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={5}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
                     <Typography>Model Version</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="text.secondary">{model.get()}</Typography>
+                    <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -149,7 +100,7 @@ export default function SetAbout() {
                     <Typography>IMEI Version</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="text.secondary">{IMEI.get()}</Typography>
+                    <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -157,7 +108,7 @@ export default function SetAbout() {
                     <Typography>Serial Number</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="text.secondary">{sn.get()}</Typography>
+                    <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -173,20 +124,21 @@ export default function SetAbout() {
           </Box>
         </Paper>
 
-      </Stack>
-
-      <Stack direction="row" spacing={5} py={5}>
         <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={5}>
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell>operator</TableCell>
-                  <TableCell><Typography color="text.secondary">{IMSI.get()}</Typography></TableCell>
+                  <TableCell>Operator</TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{IMSI.get()}</Typography>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>IMSI Version</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>WAN_IP Number</TableCell>
@@ -201,30 +153,51 @@ export default function SetAbout() {
           </Box>
         </Paper>
 
+      </Stack>
+
+      <Stack direction="row" spacing={5} py={5}>
+
         <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={5}>
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell>IMSI Version</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
+                  <TableCell>
+                    <Typography>Hardware Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>IMSI Version</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
+                  <TableCell>
+                    <Typography>Software Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{data_system_info.get()?.softwareVersion}</Typography>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>IMSI Number</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
+                  <TableCell>
+                    <Typography>Firmware Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>IMSI Version</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
+                  <TableCell>
+                    <Typography>UI Version</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="text.secondary">{uiV.get()}</Typography>
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </Box>
         </Paper>
+
       </Stack>
 
       <Stack direction="row" spacing={5} >
@@ -245,7 +218,7 @@ export default function SetAbout() {
                 </TableRow>
               </TableBody>
             </Table>
-            <Button fullWidth variant="outlined">Click to free space</Button>
+            <Button fullWidth color="error" variant="contained">Click to free space</Button>
           </Box>
         </Paper>
       </Stack>

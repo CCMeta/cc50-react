@@ -139,9 +139,9 @@ export default () => {
   return useObserver(() => <div>
 
     <Drawer sx={sx_drawer} variant='permanent' anchor="left" open={mainMenuOpen.get()}>
-      <Toolbar variant="dense" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh", display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
         <IconButton onClick={() => { mainMenuOpen.set(!mainMenuOpen.get()) }}>
-          {mainMenuOpen.get() ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          {mainMenuOpen.get() ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </Toolbar>
       <Divider />
