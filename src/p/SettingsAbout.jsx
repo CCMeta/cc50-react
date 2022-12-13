@@ -83,7 +83,7 @@ export default function SetAbout() {
 
       <Stack direction="row" spacing={5}>
 
-        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={5}>
             <Table>
               <TableBody>
@@ -124,7 +124,7 @@ export default function SetAbout() {
           </Box>
         </Paper>
 
-        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={5}>
             <Table>
               <TableBody>
@@ -157,7 +157,7 @@ export default function SetAbout() {
 
       <Stack direction="row" spacing={5} py={5}>
 
-        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={5}>
             <Table>
               <TableBody>
@@ -201,7 +201,7 @@ export default function SetAbout() {
       </Stack>
 
       <Stack direction="row" spacing={5} >
-        <Paper style={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={5}>
             <Table>
               <TableBody>

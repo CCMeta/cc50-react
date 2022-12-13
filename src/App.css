@@ -13,7 +13,7 @@ html body {
 }
 
 body {
-  zoom: var(--a);
+  /* zoom: var(--a); */
 }
 
 .MuiDataGrid-root * {

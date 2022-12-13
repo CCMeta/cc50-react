@@ -194,6 +194,8 @@ export default () => {
     // to be continued
     var bodyZoom = (((window.innerWidth / 1500) - 1) / 2) + 1
     document.body.style.setProperty(`--a`, bodyZoom)
+    if (window.innerWidth > 900)
+      document.getElementsByTagName(`html`)[0].style.fontSize = `${window.innerWidth / 15}%`
     // console.log(bodyZoom)
 
     //login process
@@ -387,7 +389,7 @@ export default () => {
       </Toolbar>
     </AppBar>
 
-    <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start"
+    <Stack sx={{ flexGrow: 1, height: { md: "95vh" } }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start"
       divider={<Divider orientation="vertical" flexItem />}>
 
 
@@ -550,10 +552,10 @@ export default () => {
       {/* end of left side content */}
 
 
-      <Stack sx={{ flexBasis: 0, flexGrow: 4 }}>
+      <Stack sx={{ flexBasis: 0, flexGrow: 4, height: { md: "100%" } }}>
 
-        <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
-          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+        <Stack direction={{ xs: "column", md: "row" }} sx={{ flexBasis: 0, flexGrow: 1, height: { md: "30vh" } }} spacing={2} px={2} py={1}>
+          <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
               <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
 
@@ -635,7 +637,7 @@ export default () => {
               </Stack>
             </Stack>
           </Paper>
-          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+          <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
               <Typography pl={1} variant={`subtitle1`}>
                 {`Month Data Usage`}
@@ -645,7 +647,7 @@ export default () => {
               </IconButton>
             </Stack>
 
-            <Stack direction={{ xs: "column", md: "row" }}>
+            <Stack direction={{ xs: "column", md: "row" }} alignItems={{ md: "center" }}>
 
               <Stack sx={{ height: '20vh', minWidth: '20vh', position: 'relative' }}>
                 <Box sx={{
@@ -742,9 +744,9 @@ export default () => {
         </Stack>
         {/* end of right side row 1; TRAFFIC && PLAN */}
 
-        <Stack direction={{ xs: "column", md: "row" }} style={{ flexBasis: 0, flexGrow: 1 }} spacing={2} px={2} py={1}>
+        <Stack direction={{ xs: "column", md: "row" }} sx={{ flexBasis: 0, flexGrow: 1, height: { md: "30vh" } }} spacing={2} px={2} py={1}>
 
-          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+          <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
               <Typography pl={1} variant={`subtitle1`}>
                 {`WiFi Overview 5G`}
@@ -754,7 +756,7 @@ export default () => {
               </IconButton>
             </Stack>
 
-            <Stack direction={{ xs: "column", md: "row" }}>
+            <Stack direction={{ xs: "column", md: "row" }} alignItems={{ md: "center" }}>
 
               <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
                 <Box sx={{
@@ -879,7 +881,7 @@ export default () => {
             {/* content */}
           </Paper>
 
-          <Paper variant='outlined' style={{ flexBasis: 0, flexGrow: 1, }} sx={{ p: 2, m: 0 }} elevation={0}>
+          <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
               <Typography pl={1} variant={`subtitle1`}>
                 {`WiFi Overview 2.4G`}
@@ -889,7 +891,7 @@ export default () => {
               </IconButton>
             </Stack>
 
-            <Stack direction={{ xs: "column", md: "row" }}>
+            <Stack direction={{ xs: "column", md: "row" }} alignItems={{ md: "center" }}>
 
               <Stack sx={{ height: '20vh', minWidth: "20vh", position: 'relative' }}>
                 <Box sx={{
@@ -1017,7 +1019,7 @@ export default () => {
         </Stack>
         {/* end of right side row 2; WIFI5 && WIFI24 */}
 
-        <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2 }}>
+        <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2, height: { md: "30vh" } }}>
           <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
             <Typography pl={1} variant={`subtitle1`}>
               {`Speed Flow  `}

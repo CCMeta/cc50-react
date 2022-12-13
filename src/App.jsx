@@ -32,7 +32,7 @@ const App = () => {
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <div style={{ flexGrow: 1, order: 1 }}>
+        <Box sx={{ flexGrow: 1, order: 1 }}>
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="clients" element={<ClientsPage />} />
@@ -49,7 +49,7 @@ const App = () => {
             <Route path="operation" element={<OperationPage />} />
             <Route path="password" element={<PasswordPage />} />
           </Routes>
-        </div>
+        </Box>
         <NavigateComponent />
       </Box>
     </ThemeProvider>

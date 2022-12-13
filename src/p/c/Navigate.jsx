@@ -110,7 +110,7 @@ export default () => {
 
   const sx_drawer = {
     display: { xs: "none", md: "flex" },
-    width: '4rem',
+    width: '4vw',
     flexShrink: 0,
     overflowX: 'hidden',
     transition: 'width 225ms ease-in-out 0ms',
@@ -118,20 +118,20 @@ export default () => {
       overflowX: 'hidden',
       // backgroundColor: "rgba(0,255,255,0.1)",
       // boxSizing: 'border-box',
-      width: '4rem',
+      width: '4vw',
       transition: 'width 225ms ease-in-out 0ms',
       ...(mainMenuOpen.get() && {
-        width: '12rem',
+        width: '12vw',
       }),
       ...(!mainMenuOpen.get() && {
-        width: '4rem',
+        width: '4vw',
       })
     },
     ...(mainMenuOpen.get() && {
-      width: '12rem',
+      width: '12vw',
     }),
     ...(!mainMenuOpen.get() && {
-      width: '4rem',
+      width: '4vw',
     })
   }
 
