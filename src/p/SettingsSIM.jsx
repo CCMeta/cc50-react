@@ -89,7 +89,7 @@ export default function SetSIM() {
             <Item>Roaming</Item>
             <Item>DataMode</Item>
           </Grid>
-          <Grid xs={4} md={6}>
+          <Grid xs={4} md={6} sx={{ textAlign: "left" }}>
             <Item><Switch checked={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} /></Item>
             <Item><Switch checked={roaming.get()} onChange={(e) => HandleChangeBoolean(roaming, e)} /></Item>
             <Item>
@@ -141,7 +141,7 @@ export default function SetSIM() {
 
         <Grid container spacing={2}>
           <Grid xs={12} md={3} sx={{ textAlign: "left" }}><Item>PDP Type</Item></Grid>
-          <Grid xs={12} md={6}>
+          <Grid xs={12} md={6} sx={{ textAlign: "left" }}>
             <Item>
               <Select size="small" value={pdp.get()} onChange={(e) => HandleChangeValue(pdp, e)} >
                 {pdps.map((pdpp) => (

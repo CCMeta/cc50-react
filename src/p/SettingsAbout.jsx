@@ -61,7 +61,7 @@ export default function SetAbout() {
   /*********createEffect**********/
   createEffect(async () => {
 
-    data_system_info.set(await webcmd(`system.info.get`))
+    data_system_info.set(await webcmd(`system.info.get`)?.data)
 
   })
 

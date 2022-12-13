@@ -132,11 +132,10 @@ export async function webcmd(action, data = ``) {
 
   try {
     const result = JSON.parse(res_text)
-    if (result.code === 200)
-      return result.data
-    alert(`Error: ${res_text}`)
+    return result
   } catch (e) {
     // console.log(e)
+    alert(`Error: ${res_text}`)
   }
   return res_text
 }

@@ -45,9 +45,9 @@ export default function SetWiFi() {
   const channel = Define("1"), channel_5 = Define("0");
 
   const securities = [
-    { value: "WPAPSKWPA2PSK", name: "WPAPSK/WPA2PSK" },
+    { value: "WPAPSKWPA2PSK", name: "WPAPSK / WPA2PSK" },
     { value: "WPA2PSK", name: "WPA2PSK" },
-    { value: "WPA2PSKWPA3PSK", name: "WPA2PSK/WPA3PSK" },
+    { value: "WPA2PSKWPA3PSK", name: "WPA2PSK / WPA3PSK" },
     { value: "WPA3PSK", name: "WPA3PSK" }
   ]
   const wirelessModes_24G = [
@@ -60,9 +60,9 @@ export default function SetWiFi() {
     { value: "0", name: "B/G mixed" },
     { value: "2", name: "A only" },
     { value: "8", name: "A/N in 5 band" },
-    { value: "17", name: "HE_5G mode" },
     { value: "14", name: "A/AC/AN mixed" },
-    { value: "15", name: "AC/AN mixed" }
+    { value: "15", name: "AC/AN mixed" },
+    { value: "17", name: "HE_5G mode" },
   ]
   const channels_24G = [
     { value: 0, name: "Channel 0 (Auto)" },
@@ -117,13 +117,15 @@ export default function SetWiFi() {
   const Synchronize = (event) => {
     //同步2.4G与5G
     commonCheck.set(event.target.checked);
+    Disable5G.set(event.target.checked ? true : false);
+    if (event.target.checked === false)
+      return
     wifi_enable_5.set(wifi_enable.get());
     hide_wifi_name_5.set(hide_wifi_name.get());
     wifi_name_5.set(wifi_name.get());
     wifi_pwd_5.set(wifi_pwd.get());
     ap_5.set(ap.get());
     security_5.set(security.get());
-    Disable5G.set(event.target.checked ? true : false);
   };
 
   const ShowOrHide5G = (event) => {
@@ -135,8 +137,8 @@ export default function SetWiFi() {
   /*********createEffect**********/
   createEffect(async () => {
 
-    await webcmd(`wifi.setting.get`).then(res => {
-
+    await webcmd(`wifi.setting.get`).then(v => {
+      const res = v.data
       security.set(res['2g'].authMode)
       bandwidth.set(res['2g'].bandwidth)
       channel.set(res['2g'].channel)
@@ -146,7 +148,7 @@ export default function SetWiFi() {
       wifi_name.set(res['2g'].name)
       wifi_pwd.set(res['2g'].password)
       wireless.set(res['2g'].wirelessMode)
- 
+
       security_5.set(res['5g'].authMode)
       bandwidth_5.set(res['5g'].bandwidth)
       channel_5.set(res['5g'].channel)
@@ -162,7 +164,37 @@ export default function SetWiFi() {
   })
 
   /*********functions**********/
-
+  const onSubmit = async () => {
+    const form = {
+      "2g": {
+        authMode: security.get(),
+        bandwidth: bandwidth.get(),
+        channel: channel.get(),
+        enable: wifi_enable.get(),
+        hideName: hide_wifi_name.get(),
+        isolation: ap.get(),
+        name: wifi_name.get(),
+        password: wifi_pwd.get(),
+        wirelessMode: wireless.get(),
+      },
+      "5g": {
+        authMode: security_5.get(),
+        bandwidth: bandwidth_5.get(),
+        channel: channel_5.get(),
+        enable: wifi_enable_5.get(),
+        hideName: hide_wifi_name_5.get(),
+        isolation: ap_5.get(),
+        name: wifi_name_5.get(),
+        password: wifi_pwd_5.get(),
+        wirelessMode: wireless_5.get(),
+      },
+    }
+    // return console.log(form)
+    const result = await webcmd(`wifi.setting.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+  }
 
   /*********styles**********/
 
@@ -227,7 +259,7 @@ export default function SetWiFi() {
               </Select>
             </Item>
           </Grid>
-          <Grid xs={4} sx={{ display: { xs: "none", md: "block" } }}>
+          <Grid xs={4} sx={{ textAlign: "left", display: { xs: "none", md: "block" } }}>
             <Item><Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
               onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} /></Item>
             <Item><TextFieldSelf value={wifi_name_5.get()} disabled={Disable5G.get()}
@@ -354,7 +386,7 @@ export default function SetWiFi() {
             <Item>Channel Bandwidth</Item>
             <Item>Channels</Item>
           </Grid>
-          <Grid xs={8} md={4}>
+          <Grid xs={8} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
             <Item><b>2.4G</b></Item>
             <Item>
               <Select size="small"
@@ -388,7 +420,7 @@ export default function SetWiFi() {
               </Select>
             </Item>
           </Grid>
-          <Grid xs={4} sx={{ display: { xs: "none", md: "block" } }}>
+          <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "none", md: "block" } }}>
             <Item><b>5G</b></Item>
             <Item>
               <Select size="small"
@@ -501,7 +533,7 @@ export default function SetWiFi() {
       {/* This is from chenyan end */}
 
       <Box px={20} py={6}>
-        <Button fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
+        <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
       </Box>
 
     </Stack>

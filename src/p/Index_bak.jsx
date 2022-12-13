@@ -199,7 +199,7 @@ export default () => {
     // Once api without interval
     data_sim_network_info.set(await fetching_sim_network_info())
     // data_device_operation_info.set(await fetching_device_operation_info())
-    data_device_operation_info.set(await webcmd(`system.info.get`))
+    data_device_operation_info.set(await webcmd(`system.info.get`)?.data)
 
     data_iwinfo_5G.set(await fetching_iwinfo_5G())
     data_iwinfo_24G.set(await fetching_iwinfo_24G())
