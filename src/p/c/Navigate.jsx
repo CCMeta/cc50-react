@@ -152,7 +152,7 @@ export default () => {
               <ListItemIcon>
                 {itemMenu.icon}
               </ListItemIcon>
-              <ListItemText primary={itemMenu.title} />
+              <ListItemText primary={itemMenu.title} sx={{ opacity: mainMenuOpen.get() ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
         ))}
