@@ -7,10 +7,10 @@ import { useObserver } from 'react-solid-state';
 export default function HeaderBar() {
   return useObserver(() => (<AppBar position="sticky">
     <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
-      
-      <Tooltip title="Index Page">
+
+      <Tooltip title="">
         <IconButton onClick={_ => window.location.href = ''} sx={{ p: 0 }}>
-          <Avatar alt="logo" variant="square" sx={{ width: `auto`, height: `4vh`, "& img": { objectFit: `contain` } }} src="https://ccmeta.com/sagereal.png"></Avatar>
+          <Avatar alt="Index Page" variant="square" sx={{ width: `auto`, height: `4vh`, "& img": { objectFit: `contain` } }} src="https://ccmeta.com/sagereal.png"></Avatar>
         </IconButton>
       </Tooltip>
 
@@ -24,13 +24,11 @@ export default function HeaderBar() {
 
       </Stack>
 
-      <Box sx={{ flexGrow: 0, px: `1rem` }}>
-        <Tooltip title="Language">
-          <IconButton>
-            <TranslateIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <Tooltip title="Language">
+        <IconButton>
+          <TranslateIcon />
+        </IconButton>
+      </Tooltip>
 
     </Toolbar>
   </AppBar>))
