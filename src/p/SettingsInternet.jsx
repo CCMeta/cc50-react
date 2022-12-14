@@ -13,7 +13,7 @@ function Item(props) {
       sx={{ height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: { xs: "15px", md: "1rem" } }}
       {...other}
     >
-        <Stack>{children}</Stack>
+      <Stack>{children}</Stack>
     </Box>
   );
 }
@@ -38,7 +38,7 @@ export default function SetInternet() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my:6 }}>
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
         <Typography variant="h6">
           <b>Internet Configuration</b>
         </Typography>

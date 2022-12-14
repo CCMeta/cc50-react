@@ -21,7 +21,7 @@ export const MyResponsivePie = ({ data, scheme, theme }) => (
     margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
     innerRadius={0.8}
     padAngle={1}
-    cornerRadius={5}
+    cornerRadius={'2.5rem'}
     activeOuterRadiusOffset={8}
     colors={{ scheme: scheme ?? 'paired' }}
     enableArcLinkLabels={false}

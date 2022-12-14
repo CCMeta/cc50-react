@@ -117,7 +117,7 @@ export default function SetSystem() {
   return useObserver(() => (
     <Box>
 
-      <Divider textAlign="left" sx={{ my:6 }}>
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
         <Typography variant="h6">
           <b>System Operation</b>
         </Typography>

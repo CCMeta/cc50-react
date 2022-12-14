@@ -85,7 +85,7 @@ export default () => {
       {/* Tabs */}
 
       <Stack sx={{ flexBasis: 0, flexGrow: 4, height: `95vh`, overflowY: `scroll` }}>
-        <Box sx={{ py: 5, px: 15, }}>
+        <Box sx={{ py: { md: '0rem' }, px: { md: '7rem' }, }}>
           <TabPanel value={tabValue.get()} index="wifi">
             <SettingsWiFi />
           </TabPanel>

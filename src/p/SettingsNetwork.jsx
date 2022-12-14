@@ -106,13 +106,13 @@ export default function SetNetwork() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my: 6 }}>
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
         <Typography variant="h6">
           <b>Network Configuration</b>
         </Typography>
       </Divider>
 
-      <Box px={10}>
+      <Box px={'4rem'}>
         <Grid container spacing={2}>
           <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
             <Item>Device Name</Item>

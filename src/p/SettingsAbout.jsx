@@ -75,16 +75,16 @@ export default function SetAbout() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my: 6 }}>
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
         <Typography variant="h6">
           <b>About Information</b>
         </Typography>
       </Divider>
 
-      <Stack direction="row" spacing={5}>
+      <Stack direction="row" spacing={`2.5rem`}>
 
         <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={5}>
+          <Box p={'2.5rem'}>
             <Table>
               <TableBody>
                 <TableRow>
@@ -125,7 +125,7 @@ export default function SetAbout() {
         </Paper>
 
         <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={5}>
+          <Box p={'2.5rem'}>
             <Table>
               <TableBody>
                 <TableRow>
@@ -155,10 +155,10 @@ export default function SetAbout() {
 
       </Stack>
 
-      <Stack direction="row" spacing={5} py={5}>
+      <Stack direction="row" spacing={'2.5rem'} py={'2.5rem'}>
 
         <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={5}>
+          <Box p={'2.5rem'}>
             <Table>
               <TableBody>
                 <TableRow>
@@ -200,9 +200,9 @@ export default function SetAbout() {
 
       </Stack>
 
-      <Stack direction="row" spacing={5} >
+      <Stack direction="row" spacing={'2.5rem'} >
         <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={5}>
+          <Box p={'2.5rem'}>
             <Table>
               <TableBody>
                 <TableRow>

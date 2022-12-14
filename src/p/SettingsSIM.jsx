@@ -76,13 +76,13 @@ export default function SetSIM() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my: 3 }}>
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
         <Typography variant="h6">
           <b>SIM Configuration</b>
         </Typography>
       </Divider>
 
-      <Box px={10}>
+      <Box px={'4rem'}>
         <Grid container spacing={2}>
           <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
             <Item>Network</Item>
@@ -103,13 +103,12 @@ export default function SetSIM() {
         </Grid>
       </Box>
 
-      <Divider textAlign="left" sx={{ my: 3 }}>
-        <Typography variant="h6">
-          <b>APN Configuration</b>
-        </Typography>
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>        <Typography variant="h6">
+        <b>APN Configuration</b>
+      </Typography>
       </Divider>
 
-      <Box px={10}>
+      <Box px={'4rem'}>
         <Grid container spacing={2}>
           <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
             <Item>Current APN</Item>

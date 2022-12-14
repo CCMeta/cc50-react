@@ -203,7 +203,7 @@ export default function SetWiFi() {
   return useObserver(() => (
     <Stack>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ my: { md: '1rem' } }}>
         <Grid sx={{ textAlign: "left" }}>
           <FormGroup>
             <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
@@ -215,13 +215,13 @@ export default function SetWiFi() {
       </Grid>
       {/* Title */}
 
-      <Divider textAlign="left" sx={{ mt: 6 }}>
+      <Divider textAlign="left">
         <Typography variant="h6">
           <b>Common Configuration</b>
         </Typography>
       </Divider>
 
-      <Box px={10}>
+      <Box px={'4rem'}>
         <Grid container spacing={2} alignItems="center" justifyContent="center" >
           <Grid xs={4} md={4} >
             <Item></Item>
@@ -397,7 +397,7 @@ export default function SetWiFi() {
         </Typography>
       </Divider>
 
-      <Box px={10}>
+      <Box px={'4rem'}>
         <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
           <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
             <Item></Item>
