@@ -1,24 +1,23 @@
 import {
-  AppBar, Badge, Box, Button, Divider, FormControl, IconButton, InputLabel, LinearProgress, List,
-  ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Paper, Popover, Select, Stack, styled, Switch, TextField, Toolbar, Typography
+  Badge, Box, Button, Divider, FormControl, IconButton, InputLabel, LinearProgress, List,
+  ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Paper, Popover, Select, Stack, styled, Switch, TextField, Typography
 } from '@mui/material';
 import cookie from 'cookie';
 import { createEffect, useObserver } from 'react-solid-state';
 
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import DownloadIcon from '@mui/icons-material/Download';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import TimerIcon from '@mui/icons-material/Schedule';
-import UploadIcon from '@mui/icons-material/Upload';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import UploadIcon from '@mui/icons-material/Upload';
 
 import 'animate.css';
 import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
-import { CmdResultParser, Define, fetching, webcmd, FormBuilder, rpc as $rpc, bytesToHuman, secondsToWatch, dBmToQuality, MAP_WirelessMode, intToColor } from './utils';
+import HeaderBar from './c/HeaderBar';
+import { bytesToHuman, CmdResultParser, dBmToQuality, Define, fetching, FormBuilder, intToColor, MAP_WirelessMode, rpc as $rpc, secondsToWatch, webcmd } from './utils';
 
 
 
@@ -377,17 +376,6 @@ export default () => {
 
   /*********component**********/
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
-
-    <AppBar position="sticky">
-      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
-        <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
-
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          Dashboard
-        </Typography>
-      </Toolbar>
-    </AppBar>
 
     <Stack sx={{ flexGrow: 1, height: { md: "95vh" } }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start"
       divider={<Divider orientation="vertical" flexItem />}>

@@ -4,25 +4,22 @@ import { useObserver } from 'react-solid-state';
 import { Define } from '../utils';
 
 import CallIcon from '@mui/icons-material/Call';
+import ClientsIcon from '@mui/icons-material/DevicesOther';
 import InfoIcon from '@mui/icons-material/Info';
 import KeyIcon from '@mui/icons-material/Key';
-import SpeedIcon from '@mui/icons-material/Speed';
+import MailIcon from '@mui/icons-material/Mail';
 import MouseIcon from '@mui/icons-material/Mouse';
 import PinIcon from '@mui/icons-material/Pin';
 import PolicyIcon from '@mui/icons-material/Policy';
 import PolylineIcon from '@mui/icons-material/Polyline';
-import MailIcon from '@mui/icons-material/Mail';
 import RouteIcon from '@mui/icons-material/Route';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SimCardIcon from '@mui/icons-material/SimCardOutlined';
-import ClientsIcon from '@mui/icons-material/DevicesOther';
+import SpeedIcon from '@mui/icons-material/Speed';
 import { BottomNavigation, BottomNavigationAction, IconButton, Menu, MenuItem, Paper } from '@mui/material';
 
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -32,6 +29,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import * as React from 'react';
+import { MenuOpenOutlined } from "@mui/icons-material";
 
 
 const subMenu1 = [
@@ -73,8 +71,8 @@ export default () => {
   const menuMetaData = [
     { title: 'DashBoard', value: `/`, icon: <SpeedIcon color="info" /> },
     { title: 'Clients', value: `clients`, icon: <ClientsIcon color="info" /> },
-    { title: 'SMS', value: `about`, icon: <MailIcon color="info" /> },
-    { title: 'Call', value: `about`, icon: <CallIcon color="info" /> },
+    // { title: 'SMS', value: `about`, icon: <MailIcon color="info" /> },
+    // { title: 'Call', value: `about`, icon: <CallIcon color="info" /> },
     { title: 'Settings', value: `settings`, icon: <SettingsIcon color="info" /> },
   ]
   /*********functions**********/
@@ -116,6 +114,8 @@ export default () => {
     transition: 'width 225ms ease-in-out 0ms',
     '& .MuiDrawer-paper': {
       overflowX: 'hidden',
+      position: 'static',
+      height: '95vh',
       // backgroundColor: "rgba(0,255,255,0.1)",
       // boxSizing: 'border-box',
       width: '4vw',
@@ -139,20 +139,21 @@ export default () => {
   return useObserver(() => <div>
 
     <Drawer sx={sx_drawer} variant='permanent' anchor="left" open={mainMenuOpen.get()}>
+      <Divider />
       <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh", display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
         <IconButton onClick={() => { mainMenuOpen.set(!mainMenuOpen.get()) }}>
-          {mainMenuOpen.get() ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          {mainMenuOpen.get() ? <MenuOpenOutlined /> : <MenuOpenOutlined sx={{ transform: `rotateY(180deg)` }} />}
         </IconButton>
       </Toolbar>
       <Divider />
-      <List>
+      <List sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
         {menuMetaData.map((itemMenu, index) => (
-          <ListItem key={index} disablePadding>
+          <ListItem key={index} disablePadding sx={{ width: mainMenuOpen.get() ? '100%' : 'auto' }}>
             <ListItemButton onClick={e => trick(e, itemMenu.value)}>
-              <ListItemIcon>
+              <ListItemIcon sx={{ my: 1, minWidth: 0, mr: mainMenuOpen.get() ? 2 : 1, ml: 1 }}>
                 {itemMenu.icon}
               </ListItemIcon>
-              <ListItemText primary={itemMenu.title} sx={{ opacity: mainMenuOpen.get() ? 1 : 0 }} />
+              <ListItemText primary={itemMenu.title} sx={{ display: mainMenuOpen.get() ? 'flex' : 'none' }} />
             </ListItemButton>
           </ListItem>
         ))}

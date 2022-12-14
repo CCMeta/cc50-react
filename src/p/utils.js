@@ -134,8 +134,8 @@ export async function webcmd(action, data = ``) {
     const result = JSON.parse(res_text)
     return result
   } catch (e) {
-    // console.log(e)
-    alert(`Error: ${res_text}`)
+    console.log(e)
+    console.log(`Error: ${res_text}`)
   }
   return res_text
 }

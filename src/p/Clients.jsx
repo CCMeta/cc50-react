@@ -1,16 +1,16 @@
 import {
-  AppBar, Button, Divider, FormControl, IconButton, InputAdornment, InputLabel, List,
-  ListItem, MenuItem, Popover, Select, Stack, TextField, Toolbar, Typography
+  Button, Divider, InputAdornment, List,
+  ListItem, Popover, Stack, TextField
 } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
 
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
+import HeaderBar from './c/HeaderBar';
 import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch } from './utils';
 
 
@@ -99,17 +99,6 @@ export default () => {
   /*********component**********/
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
-    <AppBar position="sticky">
-      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
-        <IconButton onClick={_ => window.history.go(-1)} edge="start" color="inherit" sx={{ mr: 2 }}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          Clients
-        </Typography>
-      </Toolbar>
-    </AppBar>
-
     <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start" divider={<Divider orientation="vertical" flexItem />}>
 
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
@@ -146,7 +135,6 @@ export default () => {
       </Stack>
 
     </Stack>
-
 
   </div >))
 }

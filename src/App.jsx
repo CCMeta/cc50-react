@@ -18,6 +18,7 @@ import OperationPage from './p/Operation';
 import PasswordPage from './p/Password';
 import ClientsPage from "./p/Clients";
 import SettingsPage from "./p/Settings";
+import HeaderBar from "./p/c/HeaderBar";
 
 
 const darkTheme = createTheme({
@@ -30,6 +31,7 @@ const App = () => {
 
   return <div className="App">
     <ThemeProvider theme={darkTheme}>
+      <HeaderBar />
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Box sx={{ flexGrow: 1, order: 1 }}>

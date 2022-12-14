@@ -1,17 +1,14 @@
 
 import {
-  AppBar, Box, Checkbox, Divider, IconButton, Stack, Tab, Tabs, Toolbar, Typography
+  Box, Divider, Stack, Tab, Tabs
 } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CastIcon from '@mui/icons-material/Cast';
-import CopyrightIcon from '@mui/icons-material/Copyright';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccountsOutlined';
 import LanguageIcon from '@mui/icons-material/LanguageOutlined';
-import SecurityIcon from '@mui/icons-material/ShieldOutlined';
 import SettingsIcon from '@mui/icons-material/RouterOutlined';
+import SecurityIcon from '@mui/icons-material/ShieldOutlined';
 import SimCardIcon from '@mui/icons-material/SimCardOutlined';
 import WifiIcon from '@mui/icons-material/Wifi';
 
@@ -19,6 +16,7 @@ import 'animate.css';
 import * as React from 'react';
 import { Define } from './utils';
 
+import HeaderBar from './c/HeaderBar';
 import SettingsAbout from './SettingsAbout';
 import SettingsInternet from './SettingsInternet';
 import SettingsNetwork from './SettingsNetwork';
@@ -68,27 +66,16 @@ export default () => {
   /*********component**********/
   return useObserver(() => (<div className="animate__animated animate__fadeIn">
 
-    <AppBar position="sticky">
-      <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
-        <IconButton onClick={_ => window.history.go(-1)} edge="start" color="inherit" sx={{ mr: 2 }}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
-          Settings
-        </Typography>
-      </Toolbar>
-    </AppBar>
-
     <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start" divider={<Divider orientation="vertical" flexItem />}>
 
       <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
         <Tabs orientation="vertical" variant="scrollable" value={tabValue.get()} onChange={(e, v) => tabValue.set(v)} sx={sx_nav_btn}>
           <Tab label="WiFi" icon={<WifiIcon />} iconPosition="start" value="wifi" />
           <Tab label="Network" icon={<CastIcon />} iconPosition="start" value="network" />
-          <Tab disabled label="Internet" icon={<LanguageIcon />} iconPosition="start" value="internet" />
+          {/* <Tab disabled label="Internet" icon={<LanguageIcon />} iconPosition="start" value="internet" /> */}
           <Tab label="SIM" icon={<SimCardIcon />} iconPosition="start" value="sim" />
-          <Divider />
-          <Tab disabled label="Security" icon={<SecurityIcon />} iconPosition="start" value="security" />
+          {/* <Divider /> */}
+          {/* <Tab disabled label="Security" icon={<SecurityIcon />} iconPosition="start" value="security" /> */}
           <Divider />
           {/* <Tab label="Accounts" icon={<ManageAccountsIcon />} iconPosition="start" value="accounts" /> */}
           <Tab label="System" icon={<SettingsIcon />} iconPosition="start" value="system" />
@@ -127,3 +114,5 @@ export default () => {
     </Stack>
   </div >))
 }
+
+
