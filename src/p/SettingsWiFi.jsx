@@ -1,11 +1,11 @@
-import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, MenuItem, Select, Stack, Switch, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, IconButton, InputAdornment, MenuItem, Select, Stack, Switch, TextField, Typography } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
 import { Define, fetching, FormBuilder, webcmd } from './utils';
-import { CheckCircle, Done } from '@mui/icons-material';
+import { CheckCircle, Done, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 
 function BpCheckbox(props) {
   return (
@@ -43,6 +43,7 @@ export default function SetWiFi() {
   const wireless = Define("1"), wireless_5 = Define("0");
   const bandwidth = Define("20"), bandwidth_5 = Define("20");
   const channel = Define("1"), channel_5 = Define("0");
+  const showPassword = Define(false), showPassword_5 = Define(false);
 
   const securities = [
     { value: "WPAPSKWPA2PSK", name: "WPAPSK / WPA2PSK" },
@@ -246,7 +247,16 @@ export default function SetWiFi() {
             <Item><Switch sx={{ margin: "0 auto" }} checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} /></Item>
             <Item><TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} placeholder="Enter Your WiFi name" /></Item>
             <Item><BpCheckbox label="Enable" checked={hide_wifi_name.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name, e, "hide")} /></Item>
-            <Item><TextFieldSelf value={wifi_pwd.get()} type="password" onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" /></Item>
+            <Item>
+              <TextFieldSelf value={wifi_pwd.get()} type={showPassword.get() ? 'text' : 'password'} onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" InputProps={{
+                endAdornment:
+                  <InputAdornment position="end">
+                    <IconButton onClick={_ => showPassword.set(!showPassword.get())} edge="end" >
+                      {showPassword.get() ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
+                    </IconButton>
+                  </InputAdornment>
+              }} />
+            </Item>
             <Item><BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} /></Item>
             <Item>
               <Select size="small"
@@ -266,8 +276,17 @@ export default function SetWiFi() {
               onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{ maxLength: "50" }} /></Item>
             <Item><BpCheckbox label="Enable" checked={hide_wifi_name_5.get()} disabled={Disable5G.get()}
               onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} /></Item>
-            <Item><TextFieldSelf value={wifi_pwd_5.get()} disabled={Disable5G.get()}
-              type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" /></Item>
+            <Item>
+              <TextFieldSelf value={wifi_pwd_5.get()} disabled={Disable5G.get()}
+                type={showPassword_5.get() ? 'text' : 'password'} onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" InputProps={{
+                  endAdornment:
+                    <InputAdornment position="end">
+                      <IconButton onClick={_ => showPassword_5.set(!showPassword_5.get())} edge="end" >
+                        {showPassword_5.get() ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
+                      </IconButton>
+                    </InputAdornment>
+                }} />
+            </Item>
             <Item><BpCheckbox label="Enable" checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(ap_5, e)} /></Item>
             <Item>
               <Select size="small"

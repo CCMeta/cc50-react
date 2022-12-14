@@ -84,7 +84,7 @@ export const bytesToHuman = (value, size = "B") => {
   return (value / Math.pow(unit, times)).toFixed(2) + ' ' + sizes[times + sizes.indexOf(size)]
 }
 
-export const dBmToQuality = dBm => (dBm + 100) * 2
+export const dBmToQuality = dBm => Math.min((dBm + 100) * 2, 100)
 
 export const intToColor = (value, mode = `asc`) =>
   mode === `asc` ?
