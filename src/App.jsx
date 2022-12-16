@@ -41,17 +41,6 @@ const App = () => {
             <Route path="/" element={<IndexPage />} />
             <Route path="clients" element={<ClientsPage />} />
             <Route path="settings" element={<SettingsPage store={store} />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="wifi" element={<WiFiPage />} />
-            <Route path="sim" element={<SIMPage />} />
-            <Route path="dhcp" element={<DHCPPage />} />
-            <Route path="protection" element={<ProtectionPage />} />
-            <Route path="pin" element={<PinPage />} />
-            <Route path="network_info" element={<NetworkInfoPage />} />
-            <Route path="sim_info" element={<SimInfoPage />} />
-            <Route path="device_info" element={<DevicePage />} />
-            <Route path="operation" element={<OperationPage />} />
-            <Route path="password" element={<PasswordPage />} />
           </Routes>
         </Box>
         <NavigateComponent store={store} />

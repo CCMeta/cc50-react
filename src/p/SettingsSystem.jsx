@@ -17,9 +17,10 @@ function BackColorTypography(props) {
       variant="subtitle2" gutterBottom {...props}></Typography>
   );
 }
+
 function StackButton(props) {
   return (
-    <Stack sx={{ mt: "40px", mb: "10px", width: "40%" }}>
+    <Stack sx={{ mt: "3rem", mb: "1rem", width: { md: "40%", xs: "100%" } }}>
       <Button variant="outlined" {...props}></Button>
     </Stack>
   );
@@ -140,7 +141,7 @@ export default function SetSystem() {
           </Alert>
         </Stack>
 
-        <Stack sx={{ mt: "40px", mb: "10px", width: "40%" }}>
+        <Stack sx={{ mt: "3rem", mb: "1rem", width: { md: "40%", xs: "100%" } }}>
           <LoadingButton onClick={(e) => checkNewV()} loading={fotaLoading.get()} loadingIndicator="Loading…" variant="outlined" >
             Check FOTA
           </LoadingButton>
@@ -154,10 +155,7 @@ export default function SetSystem() {
           </Alert>
         </Stack>
 
-        <Dialog
-          open={openDialog.get()}
-          onClose={CloseDialog}
-        >
+        <Dialog open={openDialog.get()} onClose={CloseDialog} >
           <DialogTitle>
             <ErrorOutlineIcon color='error' sx={{ position: "relative", top: "7px", fontSize: 40 }} /><Typography sx={{ display: "inline-block", fontSize: 28 }}>Warning</Typography>
           </DialogTitle>
