@@ -104,7 +104,7 @@ export default () => {
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
       <Stack className='styled-scrollbars' height={`95vh`} sx={{ flexBasis: 0, flexGrow: 4 }}>
         <Stack sx={{ m: 2 }}>
-          <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="contained" sx={{ width: `20vw` }}>
+          <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="contained" sx={{ width: `20rem` }}>
             Set Global QoS
           </Button>
 
@@ -114,7 +114,7 @@ export default () => {
             open={QoS_PopoverOpen.get() !== null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
             transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-            <List sx={{ width: `20vw` }} dense>
+            <List sx={{ width: `20rem` }} dense>
               <ListItem>
                 <TextField color="info" size='small' fullWidth label="Down Rate per Client" InputProps={{
                   endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,

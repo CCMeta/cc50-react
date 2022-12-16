@@ -1,25 +1,14 @@
-import { CssBaseline, Box } from "@mui/material";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Box, CssBaseline } from "@mui/material";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Route, Routes } from "react-router-dom";
 
-import './App.css';
-import AboutPage from './p/About';
-import NavigateComponent from './p/c/Navigate';
-import DHCPPage from './p/DHCP';
-import IndexPage from './p/Index';
-import ProtectionPage from './p/Protection';
-import PinPage from './p/Pin';
-import SIMPage from './p/SIM';
-import WiFiPage from './p/WiFi';
-import SimInfoPage from './p/SimInfo';
-import NetworkInfoPage from './p/NetworkInfo';
-import DevicePage from './p/DeviceInfo';
-import OperationPage from './p/Operation';
-import PasswordPage from './p/Password';
-import ClientsPage from "./p/Clients";
-import SettingsPage from "./p/Settings";
-import HeaderBar from "./p/c/HeaderBar";
 import { createStore } from "react-solid-state";
+import './App.css';
+import HeaderBar from "./p/c/HeaderBar";
+import NavigateComponent from './p/c/Navigate';
+import ClientsPage from "./p/Clients";
+import IndexPage from './p/Index';
+import SettingsPage from "./p/Settings";
 
 
 const darkTheme = createTheme({
