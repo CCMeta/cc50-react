@@ -203,7 +203,7 @@ export default function SetWiFi() {
   return useObserver(() => (
     <Stack>
 
-      <Grid container spacing={2} sx={{ my: { md: '1rem' } }}>
+      <Grid container spacing={2} sx={{ my: { xs: '1rem', md: '1rem' } }}>
         <Grid sx={{ textAlign: "left" }}>
           <FormGroup>
             <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
@@ -215,13 +215,13 @@ export default function SetWiFi() {
       </Grid>
       {/* Title */}
 
-      <Divider textAlign="left">
+      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
         <Typography variant="h6">
           <b>Common Configuration</b>
         </Typography>
       </Divider>
 
-      <Box px={'4rem'}>
+      <Box px={{ md: "4rem" }}>
         <Grid container spacing={2} alignItems="center" justifyContent="center" >
           <Grid xs={4} md={4} >
             <Item></Item>
@@ -397,7 +397,7 @@ export default function SetWiFi() {
         </Typography>
       </Divider>
 
-      <Box px={'4rem'}>
+      <Box px={{ md: "4rem" }}>
         <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
           <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
             <Item></Item>
@@ -551,7 +551,7 @@ export default function SetWiFi() {
       </Stack>
       {/* This is from chenyan end */}
 
-      <Box px={20} py={6}>
+      <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
         <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
       </Box>
 

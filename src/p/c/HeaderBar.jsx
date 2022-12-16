@@ -4,13 +4,14 @@ import * as React from 'react';
 import { useObserver } from 'react-solid-state';
 
 
-export default function HeaderBar() {
-  return useObserver(() => (<AppBar position="sticky">
+export default props => {
+
+  return useObserver(() => (<AppBar position="sticky" >
     <Toolbar variant="dense" sx={{ minHeight: 0, height: "5vh" }}>
 
-      <Tooltip title="">
+      <Tooltip title="Language">
         <IconButton onClick={_ => window.location.href = ''} sx={{ p: 0 }}>
-          <Avatar alt="Index Page" variant="square" sx={{ width: `auto`, height: `4vh`, "& img": { objectFit: `contain` } }} src="https://ccmeta.com/sagereal.png"></Avatar>
+          <Avatar alt="Index Page" variant="square" sx={{ width: `auto`, "& img": { width: `auto`, height: `4vh`, objectFit: `contain` } }} src="https://ccmeta.com/sagereal.png"></Avatar>
         </IconButton>
       </Tooltip>
 

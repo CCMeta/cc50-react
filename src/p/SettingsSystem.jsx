@@ -117,7 +117,7 @@ export default function SetSystem() {
   return useObserver(() => (
     <Box>
 
-      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
+      <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
         <Typography variant="h6">
           <b>System Operation</b>
         </Typography>
@@ -126,7 +126,7 @@ export default function SetSystem() {
       <Stack alignItems={`center`}>
 
         <StackButton onClick={(e) => OpenDialog("reboot")}>Reboot</StackButton>
-        <Stack width={`50%`}>
+        <Stack>
           <Alert variant="filled" severity="error">
             {`Tips: Some data will be lost after restart !!!`}
           </Alert>
@@ -134,7 +134,7 @@ export default function SetSystem() {
         <Divider orientation="horizontal" />
 
         <StackButton onClick={(e) => OpenDialog("reset")}>RESET</StackButton>
-        <Stack width={`50%`}>
+        <Stack>
           <Alert variant="filled" severity="error">
             {`Tips: Though your approach works fine in this sandbox.`}
           </Alert>
@@ -146,7 +146,8 @@ export default function SetSystem() {
           </LoadingButton>
         </Stack>
         {/* <StackButton onClick={checkNewV}>FOTA</StackButton> */}
-        <Stack width={`50%`}>
+
+        <Stack>
           <Alert variant="filled" severity="error">
             Click the button to detect the new version, current version: &nbsp;
             <Typography sx={{ display: "inline-block", textDecoration: "underline", fontSize: "0.875rem" }}>{currentVersion.get()}</Typography>

@@ -19,6 +19,7 @@ import PasswordPage from './p/Password';
 import ClientsPage from "./p/Clients";
 import SettingsPage from "./p/Settings";
 import HeaderBar from "./p/c/HeaderBar";
+import { createStore } from "react-solid-state";
 
 
 const darkTheme = createTheme({
@@ -28,6 +29,7 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
+  const store = createStore({ tabValue: "wifi", language: "en" })
 
   return <div className="App">
     <ThemeProvider theme={darkTheme}>
@@ -38,7 +40,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="clients" element={<ClientsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+            <Route path="settings" element={<SettingsPage store={store} />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="wifi" element={<WiFiPage />} />
             <Route path="sim" element={<SIMPage />} />
@@ -52,7 +54,7 @@ const App = () => {
             <Route path="password" element={<PasswordPage />} />
           </Routes>
         </Box>
-        <NavigateComponent />
+        <NavigateComponent store={store} />
       </Box>
     </ThemeProvider>
   </div>

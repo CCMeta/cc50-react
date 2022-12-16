@@ -76,13 +76,13 @@ export default function SetSIM() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
+      <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
         <Typography variant="h6">
           <b>SIM Configuration</b>
         </Typography>
       </Divider>
 
-      <Box px={'4rem'}>
+      <Box px={{ md: '4rem' }}>
         <Grid container spacing={2}>
           <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
             <Item>Network</Item>
@@ -103,12 +103,13 @@ export default function SetSIM() {
         </Grid>
       </Box>
 
-      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>        <Typography variant="h6">
-        <b>APN Configuration</b>
-      </Typography>
+      <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
+        <Typography variant="h6">
+          <b>APN Configuration</b>
+        </Typography>
       </Divider>
 
-      <Box px={'4rem'}>
+      <Box px={{ md: '4rem' }}>
         <Grid container spacing={2}>
           <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
             <Item>Current APN</Item>
@@ -192,7 +193,7 @@ export default function SetSIM() {
         </Grid>
       </Box>
 
-      <Box px={20} py={6}>
+      <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
         <Button fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
       </Box>
 

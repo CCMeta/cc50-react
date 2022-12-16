@@ -75,13 +75,13 @@ export default function SetAbout() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
+      <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
         <Typography variant="h6">
           <b>About Information</b>
         </Typography>
       </Divider>
 
-      <Stack direction="row" spacing={`2.5rem`}>
+      <Stack direction={{ md: "row", xs: "column" }} spacing={`2.5rem`}>
 
         <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
           <Box p={'2.5rem'}>
@@ -158,7 +158,7 @@ export default function SetAbout() {
       <Stack direction="row" spacing={'2.5rem'} py={'2.5rem'}>
 
         <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={'2.5rem'}>
+          <Box p={'2.5rem'} sx={{ lineBreak: "anywhere" }}>
             <Table>
               <TableBody>
                 <TableRow>
