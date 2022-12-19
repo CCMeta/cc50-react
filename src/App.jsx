@@ -25,7 +25,7 @@ const App = () => {
       <HeaderBar />
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Box sx={{ flexGrow: 1, order: 1 }}>
+        <Box sx={{ flexGrow: 1, order: 1, ml: { md: "4vw" } }}>
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="clients" element={<ClientsPage />} />

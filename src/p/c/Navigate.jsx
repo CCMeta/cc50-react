@@ -17,7 +17,7 @@ import SystemIcon from '@mui/icons-material/RouterOutlined';
 import SimCardIcon from '@mui/icons-material/SimCardOutlined';
 import SpeedIcon from '@mui/icons-material/Speed';
 import WifiIcon from '@mui/icons-material/Wifi';
-import { BottomNavigation, BottomNavigationAction, IconButton, Menu, MenuItem, Paper } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Box, IconButton, Menu, MenuItem, Paper } from '@mui/material';
 
 import { MenuOpenOutlined } from "@mui/icons-material";
 import Divider from '@mui/material/Divider';
@@ -92,6 +92,7 @@ export default props => {
   }
 
   const sx_drawer = {
+    position: 'fixed',
     display: { xs: "none", md: "flex" },
     width: '4vw',
     flexShrink: 0,
@@ -121,7 +122,7 @@ export default props => {
   }
 
   /*********component**********/
-  return useObserver(() => <div>
+  return useObserver(() => <Box>
 
     <Drawer sx={sx_drawer} variant='permanent' anchor="left" open={mainMenuOpen.get()}>
       <Divider />
@@ -168,5 +169,5 @@ export default props => {
       ))}
     </Menu>
 
-  </div>)
+  </Box>)
 }

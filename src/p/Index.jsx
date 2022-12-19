@@ -565,11 +565,11 @@ export default () => {
                 </IconButton>
               </Stack>
             </Stack>
-            <Stack direction={{ xs: "column", md: "row" }}>
-              <Stack sx={{ height: '20vh', flexGrow: 6 }}>
+            <Stack direction={{ xs: "column", md: "row" }} alignItems={{ md: "center" }}>
+              <Stack sx={{ height: '20vh', flexGrow: 1, width: { md: "50%" } }}>
                 <MyResponsiveBar theme={chart_theme} data={data_for_week_chart.get()} />
               </Stack>
-              <Stack justifyContent={'space-evenly'} sx={{ flexGrow: 4 }}>
+              <Stack justifyContent={'space-evenly'} sx={{ flexGrow: 1, whiteSpace: "nowrap" }}>
                 <Stack justifyContent={'space-evenly'} direction={'row'}>
                   <Stack p={1} alignItems={'flex-start'}>
                     <Typography component={'div'} variant={'caption'}>
