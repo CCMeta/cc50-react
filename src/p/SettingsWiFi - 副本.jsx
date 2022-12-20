@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemText, ListSubheader, MenuItem, Paper, Select, Stack, Switch, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Divider, FormControlLabel, FormGroup, IconButton, InputAdornment, MenuItem, Select, Stack, Switch, TextField, Typography } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
 import Grid from '@mui/material/Unstable_Grid2';
@@ -6,11 +6,10 @@ import 'animate.css';
 import * as React from 'react';
 import { Define, fetching, FormBuilder, webcmd } from './utils';
 import { CheckCircle, Done, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
-import { display } from '@mui/system';
 
 function BpCheckbox(props) {
   return (
-    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} size="small" {...props} />}
+    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} disableRipple {...props} />}
     />
   );
 }
@@ -203,7 +202,7 @@ export default function SetWiFi() {
   /*********component**********/
   return useObserver(() => (<Stack>
 
-    <Grid container spacing={2} sx={{ display: { xs: "none", md: "block" }, my: { xs: '1rem', md: '1rem' } }}>
+    <Grid container spacing={2} sx={{ my: { xs: '1rem', md: '1rem' } }}>
       <Grid sx={{ textAlign: "left" }}>
         <FormGroup>
           <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
@@ -215,72 +214,13 @@ export default function SetWiFi() {
     </Grid>
     {/* Title */}
 
-    <Divider textAlign="left" sx={{ display: { xs: "none", md: "block" }, my: { md: '3rem' } }}>
+    <Divider textAlign="left" sx={{ my: { md: '3rem' } }}>
       <Typography variant="h6">
         <b>Common Configuration</b>
       </Typography>
     </Divider>
 
-    {/* mobile WiFi global Configuration */}
-    <Paper variant="outlined" elevation={0} sx={{ my: '1rem', display: { md: "none" }, position: "sticky", top: 0, zIndex: "9999" }}>
-      <List>
-        <ListItem >
-          <FormControlLabel checked={commonCheck.get()} control={<Checkbox size="small" />} onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G" />
-        </ListItem>
-        <ListItem >
-          <FormControlLabel checked={show5GCheck.get()} control={<Checkbox size="small" />} onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
-        </ListItem>
-      </List>
-    </Paper >
-
-    {/* mobile WiFi 2.4G Base Configuration */}
-    <Paper elevation={0} sx={{ display: { md: "none" } }}>
-      <List>
-        <ListSubheader>
-          <Typography align="left" variant="caption" component="div">
-            {"WiFi 2.4G Base Configuration"}
-          </Typography>
-        </ListSubheader>
-        <ListItem>
-          <ListItemText>
-            <Divider />
-          </ListItemText>
-        </ListItem>
-        <ListItem>
-          <TextField fullWidth label="WiFi Name" variant="outlined" size="small" value={wifi_enable.get()} />
-        </ListItem>
-        <ListItem>
-          <TextField fullWidth label="WiFi Password" variant="outlined" size="small" value={wifi_pwd.get()} type={showPassword.get() ? 'text' : 'password'} onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" InputProps={{
-            endAdornment:
-              <InputAdornment position="end">
-                <IconButton onClick={_ => showPassword.set(!showPassword.get())} edge="end" >
-                  {showPassword.get() ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
-                </IconButton>
-              </InputAdornment>
-          }} />
-        </ListItem>
-        <ListItem>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Security Protocol</InputLabel>
-            <Select labelId="demo-simple-select-label" label="Security Protocol" variant="outlined" size="small" value={security.get()} onChange={(e) => HandleChangeValue(security, e, "security")} >
-              {securities.map((sec) => (
-                <MenuItem value={sec.value}>{sec.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Hide WiFi" />
-          <BpCheckbox label="Enable" checked={hide_wifi_name.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name, e, "hide")} />
-        </ListItem>
-        <ListItem >
-          <ListItemText primary="AP Isolation" />
-          <BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} />
-        </ListItem>
-      </List>
-    </Paper>
-
-    <Box display={{ xs: "none", md: "block" }} px={{ md: "4rem" }}>
+    <Box px={{ md: "4rem" }}>
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
         <Grid xs={4} md={4} >
           <Item></Item>
@@ -294,18 +234,18 @@ export default function SetWiFi() {
       </Grid>
 
       <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
+        <Grid display={{ xs: "none", md: "block" }} xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item>WiFi Enable</Item>
           <Item>WiFi Name</Item>
-          <Item>Hide WiFi</Item>
+          <Item>Hide WiFi Name</Item>
           <Item>WiFi Password</Item>
           <Item>AP Isolation</Item>
           <Item>Security Protocol</Item>
         </Grid>
         <Grid xs={8} md={4} sx={{ textAlign: "left", "& input": { fontSize: { xs: "13px", md: "1rem" } } }}>
           <Item>
-            <Switch sx={{ margin: "0 auto" }} checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} />
-            {/* <TextField size="small" label="WiFi Enable" value={wifi_enable.get()} helperText="This is helperText" fullWidth /> */}
+            {/* <Switch sx={{ margin: "0 auto" }} checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} /> */}
+            <TextField size="small" label="WiFi Enable" value={wifi_enable.get()} helperText="This is helperText" fullWidth />
           </Item>
           <Item>
             <TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} placeholder="Enter Your WiFi name" /></Item>
@@ -326,7 +266,10 @@ export default function SetWiFi() {
             <BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} />
           </Item>
           <Item>
-            <Select size="small" value={security.get()} onChange={(e) => HandleChangeValue(security, e, "security")} >
+            <Select size="small"
+              value={security.get()}
+              onChange={(e) => HandleChangeValue(security, e, "security")}
+            >
               {securities.map((sec) => (
                 <MenuItem value={sec.value}>{sec.name}</MenuItem>
               ))}
@@ -465,14 +408,14 @@ export default function SetWiFi() {
           </Item>
         </Grid>
       </Grid>
-    </Stack >
+    </Stack>
     {/* This is from chenyan end */}
 
-    < Divider textAlign="left" sx={{ mt: 6, display: showHigh.get() }}>
+    <Divider textAlign="left" sx={{ mt: 6, display: showHigh.get() }}>
       <Typography variant="h6">
         <b>Advanced Configuration</b>
       </Typography>
-    </Divider >
+    </Divider>
 
     <Box px={{ md: "4rem" }}>
       <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
@@ -632,5 +575,5 @@ export default function SetWiFi() {
       <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
     </Box>
 
-  </Stack >))
+  </Stack>))
 }

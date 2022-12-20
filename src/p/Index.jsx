@@ -569,7 +569,7 @@ export default () => {
               <Stack sx={{ height: '20vh', flexGrow: 1, width: { md: "50%" } }}>
                 <MyResponsiveBar theme={chart_theme} data={data_for_week_chart.get()} />
               </Stack>
-              <Stack justifyContent={'space-evenly'} sx={{ flexGrow: 1, whiteSpace: "nowrap" }}>
+              <Stack justifyContent={{ md: "space-evenly" }} sx={{ height: { md: "20vh" }, flexGrow: 1, whiteSpace: "nowrap" }}>
                 <Stack justifyContent={'space-evenly'} direction={'row'}>
                   <Stack p={1} alignItems={'flex-start'}>
                     <Typography component={'div'} variant={'caption'}>
