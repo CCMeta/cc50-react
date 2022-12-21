@@ -91,6 +91,19 @@ export const intToColor = (value, mode = `asc`) =>
     (value > 75 ? `error` : value > 50 ? `warning` : value > 25 ? `info` : `success`) :
     (value > 75 ? `success` : value > 50 ? `info` : value > 25 ? `warning` : `error`)
 
+export const boolToInt = v => {
+  switch (v) {
+    case true:
+      return 1;
+    case false:
+      return 0;
+    case 1:
+      return true;
+    case 0:
+      return false;
+  }
+}
+
 export const MAP_WirelessMode = {
   "0": "B/G mixed",
   "1": "B only",

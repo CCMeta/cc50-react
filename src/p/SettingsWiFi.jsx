@@ -4,7 +4,7 @@ import { createEffect, useObserver } from 'react-solid-state';
 import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
-import { Define, fetching, FormBuilder, webcmd } from './utils';
+import { boolToInt, Define, fetching, FormBuilder, webcmd } from './utils';
 import { CheckCircle, Done, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { display } from '@mui/system';
 
@@ -33,17 +33,19 @@ function TextFieldSelf(props) {
 export default function SetWiFi() {
   /*********constants**********/
   //定义动态变量
-  const showHigh = Define("block");
-  const commonCheck = Define(true), show5GCheck = Define(true), Disable5G = Define(true);
+  const syncConfigures = Define(true), showAdvances = Define(true), Disable5G = Define(true);
+
   const wifi_enable = Define(true), wifi_enable_5 = Define(true);
   const wifi_name = Define(""), wifi_name_5 = Define("");
   const hide_wifi_name = Define(true), hide_wifi_name_5 = Define(true);
   const wifi_pwd = Define(""), wifi_pwd_5 = Define("");
   const ap = Define(true), ap_5 = Define(true);
   const security = Define("WPA2PSK"), security_5 = Define("WPA2PSK");
+
   const wireless = Define("1"), wireless_5 = Define("0");
-  const bandwidth = Define("20"), bandwidth_5 = Define("20");
+  const bandwidth = Define(0), bandwidth_5 = Define(0);
   const channel = Define("1"), channel_5 = Define("0");
+
   const showPassword = Define(false), showPassword_5 = Define(false);
 
   const securities = [
@@ -53,18 +55,18 @@ export default function SetWiFi() {
     { value: "WPA3PSK", name: "WPA3PSK" }
   ]
   const wirelessModes_24G = [
-    { value: "1", name: "B only" },
-    { value: "4", name: "G only" },
-    { value: "9", name: "B/G/GN mode" },
-    { value: "16", name: "HE_2G mode" },
+    { value: 1, name: "B only" },
+    { value: 4, name: "G only" },
+    { value: 9, name: "B/G/GN mode" },
+    { value: 16, name: "HE_2G mode" },
   ]
   const wirelessModes_5G = [
-    { value: "0", name: "B/G mixed" },
-    { value: "2", name: "A only" },
-    { value: "8", name: "A/N in 5 band" },
-    { value: "14", name: "A/AC/AN mixed" },
-    { value: "15", name: "AC/AN mixed" },
-    { value: "17", name: "HE_5G mode" },
+    { value: 0, name: "B/G mixed" },
+    { value: 2, name: "A only" },
+    { value: 8, name: "A/N in 5 band" },
+    { value: 14, name: "A/AC/AN mixed" },
+    { value: 15, name: "AC/AN mixed" },
+    { value: 17, name: "HE_5G mode" },
   ]
   const channels_24G = [
     { value: 0, name: "Channel 0 (Auto)" },
@@ -94,9 +96,9 @@ export default function SetWiFi() {
     { value: 64, name: "Channel 64 (5.320GHz)" }
   ]
 
-  const HandleChangeValue = (dom, event, key) => {
-    dom.set(event.target.value); //输入框、选择框等
-    if (key && commonCheck.get()) {
+  const HandleChangeValue = (element, event, key) => {
+    element.set(event.target.value); //输入框、选择框等
+    if (key && syncConfigures.get()) {
       switch (key) {
         case "name": wifi_name_5.set(event.target.value); break;
         case "pwd": wifi_pwd_5.set(event.target.value); break;
@@ -105,9 +107,9 @@ export default function SetWiFi() {
     }
   };
 
-  const HandleChangeBoolean = (dom, event, key) => {
-    dom.set(event.target.checked); //滑动按钮、勾选框等
-    if (key && commonCheck.get()) {
+  const HandleChangeBoolean = (element, event, key) => {
+    element.set(event.target.checked); //滑动按钮、勾选框等
+    if (key && syncConfigures.get()) {
       switch (key) {
         case "enable": wifi_enable_5.set(event.target.checked); break;
         case "hide": hide_wifi_name_5.set(event.target.checked); break;
@@ -118,7 +120,7 @@ export default function SetWiFi() {
 
   const Synchronize = (event) => {
     //同步2.4G与5G
-    commonCheck.set(event.target.checked);
+    syncConfigures.set(event.target.checked);
     Disable5G.set(event.target.checked ? true : false);
     if (event.target.checked === false)
       return
@@ -132,8 +134,7 @@ export default function SetWiFi() {
 
   const ShowOrHide5G = (event) => {
     //显示高级设置
-    show5GCheck.set(event.target.checked);
-    showHigh.set(event.target.checked ? "block" : "none");
+    showAdvances.set(event.target.checked);
   }
 
   /*********createEffect**********/
@@ -141,25 +142,26 @@ export default function SetWiFi() {
 
     await webcmd(`wifi.setting.get`).then(v => {
       const res = v.data
-      security.set(res['2g'].authMode)
-      bandwidth.set(res['2g'].bandwidth)
-      channel.set(res['2g'].channel)
-      wifi_enable.set(res['2g'].enable)
-      hide_wifi_name.set(res['2g'].hideName)
-      ap.set(res['2g'].isolation)
+
+      wifi_enable.set(boolToInt(res['2g'].enable))
+      hide_wifi_name.set(boolToInt(res['2g'].hideName))
+      ap.set(boolToInt(res['2g'].isolation))
       wifi_name.set(res['2g'].name)
       wifi_pwd.set(res['2g'].password)
       wireless.set(res['2g'].wirelessMode)
+      security.set(res['2g'].authMode)
+      bandwidth.set(res['2g'].bandwidth)
+      channel.set(res['2g'].channel)
 
-      security_5.set(res['5g'].authMode)
-      bandwidth_5.set(res['5g'].bandwidth)
-      channel_5.set(res['5g'].channel)
-      wifi_enable_5.set(res['5g'].enable)
-      hide_wifi_name_5.set(res['5g'].hideName)
-      ap_5.set(res['5g'].isolation)
+      wifi_enable_5.set(boolToInt(res['5g'].enable))
+      hide_wifi_name_5.set(boolToInt(res['5g'].hideName))
+      ap_5.set(boolToInt(res['5g'].isolation))
       wifi_name_5.set(res['5g'].name)
       wifi_pwd_5.set(res['5g'].password)
       wireless_5.set(res['5g'].wirelessMode)
+      security_5.set(res['5g'].authMode)
+      bandwidth_5.set(res['5g'].bandwidth)
+      channel_5.set(res['5g'].channel)
     })
 
     // await fetching_get_wifi_setting();
@@ -172,9 +174,9 @@ export default function SetWiFi() {
         authMode: security.get(),
         bandwidth: bandwidth.get(),
         channel: channel.get(),
-        enable: wifi_enable.get(),
-        hideName: hide_wifi_name.get(),
-        isolation: ap.get(),
+        enable: boolToInt(wifi_enable.get()),
+        hideName: boolToInt(hide_wifi_name.get()),
+        isolation: boolToInt(ap.get()),
         name: wifi_name.get(),
         password: wifi_pwd.get(),
         wirelessMode: wireless.get(),
@@ -183,9 +185,9 @@ export default function SetWiFi() {
         authMode: security_5.get(),
         bandwidth: bandwidth_5.get(),
         channel: channel_5.get(),
-        enable: wifi_enable_5.get(),
-        hideName: hide_wifi_name_5.get(),
-        isolation: ap_5.get(),
+        enable: boolToInt(wifi_enable_5.get()),
+        hideName: boolToInt(hide_wifi_name_5.get()),
+        isolation: boolToInt(ap_5.get()),
         name: wifi_name_5.get(),
         password: wifi_pwd_5.get(),
         wirelessMode: wireless_5.get(),
@@ -207,9 +209,9 @@ export default function SetWiFi() {
     <Grid container spacing={2} sx={{ display: { xs: "none", md: "block" }, my: { xs: '1rem', md: '1rem' } }}>
       <Grid sx={{ textAlign: "left" }}>
         <FormGroup>
-          <FormControlLabel checked={commonCheck.get()} control={<Checkbox disableRipple />}
+          <FormControlLabel checked={syncConfigures.get()} control={<Checkbox disableRipple />}
             onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G common configuration" />
-          <FormControlLabel checked={show5GCheck.get()} control={<Checkbox disableRipple />}
+          <FormControlLabel checked={showAdvances.get()} control={<Checkbox disableRipple />}
             onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
         </FormGroup>
       </Grid>
@@ -326,7 +328,7 @@ export default function SetWiFi() {
     </Divider >
 
     {/* PC WiFi 2.4G + 5G Advanced Configuration */}
-    <Box px={{ md: "4rem" }} sx={{ display: { xs: "none", md: showHigh.get() } }}>
+    <Box px={{ md: "4rem" }} sx={{ display: { xs: "none", md: "block" } }}>
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item></Item>
@@ -345,10 +347,10 @@ export default function SetWiFi() {
           </Item>
           <Item>
             <Select size="small" value={bandwidth.get()} onChange={(e) => HandleChangeValue(bandwidth, e)}>
-              <MenuItem value={"0"}>Auto</MenuItem>
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"60"}>40M</MenuItem>
+              <MenuItem value={0}>Auto</MenuItem>
+              <MenuItem value={20}>20M</MenuItem>
+              <MenuItem value={40}>40M</MenuItem>
+              <MenuItem value={60}>60M</MenuItem>
             </Select>
           </Item>
           <Item>
@@ -376,11 +378,11 @@ export default function SetWiFi() {
               value={bandwidth_5.get()}
               onChange={(e) => HandleChangeValue(bandwidth_5, e)}
             >
-              <MenuItem value={"0"}>Auto</MenuItem>
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"80"}>80M</MenuItem>
-              <MenuItem value={"160"}>160M</MenuItem>
+              <MenuItem value={0}>Auto</MenuItem>
+              <MenuItem value={20}>20M</MenuItem>
+              <MenuItem value={40}>40M</MenuItem>
+              <MenuItem value={80}>80M</MenuItem>
+              <MenuItem value={160}>160M</MenuItem>
             </Select>
           </Item>
           <Item>
@@ -401,10 +403,10 @@ export default function SetWiFi() {
     <Paper variant="outlined" elevation={0} sx={{ my: '1rem', display: { md: "none" }, position: "sticky", top: 0, zIndex: "9999" }}>
       <List dense disablePadding>
         <ListItem >
-          <FormControlLabel checked={commonCheck.get()} control={<Checkbox size="small" />} onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G options" />
+          <FormControlLabel checked={syncConfigures.get()} control={<Checkbox size="small" />} onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G options" />
         </ListItem>
         <ListItem >
-          <FormControlLabel checked={show5GCheck.get()} control={<Checkbox size="small" />} onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
+          <FormControlLabel checked={showAdvances.get()} control={<Checkbox size="small" />} onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
         </ListItem>
       </List>
     </Paper >
@@ -454,7 +456,7 @@ export default function SetWiFi() {
           <BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} />
         </ListItem>
       </List>
-      <List sx={{ display: showHigh.get() === "block" ? "block" : "none" }}>
+      <List sx={{ display: showAdvances.get() ? "block" : "none" }}>
         <ListSubheader>
           <Typography align="left" variant="caption" component="div">
             {"WiFi 2.4G Advanced Configuration"}
@@ -479,10 +481,10 @@ export default function SetWiFi() {
           <FormControl fullWidth>
             <InputLabel id="select-label-Channel-Bandwidth">Channel Bandwidth</InputLabel>
             <Select labelId="select-label-Channel-Bandwidth" label="Channel Bandwidth" variant="outlined" size="small" value={bandwidth.get()} onChange={(e) => HandleChangeValue(bandwidth, e)}>
-              <MenuItem value={"0"}>Auto</MenuItem>
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"60"}>40M</MenuItem>
+              <MenuItem value={0}>Auto</MenuItem>
+              <MenuItem value={20}>20M</MenuItem>
+              <MenuItem value={40}>40M</MenuItem>
+              <MenuItem value={60}>60M</MenuItem>
             </Select>
           </FormControl>
         </ListItem>
@@ -537,14 +539,14 @@ export default function SetWiFi() {
         </ListItem>
         <ListItem>
           <ListItemText primary="Hide WiFi" />
-          <BpCheckbox label="Enable" checked={hide_wifi_name.get()} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} />
+          <BpCheckbox label="Enable" checked={hide_wifi_name_5.get()} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} />
         </ListItem>
         <ListItem >
           <ListItemText primary="AP Isolation" />
           <BpCheckbox label="Enable" checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(ap_5, e)} />
         </ListItem>
       </List>
-      <List sx={{ display: showHigh.get() === "block" ? "block" : "none" }}>
+      <List sx={{ display: showAdvances.get() ? "block" : "none" }}>
         <ListSubheader>
           <Typography align="left" variant="caption" component="div">
             {"WiFi 5G Advanced Configuration"}
@@ -569,11 +571,11 @@ export default function SetWiFi() {
           <FormControl fullWidth>
             <InputLabel id="select-label-Channel-Bandwidth-5">Channel Bandwidth</InputLabel>
             <Select labelId="select-label-Channel-Bandwidth-5" label="Channel Bandwidth" variant="outlined" size="small" value={bandwidth_5.get()} onChange={(e) => HandleChangeValue(bandwidth_5, e)}>
-              <MenuItem value={"0"}>Auto</MenuItem>
-              <MenuItem value={"20"}>20M</MenuItem>
-              <MenuItem value={"40"}>40M</MenuItem>
-              <MenuItem value={"80"}>80M</MenuItem>
-              <MenuItem value={"160"}>160M</MenuItem>
+              <MenuItem value={0}>Auto</MenuItem>
+              <MenuItem value={20}>20M</MenuItem>
+              <MenuItem value={40}>40M</MenuItem>
+              <MenuItem value={80}>80M</MenuItem>
+              <MenuItem value={160}>160M</MenuItem>
             </Select>
           </FormControl>
         </ListItem>
