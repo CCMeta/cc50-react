@@ -33,7 +33,7 @@ function TextFieldSelf(props) {
 export default function SetWiFi() {
   /*********constants**********/
   //定义动态变量
-  const showHigh = Define("flex");
+  const showHigh = Define("block");
   const commonCheck = Define(true), show5GCheck = Define(true), Disable5G = Define(true);
   const wifi_enable = Define(true), wifi_enable_5 = Define(true);
   const wifi_name = Define(""), wifi_name_5 = Define("");
@@ -133,7 +133,7 @@ export default function SetWiFi() {
   const ShowOrHide5G = (event) => {
     //显示高级设置
     show5GCheck.set(event.target.checked);
-    showHigh.set(event.target.checked ? "flex" : "none");
+    showHigh.set(event.target.checked ? "block" : "none");
   }
 
   /*********createEffect**********/
@@ -203,6 +203,7 @@ export default function SetWiFi() {
   /*********component**********/
   return useObserver(() => (<Stack>
 
+    {/* PC WiFi global Configuration */}
     <Grid container spacing={2} sx={{ display: { xs: "none", md: "block" }, my: { xs: '1rem', md: '1rem' } }}>
       <Grid sx={{ textAlign: "left" }}>
         <FormGroup>
@@ -213,73 +214,15 @@ export default function SetWiFi() {
         </FormGroup>
       </Grid>
     </Grid>
-    {/* Title */}
 
-    <Divider textAlign="left" sx={{ display: { xs: "none", md: "block" }, my: { md: '3rem' } }}>
+    {/* PC WiFi 2.4G + 5G base Configuration title */}
+    <Divider textAlign="left" sx={{ display: { xs: "none", md: "flex" }, my: { md: '3rem' } }}>
       <Typography variant="h6">
         <b>Common Configuration</b>
       </Typography>
     </Divider>
 
-    {/* mobile WiFi global Configuration */}
-    <Paper variant="outlined" elevation={0} sx={{ my: '1rem', display: { md: "none" }, position: "sticky", top: 0, zIndex: "9999" }}>
-      <List>
-        <ListItem >
-          <FormControlLabel checked={commonCheck.get()} control={<Checkbox size="small" />} onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G" />
-        </ListItem>
-        <ListItem >
-          <FormControlLabel checked={show5GCheck.get()} control={<Checkbox size="small" />} onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
-        </ListItem>
-      </List>
-    </Paper >
-
-    {/* mobile WiFi 2.4G Base Configuration */}
-    <Paper elevation={0} sx={{ display: { md: "none" } }}>
-      <List>
-        <ListSubheader>
-          <Typography align="left" variant="caption" component="div">
-            {"WiFi 2.4G Base Configuration"}
-          </Typography>
-        </ListSubheader>
-        <ListItem>
-          <ListItemText>
-            <Divider />
-          </ListItemText>
-        </ListItem>
-        <ListItem>
-          <TextField fullWidth label="WiFi Name" variant="outlined" size="small" value={wifi_enable.get()} />
-        </ListItem>
-        <ListItem>
-          <TextField fullWidth label="WiFi Password" variant="outlined" size="small" value={wifi_pwd.get()} type={showPassword.get() ? 'text' : 'password'} onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" InputProps={{
-            endAdornment:
-              <InputAdornment position="end">
-                <IconButton onClick={_ => showPassword.set(!showPassword.get())} edge="end" >
-                  {showPassword.get() ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
-                </IconButton>
-              </InputAdornment>
-          }} />
-        </ListItem>
-        <ListItem>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Security Protocol</InputLabel>
-            <Select labelId="demo-simple-select-label" label="Security Protocol" variant="outlined" size="small" value={security.get()} onChange={(e) => HandleChangeValue(security, e, "security")} >
-              {securities.map((sec) => (
-                <MenuItem value={sec.value}>{sec.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Hide WiFi" />
-          <BpCheckbox label="Enable" checked={hide_wifi_name.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name, e, "hide")} />
-        </ListItem>
-        <ListItem >
-          <ListItemText primary="AP Isolation" />
-          <BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} />
-        </ListItem>
-      </List>
-    </Paper>
-
+    {/* PC WiFi 2.4G + 5G Base Configuration */}
     <Box display={{ xs: "none", md: "block" }} px={{ md: "4rem" }}>
       <Grid container spacing={2} alignItems="center" justifyContent="center" >
         <Grid xs={4} md={4} >
@@ -375,107 +318,16 @@ export default function SetWiFi() {
       </Grid>
     </Box>
 
-    {/* This is from chenyan start */}
-    <Stack display={`none`}>
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} >
-          <Item></Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>5G</Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "none" } }}>
-          <Item><b>5G</b></Item>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>WiFi Enable</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto" }} disabled={Disable5G.get()}
-              onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} />
-          </Item>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>WiFi Name</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <TextFieldSelf value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} placeholder="Enter Your WiFi name" />
-          </Item>
-        </Grid>
-        {/* <Grid xs={6} md={4}>
-                <Item><TextFieldSelf value={wifi_name_5.get()} sx={{height: "30px", padding: "5px","& input":{fontSize: {xs:"15px", md:"1rem"}}}} disabled={Disable5G.get()}
-                        onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{maxLength: "50"}}/></Item>
-            </Grid> */}
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>Hide WiFi Name</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <BpCheckbox label="Enable" checked={hide_wifi_name_5.get()} disabled={Disable5G.get()}
-              onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} />
-          </Item>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>WiFi Password</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <TextFieldSelf value={wifi_pwd_5.get()} sx={{ height: "30px", padding: "5px", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()} type="password" onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" />
-          </Item>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center" >
-        <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>AP Isolation</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <BpCheckbox label="Enable" checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()}
-              onChange={(e) => HandleChangeBoolean(ap_5, e)} />
-          </Item>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid xs={4} md={4} sx={{ textAlign: "left", display: { xs: "block", md: "none" }, whiteSpace: "nowrap" }}>
-          <Item>Security Protocol</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select size="small" value={security_5.get()} onChange={(e) => HandleChangeValue(security_5, e)} disabled={Disable5G.get()}>
-              {securities.map((security) => (
-                <MenuItem value={security.value}>{security.name}</MenuItem>
-              ))}
-            </Select>
-          </Item>
-        </Grid>
-      </Grid>
-    </Stack >
-    {/* This is from chenyan end */}
-
-    < Divider textAlign="left" sx={{ mt: 6, display: showHigh.get() }}>
+    {/* PC WiFi 2.4G + 5G Advanced Configuration title */}
+    <Divider textAlign="left" sx={{ my: { md: '3rem' }, display: { xs: "none", md: "flex" } }}>
       <Typography variant="h6">
         <b>Advanced Configuration</b>
       </Typography>
     </Divider >
 
-    <Box px={{ md: "4rem" }}>
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
+    {/* PC WiFi 2.4G + 5G Advanced Configuration */}
+    <Box px={{ md: "4rem" }} sx={{ display: { xs: "none", md: showHigh.get() } }}>
+      <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item></Item>
           <Item>Wireless Mode</Item>
@@ -485,20 +337,14 @@ export default function SetWiFi() {
         <Grid xs={8} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item><b>2.4G</b></Item>
           <Item>
-            <Select size="small"
-              value={wireless.get()}
-              onChange={(e) => HandleChangeValue(wireless, e)}
-            >
+            <Select size="small" value={wireless.get()} onChange={(e) => HandleChangeValue(wireless, e)}>
               {wirelessModes_24G.map((wirelessMode) => (
                 <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
               ))}
             </Select>
           </Item>
           <Item>
-            <Select size="small"
-              value={bandwidth.get()}
-              onChange={(e) => HandleChangeValue(bandwidth, e)}
-            >
+            <Select size="small" value={bandwidth.get()} onChange={(e) => HandleChangeValue(bandwidth, e)}>
               <MenuItem value={"0"}>Auto</MenuItem>
               <MenuItem value={"20"}>20M</MenuItem>
               <MenuItem value={"40"}>40M</MenuItem>
@@ -506,10 +352,7 @@ export default function SetWiFi() {
             </Select>
           </Item>
           <Item>
-            <Select size="small"
-              value={channel.get()}
-              onChange={(e) => HandleChangeValue(channel, e)}
-            >
+            <Select size="small" value={channel.get()} onChange={(e) => HandleChangeValue(channel, e)}>
               {channels_24G.map((channel) => (
                 <MenuItem value={channel.value}>{channel.name}</MenuItem>
               ))}
@@ -554,80 +397,201 @@ export default function SetWiFi() {
       </Grid>
     </Box>
 
-    {/* This is from chenyan start */}
-    <Stack display={`none`}>
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} >
-          <Item></Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>5G</Item>
-        </Grid>
-        <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "none" } }}>
-          <Item><b>5G</b></Item>
-        </Grid>
-      </Grid>
+    {/* mobile WiFi global Configuration */}
+    <Paper variant="outlined" elevation={0} sx={{ my: '1rem', display: { md: "none" }, position: "sticky", top: 0, zIndex: "9999" }}>
+      <List dense disablePadding>
+        <ListItem >
+          <FormControlLabel checked={commonCheck.get()} control={<Checkbox size="small" />} onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G options" />
+        </ListItem>
+        <ListItem >
+          <FormControlLabel checked={show5GCheck.get()} control={<Checkbox size="small" />} onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
+        </ListItem>
+      </List>
+    </Paper >
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
-          <Item>Wireless Mode</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select size="small"
-              value={wireless_5.get()}
-              onChange={(e) => HandleChangeValue(wireless_5, e)}
-            >
+    {/* mobile WiFi 2.4G Base + Advanced Configuration */}
+    <Paper variant="outlined" elevation={0} sx={{ display: { md: "none" }, my: '1rem' }}>
+      <List>
+        <ListSubheader>
+          <Typography align="left" variant="caption" component="div">
+            {"WiFi 2.4G Base Configuration"}
+          </Typography>
+        </ListSubheader>
+        <ListItem>
+          <ListItemText>
+            <Divider />
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <TextField fullWidth label="WiFi Name" variant="outlined" size="small" value={wifi_name.get()} onChange={(e) => HandleChangeValue(wifi_name, e, "name")} />
+        </ListItem>
+        <ListItem>
+          <TextField fullWidth label="WiFi Password" variant="outlined" size="small" value={wifi_pwd.get()} type={showPassword.get() ? 'text' : 'password'} onChange={(e) => HandleChangeValue(wifi_pwd, e, "pwd")} placeholder="Enter Your WiFi password" InputProps={{
+            endAdornment:
+              <InputAdornment position="end">
+                <IconButton onClick={_ => showPassword.set(!showPassword.get())} edge="end" >
+                  {showPassword.get() ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
+                </IconButton>
+              </InputAdornment>
+          }} />
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Security-Protocol">Security Protocol</InputLabel>
+            <Select labelId="select-label-Security-Protocol" label="Security Protocol" variant="outlined" size="small" value={security.get()} onChange={(e) => HandleChangeValue(security, e, "security")} >
+              {securities.map((sec) => (
+                <MenuItem value={sec.value}>{sec.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Hide WiFi" />
+          <BpCheckbox label="Enable" checked={hide_wifi_name.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name, e, "hide")} />
+        </ListItem>
+        <ListItem >
+          <ListItemText primary="AP Isolation" />
+          <BpCheckbox label="Enable" checked={ap.get()} onChange={(e) => HandleChangeBoolean(ap, e, "ap")} />
+        </ListItem>
+      </List>
+      <List sx={{ display: showHigh.get() === "block" ? "block" : "none" }}>
+        <ListSubheader>
+          <Typography align="left" variant="caption" component="div">
+            {"WiFi 2.4G Advanced Configuration"}
+          </Typography>
+        </ListSubheader>
+        <ListItem>
+          <ListItemText>
+            <Divider />
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Wireless-Mode">Wireless Mode</InputLabel>
+            <Select labelId="select-label-Wireless-Mode" label="Wireless Mode" variant="outlined" size="small" value={wireless.get()} onChange={(e) => HandleChangeValue(wireless, e)}>
               {wirelessModes_24G.map((wirelessMode) => (
                 <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
               ))}
             </Select>
-          </Item>
-        </Grid>
-      </Grid>
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Channel-Bandwidth">Channel Bandwidth</InputLabel>
+            <Select labelId="select-label-Channel-Bandwidth" label="Channel Bandwidth" variant="outlined" size="small" value={bandwidth.get()} onChange={(e) => HandleChangeValue(bandwidth, e)}>
+              <MenuItem value={"0"}>Auto</MenuItem>
+              <MenuItem value={"20"}>20M</MenuItem>
+              <MenuItem value={"40"}>40M</MenuItem>
+              <MenuItem value={"60"}>40M</MenuItem>
+            </Select>
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Channels">Channels</InputLabel>
+            <Select labelId="select-label-Channels" label="Channels" variant="outlined" size="small" value={channel.get()} onChange={(e) => HandleChangeValue(channel, e)}>
+              {channels_24G.map((channel) => (
+                <MenuItem value={channel.value}>{channel.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </ListItem>
+      </List>
+    </Paper>
 
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
-          <Item>Channel Bandwidth</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select size="small"
-              value={bandwidth_5.get()}
-              onChange={(e) => HandleChangeValue(bandwidth_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem", } }}
-            >
+    {/* mobile WiFi 5G Base + Advanced Configuration */}
+    <Paper variant="outlined" elevation={0} sx={{ display: { md: "none" }, my: '1rem' }}>
+      <List>
+        <ListSubheader>
+          <Typography align="left" variant="caption" component="div">
+            {"WiFi 5G Base Configuration"}
+          </Typography>
+        </ListSubheader>
+        <ListItem>
+          <ListItemText>
+            <Divider />
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <TextField fullWidth label="WiFi Name" variant="outlined" size="small" value={wifi_name_5.get()} disabled={Disable5G.get()} onChange={(e) => HandleChangeValue(wifi_name_5, e)} placeholder="Enter Your WiFi name" inputProps={{ maxLength: "50" }} />
+        </ListItem>
+        <ListItem>
+          <TextField fullWidth label="WiFi Password" variant="outlined" size="small" value={wifi_pwd_5.get()} disabled={Disable5G.get()} type={showPassword_5.get() ? 'text' : 'password'} onChange={(e) => HandleChangeValue(wifi_pwd_5, e)} placeholder="Enter Your WiFi password" InputProps={{
+            endAdornment:
+              <InputAdornment position="end">
+                <IconButton onClick={_ => showPassword_5.set(!showPassword_5.get())} edge="end" >
+                  {showPassword_5.get() ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
+                </IconButton>
+              </InputAdornment>
+          }} />
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Security-Protocol-5">Security Protocol</InputLabel>
+            <Select labelId="select-label-Security-Protocol-5" label="Security Protocol" variant="outlined" size="small" value={security_5.get()} onChange={(e) => HandleChangeValue(security_5, e, "security")} disabled={Disable5G.get()} >
+              {securities.map((sec) => (
+                <MenuItem value={sec.value}>{sec.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Hide WiFi" />
+          <BpCheckbox label="Enable" checked={hide_wifi_name.get()} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(hide_wifi_name_5, e)} />
+        </ListItem>
+        <ListItem >
+          <ListItemText primary="AP Isolation" />
+          <BpCheckbox label="Enable" checked={ap_5.get() == 0 ? false : true} disabled={Disable5G.get()} onChange={(e) => HandleChangeBoolean(ap_5, e)} />
+        </ListItem>
+      </List>
+      <List sx={{ display: showHigh.get() === "block" ? "block" : "none" }}>
+        <ListSubheader>
+          <Typography align="left" variant="caption" component="div">
+            {"WiFi 5G Advanced Configuration"}
+          </Typography>
+        </ListSubheader>
+        <ListItem>
+          <ListItemText>
+            <Divider />
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Wireless-Mode-5">Wireless Mode</InputLabel>
+            <Select labelId="select-label-Wireless-Mode-5" label="Wireless Mode" variant="outlined" size="small" value={wireless_5.get()} onChange={(e) => HandleChangeValue(wireless_5, e)}>
+              {wirelessModes_5G.map((wirelessMode) => (
+                <MenuItem value={wirelessMode.value}>{wirelessMode.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Channel-Bandwidth-5">Channel Bandwidth</InputLabel>
+            <Select labelId="select-label-Channel-Bandwidth-5" label="Channel Bandwidth" variant="outlined" size="small" value={bandwidth_5.get()} onChange={(e) => HandleChangeValue(bandwidth_5, e)}>
+              <MenuItem value={"0"}>Auto</MenuItem>
               <MenuItem value={"20"}>20M</MenuItem>
               <MenuItem value={"40"}>40M</MenuItem>
               <MenuItem value={"80"}>80M</MenuItem>
               <MenuItem value={"160"}>160M</MenuItem>
-              <MenuItem value={"0"}>Auto</MenuItem>
             </Select>
-          </Item>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ display: showHigh.get() }}>
-        <Grid xs={4} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "block", md: "none" } }}>
-          <Item>Channels</Item>
-        </Grid>
-        <Grid xs={8} md={7} sx={{ display: { xs: "block", md: "none" } }}>
-          <Item>
-            <Select
-              value={channel_5.get()}
-              onChange={(e) => HandleChangeValue(channel_5, e)}
-              sx={{ height: "40px", margin: "5px", fontSize: { xs: "5px", md: "1rem" } }}
-            >
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <InputLabel id="select-label-Channels-5">Channels</InputLabel>
+            <Select labelId="select-label-Channels-5" label="Channels" variant="outlined" size="small" value={channel_5.get()} onChange={(e) => HandleChangeValue(channel_5, e)}>
               {channels_5G.map((channel) => (
                 <MenuItem value={channel.value}>{channel.name}</MenuItem>
               ))}
             </Select>
-          </Item>
-        </Grid>
-      </Grid>
-    </Stack>
-    {/* This is from chenyan end */}
+          </FormControl>
+        </ListItem>
+      </List>
+    </Paper>
 
+
+    {/* PC + mobile WiFi 2.4G + 5G submit button */}
     <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
       <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
     </Box>
