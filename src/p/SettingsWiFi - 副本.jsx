@@ -52,18 +52,18 @@ export default function SetWiFi() {
     { value: "WPA3PSK", name: "WPA3PSK" }
   ]
   const wirelessModes_24G = [
-    { value: "1", name: "B only" },
-    { value: "4", name: "G only" },
-    { value: "9", name: "B/G/GN mode" },
-    { value: "16", name: "HE_2G mode" },
+    { value: 1, name: "B only" },
+    { value: 4, name: "G only" },
+    { value: 9, name: "B/G/GN mode" },
+    { value: 16, name: "HE_2G mode" },
   ]
   const wirelessModes_5G = [
-    { value: "0", name: "B/G mixed" },
-    { value: "2", name: "A only" },
-    { value: "8", name: "A/N in 5 band" },
-    { value: "14", name: "A/AC/AN mixed" },
-    { value: "15", name: "AC/AN mixed" },
-    { value: "17", name: "HE_5G mode" },
+    { value: 0, name: "B/G mixed" },
+    { value: 2, name: "A only" },
+    { value: 8, name: "A/N in 5 band" },
+    { value: 14, name: "A/AC/AN mixed" },
+    { value: 15, name: "AC/AN mixed" },
+    { value: 17, name: "HE_5G mode" },
   ]
   const channels_24G = [
     { value: 0, name: "Channel 0 (Auto)" },

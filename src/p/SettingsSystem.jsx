@@ -137,7 +137,7 @@ export default function SetSystem() {
         <StackButton onClick={(e) => OpenDialog("reset")}>RESET</StackButton>
         <Stack>
           <Alert variant="filled" severity="error">
-            {`Tips: Though your approach works fine in this sandbox.`}
+            {`Tips: All content and set items will be lost after RESET.`}
           </Alert>
         </Stack>
 

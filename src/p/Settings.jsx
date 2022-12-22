@@ -1,10 +1,9 @@
-
 import {
   Box, Divider, Stack, Tab, Tabs
 } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
-import CastIcon from '@mui/icons-material/Cast';
+import LanIcon from '@mui/icons-material/LanRounded';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/LanguageOutlined';
 import SystemIcon from '@mui/icons-material/RouterOutlined';
@@ -71,7 +70,7 @@ export default props => {
       <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
         <Tabs orientation="vertical" variant="scrollable" value={props.store[0].tabValue} onChange={(e, v) => props.store[1]({ ...props.store[0], tabValue: v })} sx={sx_nav_btn}>
           <Tab label="WiFi" icon={<WifiIcon />} iconPosition="start" value="wifi" />
-          <Tab label="Network" icon={<CastIcon />} iconPosition="start" value="network" />
+          <Tab label="Network" icon={<LanIcon />} iconPosition="start" value="network" />
           {/* <Tab disabled label="Internet" icon={<LanguageIcon />} iconPosition="start" value="internet" /> */}
           <Tab label="SIM" icon={<SimCardIcon />} iconPosition="start" value="sim" />
           {/* <Divider /> */}

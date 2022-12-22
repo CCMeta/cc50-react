@@ -3,7 +3,7 @@ import { useObserver } from 'react-solid-state';
 
 import { Define } from '../utils';
 
-import CastIcon from '@mui/icons-material/Cast';
+import LanIcon from '@mui/icons-material/LanRounded';
 import ClientsIcon from '@mui/icons-material/DevicesOther';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import KeyIcon from '@mui/icons-material/Key';
@@ -32,7 +32,7 @@ import * as React from 'react';
 
 const subMenuSettings = [
   { text: 'WiFi', value: "wifi", icon: <WifiIcon color="primary" /> },
-  { text: 'Network', value: "network", icon: <CastIcon color="primary" /> },
+  { text: 'Network', value: "network", icon: <LanIcon color="primary" /> },
   { text: 'SIM', value: "sim", icon: <SimCardIcon color="primary" /> },
   { text: 'System', value: "system", icon: <SystemIcon color="primary" /> },
   { text: 'About', value: "about", icon: <InfoIcon color="primary" /> },
