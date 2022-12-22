@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, List, ListItem, ListItemText, ListSubheader, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { createEffect, useObserver } from 'react-solid-state';
 
@@ -75,153 +75,182 @@ export default function SetAbout() {
   return useObserver(() => (
     <Stack>
 
-      <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
-        <Typography variant="h6">
-          <b>About Information</b>
-        </Typography>
-      </Divider>
-
-      <Stack direction={{ md: "row", xs: "column" }} spacing={`2.5rem`}>
-
-        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={'2.5rem'}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Model Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>IMEI Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Serial Number</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>MAC Address</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{mac.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
+      {/* Mobile About  */}
+      <Box display={{ md: "none" }}>
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
+            <ListSubheader component="div">{`About Information`}</ListSubheader>}>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`Model Version`} secondary={data_system_info.get()?.model} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`IMEI Version`} secondary={data_system_info.get()?.imei} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`Serial Number`} secondary={data_system_info.get()?.imei} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`MAC Address`} secondary={mac.get()} />
+            </ListItem>
+          </List>
         </Paper>
+      </Box>
 
-        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={'2.5rem'}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Operator</TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{IMSI.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>IMSI Version</TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>WAN_IP Number</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>RSRP RSRQ RSSI SINR</TableCell>
-                  <TableCell>{IMSI.get()}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
-        </Paper>
+      {/* PC About  */}
+      <Box display={{ xs: "none", md: "block" }}>
+        <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
+          <Typography variant="h6">
+            <b>About Information</b>
+          </Typography>
+        </Divider>
 
-      </Stack>
+        <Stack direction={{ md: "row", xs: "column" }} spacing={`2.5rem`}>
 
-      <Stack direction="row" spacing={'2.5rem'} py={'2.5rem'}>
+          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+            <Box p={'2.5rem'}>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>Model Version</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>IMEI Version</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>Serial Number</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>MAC Address</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{mac.get()}</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </Paper>
 
-        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={'2.5rem'} sx={{ lineBreak: "anywhere" }}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Hardware Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Software Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.softwareVersion}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Firmware Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>UI Version</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="text.secondary">{uiV.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
-        </Paper>
+          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+            <Box p={'2.5rem'}>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Operator</TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{IMSI.get()}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>IMSI Version</TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>WAN_IP Number</TableCell>
+                    <TableCell>{IMSI.get()}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>RSRP RSRQ RSSI SINR</TableCell>
+                    <TableCell>{IMSI.get()}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </Paper>
 
-      </Stack>
+        </Stack>
 
-      <Stack direction="row" spacing={'2.5rem'} >
-        <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
-          <Box p={'2.5rem'}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell width={200}>
-                    <Typography>Storage</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <BorderLinearProgress variant="determinate" value={storage.get()} />
-                  </TableCell>
-                  <TableCell width={200}>
-                    <Typography>{romFree.get()} / {rom.get()}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <Button fullWidth color="error" variant="contained">Click to free space</Button>
-          </Box>
-        </Paper>
-      </Stack>
+        <Stack direction="row" spacing={'2.5rem'} py={'2.5rem'}>
+
+          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+            <Box p={'2.5rem'} sx={{ lineBreak: "anywhere" }}>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>Hardware Version</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>Software Version</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.softwareVersion}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>Firmware Version</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography>UI Version</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="text.secondary">{uiV.get()}</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </Paper>
+
+        </Stack>
+
+        <Stack direction="row" spacing={'2.5rem'} >
+          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+            <Box p={'2.5rem'}>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell width={200}>
+                      <Typography>Storage</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <BorderLinearProgress variant="determinate" value={storage.get()} />
+                    </TableCell>
+                    <TableCell width={200}>
+                      <Typography>{romFree.get()} / {rom.get()}</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Button fullWidth color="error" variant="contained">Click to free space</Button>
+            </Box>
+          </Paper>
+        </Stack>
+      </Box>
+
 
     </Stack>
   ))
