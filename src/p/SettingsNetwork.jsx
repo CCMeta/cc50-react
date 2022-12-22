@@ -1,14 +1,12 @@
-import {
-  Divider, Stack, Box, FormGroup, FormControlLabel, Checkbox, TextField, Select,
-  MenuItem, Switch, Button, FormControl, RadioGroup, Radio, Typography
-} from '@mui/material';
+import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, List, ListItem, ListItemText, ListSubheader, MenuItem, Paper, Radio, RadioGroup, Select, Stack, Switch, TextField, Typography } from '@mui/material';
+
 import { createEffect, useObserver } from 'react-solid-state';
 
+import { CheckCircle } from '@mui/icons-material';
+import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
-import Grid from '@mui/material/Unstable_Grid2';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
-import { CheckCircle } from '@mui/icons-material';
+import { Define, fetching, FormBuilder } from './utils';
 
 
 function Item(props) {
@@ -37,7 +35,7 @@ function TextField1(props) {
 
 export default function SetNetwork() {
   /*********constants**********/
-  const modes = [
+  const leaseTimeOptions = [
     { value: 0, name: "Auto" },
     { value: 1, name: "1 Hour" },
     { value: 6, name: "6 Hours" },
@@ -45,21 +43,24 @@ export default function SetNetwork() {
     { value: 24, name: "24 Hours" }
   ]
   //定义动态变量
-  const enable = Define(true), mode = Define("auto"), gateway = Define("");
-  const start1 = Define(""), end1 = Define(""), start2 = Define(""), end2 = Define(""), lease = Define("0");
-  const HandleChangeBoolean = (dom, event) => {
-    dom.set(event.target.checked); //滑动按钮、勾选框等
+  const enable = Define(true), mode = Define("auto"), gateway = Define("192.168.10.1"), deviceName = Define("Unnamed");
+  const start1 = Define(""), end1 = Define(""), start2 = Define(""), end2 = Define(""), lease = Define(0);
+
+  const HandleChangeBoolean = (element, event) => {
+    element.set(event.target.checked); //滑动按钮、勾选框等
   };
-  const HandleChangeValue = (dom, event) => {
-    dom.set(event.target.value); //输入框、选择框等
+
+  const HandleChangeValue = (element, event) => {
+    element.set(event.target.value); //输入框、选择框等
   };
-  const HandleJudgeValue = (dom, event) => {
+
+  const HandleJudgeValue = (element, event) => {
     if (event.target.value > 255) {
-      dom.set(255);
+      element.set(255);
     } else if (event.target.value < 0) {
-      dom.set(0);
+      element.set(0);
     } else {
-      dom.set(event.target.value); //输入框、选择框等
+      element.set(event.target.value); //输入框、选择框等
     }
   };
 
@@ -84,7 +85,8 @@ export default function SetNetwork() {
       end2.set(res.end.split(".")[3]);
     })
   }
-  const fetching_set_network = async () => {
+
+  const onSubmit = async () => {
     const form = {
       enable: enable.get(),
       mode: mode.get(),
@@ -106,10 +108,66 @@ export default function SetNetwork() {
   return useObserver(() => (
     <Stack>
 
+      {/* Mobile DHCP Configuration Settings */}
+      <Box display={{ md: "none" }}>
+
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+          <List>
+            <ListSubheader>
+              <Typography align="left" variant="caption" component="div">
+                {"DHCP Configuration"}
+              </Typography>
+            </ListSubheader>
+            <ListItem>
+              <ListItemText>
+                <Divider />
+              </ListItemText>
+            </ListItem>
+
+
+            <ListItem>
+              <ListItemText primary="DHCP Enable" />
+              <FormControlLabel label="Enable" control={<Checkbox size="small" value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />} />
+            </ListItem>
+
+            <ListItem>
+              <FormControl fullWidth>
+                <InputLabel id="select-label-Wireless-DHCP-Lease-Time">DHCP Lease Time</InputLabel>
+                <Select labelId="select-label-Wireless-DHCP-Lease-Time" label="DHCP Lease Time" variant="outlined" size="small" value={lease.get()} onChange={(e) => HandleChangeValue(lease, e)}>
+                  {leaseTimeOptions.map((i) => (
+                    <MenuItem value={i.value}>{i.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </ListItem>
+
+            <ListItem secondaryAction={<Typography variant="caption" color="text.secondary">{gateway.get()}</Typography>}>
+              <ListItemText primary={`DHCP Gateway`} />
+            </ListItem>
+
+            <ListItem>
+              <TextField fullWidth label="Range Start Address" variant="outlined" size="small" value={start1.get()} onChange={(e) => HandleChangeValue(start1, e)} />
+            </ListItem>
+
+            <ListItem>
+              <TextField fullWidth label="Range End Address" variant="outlined" size="small" value={end1.get()} onChange={(e) => HandleChangeValue(end1, e)} />
+            </ListItem>
+
+            <ListItem>
+              <TextField fullWidth label="Device Name" variant="outlined" size="small" value={deviceName.get()} onChange={(e) => HandleChangeValue(deviceName, e)} />
+            </ListItem>
+
+          </List>
+        </Paper>
+
+      </Box>
+
+
+      {/* PC DHCP Configuration Settings */}
       <Box display={{ xs: "none", md: "block" }}>
         <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
           <Typography variant="h6">
-            <b>Network Configuration</b>
+            <b>DHCP Configuration</b>
           </Typography>
         </Divider>
 
@@ -120,7 +178,9 @@ export default function SetNetwork() {
               <Item>DHCP Enable</Item>
             </Grid>
             <Grid xs={7} md={9}>
-              <Item><Switch value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} /></Item>
+              <Item>
+                <FormControlLabel label="Enable" control={<Checkbox size="small" value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />} />
+              </Item>
             </Grid>
           </Grid>
 
@@ -165,12 +225,9 @@ export default function SetNetwork() {
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
-                <Select size="small"
-                  value={lease.get()}
-                  onChange={(e) => HandleChangeValue(lease, e)}
-                >
-                  {modes.map((mode) => (
-                    <MenuItem value={mode.value}>{mode.name}</MenuItem>
+                <Select size="small" value={lease.get()} onChange={(e) => HandleChangeValue(lease, e)}>
+                  {leaseTimeOptions.map((i) => (
+                    <MenuItem value={i.value}>{i.name}</MenuItem>
                   ))}
                 </Select>
               </Item>
@@ -200,10 +257,10 @@ export default function SetNetwork() {
             </Grid>
           </Grid>
         </Box>
+      </Box>
 
-        <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-          <Button fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
-        </Box>
+      <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
+        <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
       </Box>
 
     </Stack>

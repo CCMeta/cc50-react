@@ -91,7 +91,6 @@ export default function SetSIM() {
       {/* Mobile SIM Settings */}
       <Box display={{ md: "none" }}>
 
-        {/* mobile WiFi global Configuration */}
         <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
           <List>
             <ListSubheader>
