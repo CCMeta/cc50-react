@@ -321,14 +321,14 @@ export default function SetWiFi() {
     </Box>
 
     {/* PC WiFi 2.4G + 5G Advanced Configuration title */}
-    <Divider textAlign="left" sx={{ my: { md: '3rem' }, display: { xs: "none", md: "flex" } }}>
+    <Divider textAlign="left" sx={{ my: { md: '3rem' }, display: { xs: "none", md: showAdvances.get() ? "flex" : "none" } }}>
       <Typography variant="h6">
         <b>Advanced Configuration</b>
       </Typography>
     </Divider >
 
     {/* PC WiFi 2.4G + 5G Advanced Configuration */}
-    <Box px={{ md: "4rem" }} sx={{ display: { xs: "none", md: "block" } }}>
+    <Box px={{ md: "4rem" }} sx={{ display: { xs: "none", md: showAdvances.get() ? "block" : "none" } }}>
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item></Item>
