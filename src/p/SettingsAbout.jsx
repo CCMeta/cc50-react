@@ -57,11 +57,13 @@ export default function SetAbout() {
   const storage = Define(15);
   const rom = Define("100MB"), romFree = Define("15MB");
   const data_system_info = Define()
+  const data_network_info = Define()
 
   /*********createEffect**********/
   createEffect(async () => {
 
     data_system_info.set((await webcmd(`system.info.get`))?.data)
+    data_network_info.set((await webcmd(`internet.sim.info.get`))?.data)
 
   })
 
@@ -77,9 +79,10 @@ export default function SetAbout() {
 
       {/* Mobile About  */}
       <Box display={{ md: "none" }}>
+
         <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
-            <ListSubheader component="div">{`About Information`}</ListSubheader>}>
+            <ListSubheader component="div">{`System Information`}</ListSubheader>}>
             <Divider component="li" />
             <ListItem>
               <ListItemText primary={`Model Version`} secondary={data_system_info.get()?.model} />
@@ -98,6 +101,48 @@ export default function SetAbout() {
             </ListItem>
           </List>
         </Paper>
+
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
+            <ListSubheader component="div">{`Network Information`}</ListSubheader>}>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`Operator`} secondary={data_network_info.get()?.operator?.name} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`IMSI`} secondary={data_system_info.get()?.imsi} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`WAN`} secondary={data_network_info.get()?.wan_ip} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`PINLockState`} secondary={data_network_info.get()?.PINLockState} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`PINCodeState`} secondary={data_network_info.get()?.PINCodeState} />
+            </ListItem>
+          </List>
+        </Paper>
+
+
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
+            <ListSubheader component="div">{`Network Information`}</ListSubheader>}>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`Software Version`} secondary={data_system_info.get()?.softwareVersion} />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`Firmware Version`} secondary={data_system_info.get()?.firmwareVersion} />
+            </ListItem>
+          </List>
+        </Paper>
+
       </Box>
 
       {/* PC About  */}
@@ -116,7 +161,7 @@ export default function SetAbout() {
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography>Model Version</Typography>
+                      <Typography>Model</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
@@ -124,7 +169,7 @@ export default function SetAbout() {
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography>IMEI Version</Typography>
+                      <Typography>IMEI</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
@@ -152,28 +197,33 @@ export default function SetAbout() {
           </Paper>
 
           <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+
             <Box p={'2.5rem'}>
               <Table>
                 <TableBody>
                   <TableRow>
                     <TableCell>Operator</TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{IMSI.get()}</Typography>
+                      <Typography color="text.secondary">{data_network_info.get()?.operator?.name}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>IMSI Version</TableCell>
+                    <TableCell>IMSI</TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
+                      <Typography color="text.secondary">{data_system_info.get()?.imsi}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>WAN_IP Number</TableCell>
-                    <TableCell>{IMSI.get()}</TableCell>
+                    <TableCell>WAN</TableCell>
+                    <TableCell>{data_network_info.get()?.wan_ip}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>RSRP RSRQ RSSI SINR</TableCell>
-                    <TableCell>{IMSI.get()}</TableCell>
+                    <TableCell>PINLockState</TableCell>
+                    <TableCell>{data_network_info.get()?.PINLockState}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>PINCodeState</TableCell>
+                    <TableCell>{data_network_info.get()?.PINCodeState}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -190,14 +240,6 @@ export default function SetAbout() {
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography>Hardware Version</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
                       <Typography>Software Version</Typography>
                     </TableCell>
                     <TableCell>
@@ -210,14 +252,6 @@ export default function SetAbout() {
                     </TableCell>
                     <TableCell>
                       <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <Typography>UI Version</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography color="text.secondary">{uiV.get()}</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
