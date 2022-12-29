@@ -198,10 +198,10 @@ export default () => {
     // console.log(bodyZoom)
 
     //login process
-    await fetching(FormBuilder({
-      "luci_username": "root", "luci_password": "123456",
-    }), 'login'
-    ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
+    // await fetching(FormBuilder({
+    //   "luci_username": "root", "luci_password": "123456",
+    // }), 'login'
+    // ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
 
     // Once api without interval
     // data_device_operation_info.set(await fetching_device_operation_info())

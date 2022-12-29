@@ -1,3 +1,4 @@
+import { Login } from "@mui/icons-material";
 import { Box, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Route, Routes } from "react-router-dom";
@@ -9,6 +10,7 @@ import NavigateComponent from './p/c/Navigate';
 import ClientsPage from "./p/Clients";
 import IndexPage from './p/Index';
 import SettingsPage from "./p/Settings";
+import LoginPage from "./p/Login";
 
 
 const darkTheme = createTheme({
@@ -33,6 +35,7 @@ const App = () => {
           </Routes>
         </Box>
         <NavigateComponent store={store} />
+        <LoginPage />
       </Box>
     </ThemeProvider>
   </div>
