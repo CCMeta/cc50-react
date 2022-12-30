@@ -2,7 +2,7 @@ import {
   Button, Divider, InputAdornment, List,
   ListItem, Popover, Stack, TextField
 } from '@mui/material';
-import { createEffect, useObserver } from 'react-solid-state';
+import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
 import EditIcon from '@mui/icons-material/Edit';
 import LockIcon from '@mui/icons-material/Lock';
@@ -44,6 +44,7 @@ export default () => {
   const QoS_PopoverOpen = Define(null)
 
   /*********createEffect**********/
+  var timer 
   createEffect(async () => {
 
     // setInterval api below 
@@ -88,9 +89,11 @@ export default () => {
 
       return interval_apis
     }
-    setInterval(await interval_apis(), 2000);
+    timer = setInterval(await interval_apis(), 2000);
 
   })
+  onCleanup(() => clearInterval(timer))
+
   /*********functions**********/
 
   /*********styles**********/

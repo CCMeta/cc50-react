@@ -3,7 +3,7 @@ import {
   ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Paper, Popover, Select, Stack, styled, Switch, TextField, Typography
 } from '@mui/material';
 import cookie from 'cookie';
-import { createEffect, useObserver } from 'react-solid-state';
+import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -188,6 +188,7 @@ export default () => {
   }
 
   /*********createEffect**********/
+  var timer 
   createEffect(async () => {
 
     // to be continued
@@ -255,9 +256,10 @@ export default () => {
 
       return interval_apis
     }
-    setInterval(await interval_apis(), 3000);
+    timer = setInterval(await interval_apis(), 3000);
   })
-
+  onCleanup(() => clearInterval(timer))
+  
   /*********functions**********/
   const fetching_iwinfo_5G = async () => {
     return await fetching(FormBuilder({
