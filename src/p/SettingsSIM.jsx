@@ -77,7 +77,7 @@ export default function SetSIM() {
       roaming: boolToInt(roaming.get()),
       dataMode: dataMode.get(),
     }
-    return console.log(form)
+    // return console.log(form)
     const result = await webcmd(`internet.setting.sim.set`, form)
     if (result.code === 200) {
       alert(result.msg)
