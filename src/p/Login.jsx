@@ -32,8 +32,9 @@ export default () => {
     await fetching(FormBuilder(form), 'login')
       .then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
       .then(_ => {
+        // window.location.reload()
         modalOpen.set(false)
-        // navigate('/')
+        navigate('/')
       })
   }
 

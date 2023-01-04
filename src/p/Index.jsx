@@ -188,7 +188,7 @@ export default () => {
   }
 
   /*********createEffect**********/
-  var timer 
+  var timer
   createEffect(async () => {
 
     // to be continued
@@ -219,9 +219,9 @@ export default () => {
     // thw wifi devices of wifi info per devices , such as PhyMode HE=AX VHT=AC
     // https://192.168.1.1/cgi-bin/luci/admin/mtk/wifi/sta_info/rai0/MT7915D.1.2?1659322511882
     // data_clients_info_5G.set(await fetching(null, 'wifi', `/sta_info/rai0`))
-    data_clients_info_5G.set((await webcmd(`wifi.stat.5g.get`))?.data)
+    data_clients_info_5G.set((await webcmd(`wifi.stat.5g.get`))?.data || [])
     // data_clients_info_24G.set(await fetching(null, 'wifi', `/sta_info/ra0`))
-    data_clients_info_24G.set((await webcmd(`wifi.stat.24g.get`))?.data)
+    data_clients_info_24G.set((await webcmd(`wifi.stat.24g.get`))?.data || [])
 
     data_wan_network_interface_dump.set(
       (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
@@ -259,7 +259,7 @@ export default () => {
     timer = setInterval(await interval_apis(), 3000);
   })
   onCleanup(() => clearInterval(timer))
-  
+
   /*********functions**********/
   const fetching_iwinfo_5G = async () => {
     return await fetching(FormBuilder({
