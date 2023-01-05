@@ -11,7 +11,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import HeaderBar from './c/HeaderBar';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch } from './utils';
+import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
 
 
 export default () => {
@@ -44,7 +44,7 @@ export default () => {
   const QoS_PopoverOpen = Define(null)
 
   /*********createEffect**********/
-  var timer 
+  var timer
   createEffect(async () => {
 
     // setInterval api below 
@@ -59,7 +59,7 @@ export default () => {
           traffics_str.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
         console.log(traffics)
 
-        return (await $rpc.post("luci-rpc", "getDHCPLeases"))?.[1]?.dhcp_leases?.map((v, i) => {
+        return (await fetching_conntrack_list())?.map((v, i) => {
           const recent = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
 
           const rx = traffics.reduce((_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ? _t + _v[3] : _t, 0)
@@ -95,6 +95,15 @@ export default () => {
   onCleanup(() => clearInterval(timer))
 
   /*********functions**********/
+  const fetching_conntrack_list = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `ubus call luci-rpc getDHCPLeases`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return res.dhcp_leases
+    })
+  }
 
   /*********styles**********/
 

@@ -223,19 +223,17 @@ export default () => {
     // data_clients_info_24G.set(await fetching(null, 'wifi', `/sta_info/ra0`))
     data_clients_info_24G.set((await webcmd(`wifi.stat.24g.get`))?.data || [])
 
-    data_wan_network_interface_dump.set(
-      (await $rpc.post("network.interface", "dump"))?.[1]?.interface.find(i => i.interface === `wan`)
-    )
+    data_wan_network_interface_dump.set(await fetching_wan_network_interface_dump())
 
     // setInterval api below 
     const interval_apis = async () => {
       data_device_performance.set(await fetching_device_performance())
       data_device_heat.set(await fetching_device_heat())
-      data_system_info.set((await $rpc.post("system", "info"))?.[1])
+      data_system_info.set(await fetching_system_info())
 
       data_sim_network_info.set(await fetching_sim_network_info())
 
-      data_luci_conntrack.set((await $rpc.post(`luci`, "getConntrackList"))?.[1].result)
+      data_luci_conntrack.set(await fetching_luci_conntrack())
       data_traffic_5G.set(await fetching_traffic_5G())
 
       //concat speed
@@ -275,6 +273,34 @@ export default () => {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     )
+  }
+
+  const fetching_wan_network_interface_dump = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `ubus call network.interface dump`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return res.interface.find(i => i.interface === `wan`)
+    })
+  }
+
+  const fetching_system_info = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `ubus call system info`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    )
+  }
+
+  const fetching_luci_conntrack = async () => {
+    return await fetching(FormBuilder({
+      "cmd": `ubus call luci getConntrackList`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return res.result
+    })
   }
 
   const fetching_device_heat = async () => {
