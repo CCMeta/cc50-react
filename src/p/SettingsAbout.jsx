@@ -161,34 +161,42 @@ export default function SetAbout() {
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography>Model</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`Model`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.model}</Typography>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <Typography>IMEI</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
+                      <Typography variant="subtitle2" >{data_system_info.get()?.model}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography>Serial Number</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`IMEI`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.imei}</Typography>
+                      <Typography variant="subtitle2" >{data_system_info.get()?.imei}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography>MAC Address</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`Serial Number`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{mac.get()}</Typography>
+                      <Typography variant="subtitle2" >{data_system_info.get()?.imei}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`MAC Address`}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" >{mac.get()}</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -202,27 +210,47 @@ export default function SetAbout() {
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Operator</TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_network_info.get()?.operator?.name}</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`Operator`}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" >{data_network_info.get()?.operator?.name}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>IMSI</TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.imsi}</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`IMSI`}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" >{data_system_info.get()?.imsi}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>WAN</TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`WAN`}
+                      </Typography>
+                    </TableCell>
                     <TableCell>{data_network_info.get()?.wan_ip}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>PINLockState</TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`PINLockState`}
+                      </Typography>
+                    </TableCell>
                     <TableCell>{data_network_info.get()?.PINLockState}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>PINCodeState</TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`PINCodeState`}
+                      </Typography>
+                    </TableCell>
                     <TableCell>{data_network_info.get()?.PINCodeState}</TableCell>
                   </TableRow>
                 </TableBody>
@@ -240,18 +268,26 @@ export default function SetAbout() {
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography>Software Version</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`Software Version`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.softwareVersion}</Typography>
+                      <Typography variant="subtitle2">
+                        {data_system_info.get()?.softwareVersion}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography>Firmware Version</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`Firmware Version`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography color="text.secondary">{data_system_info.get()?.firmwareVersion}</Typography>
+                      <Typography variant="subtitle2">
+                        {data_system_info.get()?.firmwareVersion}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -268,13 +304,15 @@ export default function SetAbout() {
                 <TableBody>
                   <TableRow>
                     <TableCell width={200}>
-                      <Typography>Storage</Typography>
+                      <Typography variant="subtitle2" color='text.secondary'>
+                        {`Storage`}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <BorderLinearProgress variant="determinate" value={storage.get()} />
                     </TableCell>
                     <TableCell width={200}>
-                      <Typography>{romFree.get()} / {rom.get()}</Typography>
+                      <Typography variant="subtitle2">{romFree.get()} / {rom.get()}</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>

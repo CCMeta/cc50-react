@@ -231,21 +231,53 @@ export default function SetWiFi() {
           <Item></Item>
         </Grid>
         <Grid xs={4} md={4} >
-          <Item><b>2.4G</b></Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              <b>2.4G</b>
+            </Typography>
+          </Item>
         </Grid>
         <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "block" } }}>
-          <Item><b>5G</b></Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              <b>5G</b>
+            </Typography>
+          </Item>
         </Grid>
       </Grid>
 
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
-          <Item>WiFi Enable</Item>
-          <Item>WiFi Name</Item>
-          <Item>Hide WiFi</Item>
-          <Item>WiFi Password</Item>
-          <Item>AP Isolation</Item>
-          <Item>Security Protocol</Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`WiFi Enable`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`WiFi Name`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`Hide WiFi`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`WiFi Password`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`AP Isolation`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`Security Protocol`}
+            </Typography>
+          </Item>
         </Grid>
         <Grid xs={8} md={4} sx={{ textAlign: "left", "& input": { fontSize: { xs: "13px", md: "1rem" } } }}>
           <Item>
@@ -332,12 +364,28 @@ export default function SetWiFi() {
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item></Item>
-          <Item>Wireless Mode</Item>
-          <Item>Channel Bandwidth</Item>
-          <Item>Channels</Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`Wireless Mode`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`Channel Bandwidth`}
+            </Typography>
+          </Item>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              {`Channels`}
+            </Typography>
+          </Item>
         </Grid>
-        <Grid xs={8} md={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
-          <Item><b>2.4G</b></Item>
+        <Grid xs={8} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap" }}>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              <b>2.4G</b>
+            </Typography>
+          </Item>
           <Item>
             <Select size="small" value={wireless.get()} onChange={(e) => HandleChangeValue(wireless, e)}>
               {wirelessModes_24G.map((wirelessMode) => (
@@ -361,8 +409,12 @@ export default function SetWiFi() {
             </Select>
           </Item>
         </Grid>
-        <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap", display: { xs: "none", md: "block" } }}>
-          <Item><b>5G</b></Item>
+        <Grid xs={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "none", md: "block" } }}>
+          <Item>
+            <Typography variant="subtitle1" color='text.secondary'>
+              <b>5G</b>
+            </Typography>
+          </Item>
           <Item>
             <Select size="small"
               value={wireless_5.get()}

@@ -21,6 +21,10 @@ export default () => {
   /*********createEffect**********/
   createEffect(async () => {
 
+    //this part is fucked   to be defined
+    if (sessionStorage.getItem('sid') === null)
+      sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth)
+
   })
 
   /*********functions**********/

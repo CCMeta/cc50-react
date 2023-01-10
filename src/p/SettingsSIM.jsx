@@ -137,9 +137,21 @@ export default function SetSIM() {
         <Box px={{ md: '4rem' }}>
           <Grid container spacing={2}>
             <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
-              <Item>Network</Item>
-              <Item>Roaming</Item>
-              <Item>DataMode</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Network`}
+                </Typography>
+              </Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Roaming`}
+                </Typography>
+              </Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`DataMode`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={4} md={6} sx={{ textAlign: "left" }}>
               <Item>
@@ -168,7 +180,11 @@ export default function SetSIM() {
         <Box px={{ md: '4rem' }}>
           <Grid container spacing={2}>
             <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
-              <Item>Current APN</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Current APN`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={12} md={6}><Item>
               <TextFieldSelf value={current.get()} onChange={(e) => HandleChangeValue(current, e)} /></Item>
@@ -176,7 +192,13 @@ export default function SetSIM() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left" }}><Item>APN Select Mode</Item></Grid>
+            <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`APN Select Mode`}
+                </Typography>
+              </Item>
+            </Grid>
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl md={{ paddingLeft: "9px" }} xs={{ paddingLeft: "0px" }}>
@@ -196,7 +218,13 @@ export default function SetSIM() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left" }}><Item>PDP Type</Item></Grid>
+            <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`PDP Type`}
+                </Typography>
+              </Item>
+            </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left" }}>
               <Item>
                 <Select size="small" value={pdp.get()} onChange={(e) => HandleChangeValue(pdp, e)} >
@@ -209,13 +237,25 @@ export default function SetSIM() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left" }}><Item>APN Name</Item></Grid>
+            <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`APN Name`}
+                </Typography>
+              </Item>
+            </Grid>
             <Grid xs={12} md={6}>
               <Item><TextFieldSelf value={current.get()} onChange={(e) => HandleChangeValue(current, e)} /></Item>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left", }}><Item>Auth Type</Item></Grid>
+            <Grid xs={12} md={3} sx={{ textAlign: "left", }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Auth Type`}
+                </Typography>
+              </Item>
+            </Grid>
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl sx={{ paddingLeft: "9px", flexDirection: "row", }}>
@@ -236,13 +276,25 @@ export default function SetSIM() {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left", marginTop: "30px" }}><Item>Username</Item></Grid>
+            <Grid xs={12} md={3} sx={{ textAlign: "left", marginTop: "30px" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Username`}
+                </Typography>
+              </Item>
+            </Grid>
             <Grid xs={12} md={6}>
               <Item><TextFieldSelf value={username.get()} onChange={(e) => HandleChangeValue(username, e)} maxLength="30" /></Item>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left" }}><Item>Password</Item></Grid>
+            <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Password`}
+                </Typography>
+              </Item>
+            </Grid>
             <Grid xs={12} md={6}>
               <Item><TextFieldSelf value={password.get()} onChange={(e) => HandleChangeValue(password, e)} maxLength="30" /></Item>
             </Grid>

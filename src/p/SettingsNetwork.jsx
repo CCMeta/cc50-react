@@ -175,7 +175,11 @@ export default function SetNetwork() {
 
           <Grid container spacing={2}>
             <Grid xs={5} md={3} sx={{ textAlign: "left" }}>
-              <Item>DHCP Enable</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`DHCP Enable`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={7} md={9}>
               <Item>
@@ -186,7 +190,11 @@ export default function SetNetwork() {
 
           <Grid container spacing={2}>
             <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
-              <Item>Device Name</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Device Name`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={8} md={6} sx={{ textAlign: "left", "& input": { fontSize: { xs: "15px", md: "1rem" } } }} >
               <Item><TextFieldSelf placeholder="Device Name" /></Item>
@@ -195,7 +203,11 @@ export default function SetNetwork() {
 
           <Grid container spacing={2}>
             <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
-              <Item>DHCP Range</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`DHCP Range`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={12} md={9} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
@@ -221,7 +233,11 @@ export default function SetNetwork() {
 
           <Grid container spacing={2}>
             <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
-              <Item>DHCP Lease</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`DHCP Lease`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
@@ -237,7 +253,11 @@ export default function SetNetwork() {
 
           <Grid container spacing={2}>
             <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
-              <Item>DHCP Gateway</Item>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`DHCP Gateway`}
+                </Typography>
+              </Item>
             </Grid>
             <Grid xs={12} md={9} sx={{ textAlign: "left", fontSize: { xs: "15px", md: "1rem" } }}>
               <Item>
