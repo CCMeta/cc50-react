@@ -6,7 +6,7 @@ import { CheckCircle } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
-import { Define, fetching, FormBuilder, webcmd } from './utils';
+import { Define, fetching, FormBuilder } from './utils';
 
 
 function Item(props) {
@@ -44,8 +44,7 @@ export default function SetNetwork() {
   ]
   //定义动态变量
   const enable = Define(true), mode = Define("auto"), gateway = Define("192.168.10.1"), deviceName = Define("Unnamed");
-  const start1 = Define(""), end1 = Define(""), start2 = Define(""), end2 = Define("");
-  const start = Define(100), limit = Define(150), expire = Define(12)
+  const start1 = Define(""), end1 = Define(""), start2 = Define(""), end2 = Define(""), lease = Define(0);
 
   const HandleChangeBoolean = (element, event) => {
     element.set(event.target.checked); //滑动按钮、勾选框等
@@ -67,13 +66,7 @@ export default function SetNetwork() {
 
   /*********createEffect**********/
   createEffect(async () => {
-
-    await webcmd(`network.dhcp.get`).then(res => {
-      // start.set(res.start);
-      // limit.set(res.limit);
-      // expire.set(res.expire);
-    })
-
+    // await fetching_get_wifi_setting();
   })
 
   /*********functions**********/
@@ -83,22 +76,31 @@ export default function SetNetwork() {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
-      start.set(res.start);
-      limit.set(res.limit);
-      expire.set(res.expire);
+      enable.set(res.enable);
+      mode.set(res.mode);
+      gateway.set(res.gateway);
+      start1.set(res.start.split(".")[2]);
+      start2.set(res.start.split(".")[3]);
+      end1.set(res.end.split(".")[2]);
+      end2.set(res.end.split(".")[3]);
     })
   }
+
   const onSubmit = async () => {
     const form = {
-      start: parseInt(start.get()),
-      limit: parseInt(limit.get()),
-      expire: parseInt(expire.get()),
+      enable: enable.get(),
+      mode: mode.get(),
+      gateway: gateway.get(),
+      start: "192.168." + start1.get() + "." + start2.get(),
+      end: "192.168." + end1.get() + "." + end2.get()
     }
-    return console.log(form)
-    const result = await webcmd(`network.dhcp.set`, form)
-    if (result.code === 200) {
-      alert(result.msg)
-    }
+    return await fetching(FormBuilder({
+      "cmd": `network.dhcp.get` + form,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+
+    })
   }
   /*********styles**********/
   //   sx={{height: "30px", padding: "5px","& input":{fontSize: {xs:"12px", md:"1rem"}}}}
@@ -122,10 +124,16 @@ export default function SetNetwork() {
               </ListItemText>
             </ListItem>
 
+
+            <ListItem>
+              <ListItemText primary="DHCP Enable" />
+              <FormControlLabel label="Enable" control={<Checkbox size="small" value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />} />
+            </ListItem>
+
             <ListItem>
               <FormControl fullWidth>
                 <InputLabel id="select-label-Wireless-DHCP-Lease-Time">DHCP Lease Time</InputLabel>
-                <Select labelId="select-label-Wireless-DHCP-Lease-Time" label="DHCP Lease Time" variant="outlined" size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
+                <Select labelId="select-label-Wireless-DHCP-Lease-Time" label="DHCP Lease Time" variant="outlined" size="small" value={lease.get()} onChange={(e) => HandleChangeValue(lease, e)}>
                   {leaseTimeOptions.map((i) => (
                     <MenuItem value={i.value}>{i.name}</MenuItem>
                   ))}
@@ -138,14 +146,20 @@ export default function SetNetwork() {
             </ListItem>
 
             <ListItem>
-              <TextField fullWidth label="DHCP Start Address" variant="outlined" size="small" value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
+              <TextField fullWidth label="Range Start Address" variant="outlined" size="small" value={start1.get()} onChange={(e) => HandleChangeValue(start1, e)} />
             </ListItem>
 
             <ListItem>
-              <TextField fullWidth label="Maximum number of Clients" variant="outlined" size="small" value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
+              <TextField fullWidth label="Range End Address" variant="outlined" size="small" value={end1.get()} onChange={(e) => HandleChangeValue(end1, e)} />
             </ListItem>
+
+            <ListItem>
+              <TextField fullWidth label="Device Name" variant="outlined" size="small" value={deviceName.get()} onChange={(e) => HandleChangeValue(deviceName, e)} />
+            </ListItem>
+
           </List>
         </Paper>
+
       </Box>
 
 
@@ -160,17 +174,30 @@ export default function SetNetwork() {
         <Box px={{ md: '4rem' }}>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={5} md={3} sx={{ textAlign: "left" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
-                  {`DHCP Start address`}
+                  {`DHCP Enable`}
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={7} md={9}>
               <Item>
-                <TextField1 value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
+                <FormControlLabel label="Enable" control={<Checkbox size="small" value={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />} />
               </Item>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Device Name`}
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={8} md={6} sx={{ textAlign: "left", "& input": { fontSize: { xs: "15px", md: "1rem" } } }} >
+              <Item><TextFieldSelf placeholder="Device Name" /></Item>
             </Grid>
           </Grid>
 
@@ -178,13 +205,28 @@ export default function SetNetwork() {
             <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
-                  {`Maximum number of Clients `}
+                  {`DHCP Range`}
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={9} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
-                <TextField1 value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
+                <Stack direction={`row`} alignItems="center">
+                  <Typography component={`span`}>
+                    192.168.
+                  </Typography>
+                  <TextField1 value={start1.get()} onChange={(e) => HandleJudgeValue(start1, e)} />.
+                  <TextField1 value={start2.get()} onChange={(e) => HandleJudgeValue(end1, e)} />
+                </Stack>
+              </Item>
+              <Item>
+                <Stack direction={`row`} alignItems="center">
+                  <Typography component={`span`}>
+                    192.168.
+                  </Typography>
+                  <TextField1 value={end1.get()} onChange={(e) => HandleJudgeValue(start2, e)} />.
+                  <TextField1 value={end2.get()} onChange={(e) => HandleJudgeValue(end2, e)} />
+                </Stack>
               </Item>
             </Grid>
           </Grid>
@@ -199,15 +241,41 @@ export default function SetNetwork() {
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
-                <Select size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
+                <Select size="small" value={lease.get()} onChange={(e) => HandleChangeValue(lease, e)}>
                   {leaseTimeOptions.map((i) => (
                     <MenuItem value={i.value}>{i.name}</MenuItem>
                   ))}
                 </Select>
               </Item>
+
             </Grid>
           </Grid>
 
+          <Grid container spacing={2}>
+            <Grid xs={8} md={3} sx={{ textAlign: "left" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`DHCP Gateway`}
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={9} sx={{ textAlign: "left", fontSize: { xs: "15px", md: "1rem" } }}>
+              <Item>
+                <FormControl sx={{ flexDirection: "row" }}>
+                  <RadioGroup row value={mode.get()} onChange={(e) => HandleChangeValue(mode, e)} >
+                    <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+                    <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
+                  </RadioGroup>
+                  <FormControlLabel
+                    value={gateway.get()}
+                    control={<TextFieldSelf sx={{ "& input": { fontSize: { xs: "15px", md: "1rem" } } }} placeholder="192.168.10.1" />}
+                    disabled={mode.get() == "auto"}
+                    onChange={(e) => HandleChangeValue(gateway, e)}
+                  />
+                </FormControl>
+              </Item>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
 

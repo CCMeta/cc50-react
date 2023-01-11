@@ -62,45 +62,9 @@ export default function SetSystem() {
 
   /*********createEffect**********/
   createEffect(async () => {
-    const fetching_reboot = async () => {
-      return await fetching(FormBuilder({
-        "cmd": `system.reboot`,
-        "token": sessionStorage.getItem('sid'),
-      }), 'webcmd'
-      ).then(res => {
-        // setTimeout()
-      })
-    }
-    const fetching_reset = async () => {
-      return await fetching(FormBuilder({
-        "cmd": `system.reset`,
-        "token": sessionStorage.getItem('sid'),
-      }), 'webcmd'
-      ).then(res => {
-        // setTimeout()
-      })
-    }
-    const fetching_get_fota = async () => {
-      return await fetching(FormBuilder({
-        "cmd": `system.firmware.get`,
-        "token": sessionStorage.getItem('sid'),
-      }), 'webcmd'
-      ).then(res => {
-        // setTimeout()
-        currentVersion.set(res.current);
-        newVersion.set(res.latest);
-      })
-    }
-    const fetching_fota = async () => {
-      return await fetching(FormBuilder({
-        "cmd": `system.firmware.set` + { "update": 1 },
-        "token": sessionStorage.getItem('sid'),
-      }), 'webcmd'
-      ).then(res => {
-        // setTimeout()
+    
 
-      })
-    }
+    
   })
 
   /*********functions**********/
