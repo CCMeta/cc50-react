@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import 'animate.css';
 import cookie from 'cookie';
 import { useNavigate } from 'react-router-dom';
-import { Define, fetching, FormBuilder } from './utils';
+import { Define, fetching, FormBuilder, webcmd } from './utils';
 
 
 export default () => {
@@ -24,6 +24,14 @@ export default () => {
     //this part is fucked   to be defined
     if (sessionStorage.getItem('sid') === null)
       sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth)
+
+    //If no need login, close login modal
+    await webcmd(`hello`).then(res => {
+      if (res.code === 200) {
+        console.log(`login result msg = ${res.msg}`)
+        modalOpen.set(false)
+      }
+    })
 
   })
 

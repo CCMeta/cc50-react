@@ -669,7 +669,7 @@ export default () => {
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Typography variant={`subtitle2`} component="div">
+                  <Typography textAlign="center" variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div">
                       {`Free (${data_data_Usage_count().textData.ratio}%)`}
                     </Typography>
@@ -778,7 +778,7 @@ export default () => {
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Typography variant={`subtitle2`} component="div">
+                  <Typography textAlign="center" variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div">
                       {`5G Clients`}
                     </Typography>
@@ -913,7 +913,7 @@ export default () => {
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Typography variant={`subtitle2`} component="div">
+                  <Typography textAlign="center" variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div">
                       {`2.4G Clients`}
                     </Typography>

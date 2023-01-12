@@ -1,12 +1,12 @@
-import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, List, ListItem, ListItemText, ListSubheader, MenuItem, Paper, Radio, RadioGroup, Select, Stack, Switch, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Divider, FormControl, IconButton, InputLabel, List, ListItem, ListItemText, ListSubheader, MenuItem, Paper, Popover, Select, Stack, TextField, Typography } from '@mui/material';
 
 import { createEffect, useObserver } from 'react-solid-state';
 
-import { CheckCircle } from '@mui/icons-material';
+import { CheckCircle, HelpOutlineRounded as HelpIcon } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
-import { Define, fetching, FormBuilder, webcmd } from './utils';
+import { Define, webcmd } from './utils';
 
 
 function Item(props) {
@@ -36,16 +36,16 @@ function TextFieldProto(props) {
 export default function SetNetwork() {
   /*********constants**********/
   const leaseTimeOptions = [
-    { value: 0, name: "Auto" },
-    { value: 1, name: "1 Hour" },
-    { value: 6, name: "6 Hours" },
-    { value: 12, name: "12 Hours" },
-    { value: 24, name: "24 Hours" }
+    { value: `1h`, name: "1 Hour" },
+    { value: `6h`, name: "6 Hours" },
+    { value: `12h`, name: "12 Hours" },
+    { value: `24h`, name: "24 Hours" }
   ]
   //定义动态变量
   const enable = Define(true), mode = Define("auto"), gateway = Define("192.168.10.1"), deviceName = Define("Unnamed");
   const start1 = Define(""), end1 = Define(""), start2 = Define(""), end2 = Define("");
-  const start = Define(100), limit = Define(150), expire = Define(12)
+  const start = Define(100), limit = Define(150), expire = Define(`12h`)
+  const HelperLeaseTime = Define(null)
 
   const HandleChangeBoolean = (element, event) => {
     element.set(event.target.checked); //滑动按钮、勾选框等
@@ -68,38 +68,29 @@ export default function SetNetwork() {
   /*********createEffect**********/
   createEffect(async () => {
 
-    await webcmd(`network.dhcp.get`).then(res => {
-      // start.set(res.start);
-      // limit.set(res.limit);
-      // expire.set(res.expire);
+    await webcmd(`network.dhcp.get`).then(v => {
+      const res = v.data
+      start.set(res.start);
+      limit.set(res.limit);
+      expire.set(res.expire);
     })
 
   })
 
   /*********functions**********/
-  const fetching_get_network = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `network.dhcp.get`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      start.set(res.start);
-      limit.set(res.limit);
-      expire.set(res.expire);
-    })
-  }
   const onSubmit = async () => {
     const form = {
       start: parseInt(start.get()),
       limit: parseInt(limit.get()),
-      expire: parseInt(expire.get()),
+      expire: expire.get(),
     }
-    return console.log(form)
+    // return console.log(form)
     const result = await webcmd(`network.dhcp.set`, form)
     if (result.code === 200) {
       alert(result.msg)
     }
   }
+
   /*********styles**********/
   //   sx={{height: "30px", padding: "5px","& input":{fontSize: {xs:"12px", md:"1rem"}}}}
 
@@ -193,7 +184,20 @@ export default function SetNetwork() {
             <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
-                  {`DHCP Lease`}
+                  {`DHCP Lease Time`}
+                  <Box component="span">
+                    <IconButton onMouseEnter={e => HelperLeaseTime.set(e.currentTarget)} size="small" color="info">
+                      <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                    <Popover onClose={e => HelperLeaseTime.set(null)}
+                      anchorEl={HelperLeaseTime.get()}
+                      open={HelperLeaseTime.get() !== null}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                      transformOrigin={{ vertical: 'top', horizontal: 'center', }}
+                      disableRestoreFocus>
+                      <Alert onMouseLeave={e => HelperLeaseTime.set(null)} severity="info">This is an info alert — check it out!</Alert>
+                    </Popover>
+                  </Box>
                 </Typography>
               </Item>
             </Grid>

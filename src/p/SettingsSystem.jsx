@@ -1,15 +1,15 @@
-import {
-  Divider, Stack, Box, Button, styled, Typography, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Grid, Alert
-} from '@mui/material';
-import { createEffect, useObserver } from 'react-solid-state';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import SystemUpdateIcon from '@mui/icons-material/SystemUpdate';
 import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Alert, AlertTitle, Box, Button, Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle, Divider, Stack, Typography
+} from '@mui/material';
+import { createEffect, useObserver } from 'react-solid-state';
 
 import 'animate.css';
 import * as React from 'react';
-import { bytesToHuman, Define, fetching, rpc as $rpc, webcmd, FormBuilder } from './utils';
+import { Define, fetching, FormBuilder, webcmd } from './utils';
 
 function BackColorTypography(props) {
   return (
@@ -21,7 +21,7 @@ function BackColorTypography(props) {
 function StackButton(props) {
   return (
     <Stack sx={{ mt: "3rem", mb: "1rem", width: { md: "40%", xs: "100%" } }}>
-      <Button variant="outlined" {...props}></Button>
+      <Button variant="contained" color="error" {...props}></Button>
     </Stack>
   );
 }
@@ -35,34 +35,7 @@ export default function SetSystem() {
   const currentVersion = Define(""), newVersion = Define(""), fotaLoading = Define(false);
   const openFotaDialog = Define(false);
   const tips = Define("");
-  const OpenDialogReboot = (types) => {
-    if (types == "reboot") {
-      tips.set("")
-    } else if (types == "reset") {
-      tips.set("")
-    }
-    type.set(types);
-    openDialog.set(true);
-  }
 
-  const OpenDialogReset = (types) => {
-    if (types == "reboot") {
-      tips.set("When you reboot your CPE, it will lost some information of connected devices, and all devices connected to this CPE will also be disconnected.")
-    } else if (types == "reset") {
-      tips.set("When the reset your CPE completes, the CPE will need to be set up again and then all devices will have to reconnect the new settings.")
-    }
-    type.set(types);
-    openDialog.set(true);
-  }
-
-  const CloseDialog = () => {
-    if (type.get() == "reboot") {
-      //调用重启函数
-    } else if (type.get() == "reset") {
-      //调用格式化函数
-    }
-    openDialog.set(false);
-  }
   const checkNewV = () => {
     fotaLoading.set(true);
     //调用查询FOTA函数
@@ -126,19 +99,15 @@ export default function SetSystem() {
       <Stack alignItems={`center`}>
 
         <StackButton onClick={() => dialogReboot.set(true)}>Reboot</StackButton>
-        <Stack>
-          <Alert variant="filled" severity="error">
-            {`Tips: Some data will be lost after reboot !!!`}
-          </Alert>
-        </Stack>
+        <Alert sx={{ width: { md: "40%", xs: "100%" } }} variant="outlined" severity="info">
+          {`Tips: Some data will be lost after reboot !!!`}
+        </Alert>
         <Divider orientation="horizontal" />
 
-        <StackButton onClick={() => dialogReset.set(true)}>RESET</StackButton>
-        <Stack>
-          <Alert variant="filled" severity="error">
-            {`Tips: All content and set items will be lost after reset.`}
-          </Alert>
-        </Stack>
+        <StackButton onClick={() => dialogReset.set(true)}>Reset Factory</StackButton>
+        <Alert sx={{ width: { md: "40%", xs: "100%" } }} variant="outlined" severity="info">
+          {`Tips: All content and set items will be lost after reset.`}
+        </Alert>
 
         <Stack sx={{ mt: "3rem", mb: "1rem", width: { md: "40%", xs: "100%" } }}>
           <LoadingButton onClick={(e) => checkNewV()} loading={fotaLoading.get()} loadingIndicator="Loading…" variant="outlined" disabled >
@@ -146,13 +115,12 @@ export default function SetSystem() {
           </LoadingButton>
         </Stack>
         {/* <StackButton onClick={checkNewV}>FOTA</StackButton> */}
-
-        <Stack>
-          <Alert variant="filled" severity="error">
-            Click the button to detect the new version, current version: &nbsp;
-            <Typography sx={{ display: "inline-block", textDecoration: "underline", fontSize: "0.875rem" }}>{currentVersion.get()}</Typography>
-          </Alert>
-        </Stack>
+        <Alert sx={{ width: { md: "40%", xs: "100%" } }} variant="outlined" severity="info">
+          Click the button to detect the new version, current version: &nbsp;
+          <Typography sx={{ display: "inline-block", textDecoration: "underline", fontSize: "0.875rem" }}>
+            {currentVersion.get()}
+          </Typography>
+        </Alert>
 
 
         <Dialog open={dialogReboot.get()} onClose={() => dialogReboot.set(false)} >
