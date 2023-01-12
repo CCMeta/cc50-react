@@ -22,11 +22,11 @@ function Item(props) {
 
 function TextFieldSelf(props) {
   return (
-    <TextField label="" variant="outlined" size="small" {...props} />
+    <TextField label="" variant="outlined" type="number" size="small" {...props} />
   );
 }
 
-function TextField1(props) {
+function TextFieldProto(props) {
   return (
     <TextField label="" variant="outlined" type="number" size="small" {...props} />
   );
@@ -138,11 +138,11 @@ export default function SetNetwork() {
             </ListItem>
 
             <ListItem>
-              <TextField fullWidth label="DHCP Start Address" variant="outlined" size="small" value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
+              <TextFieldProto fullWidth label="DHCP Start Address" variant="outlined" size="small" value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
             </ListItem>
 
             <ListItem>
-              <TextField fullWidth label="Maximum number of Clients" variant="outlined" size="small" value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
+              <TextFieldProto fullWidth label="Maximum number of Clients" variant="outlined" size="small" value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
             </ListItem>
           </List>
         </Paper>
@@ -169,7 +169,7 @@ export default function SetNetwork() {
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
-                <TextField1 value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
+                <TextFieldProto value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
               </Item>
             </Grid>
           </Grid>
@@ -184,7 +184,7 @@ export default function SetNetwork() {
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
-                <TextField1 value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
+                <TextFieldProto value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
               </Item>
             </Grid>
           </Grid>

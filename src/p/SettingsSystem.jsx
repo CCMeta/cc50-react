@@ -9,7 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import 'animate.css';
 import * as React from 'react';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
+import { bytesToHuman, Define, fetching, rpc as $rpc, webcmd, FormBuilder } from './utils';
 
 function BackColorTypography(props) {
   return (
@@ -31,18 +31,30 @@ export default function SetSystem() {
   /*********constants**********/
   //定义动态变量
   const openDialog = Define(false), type = Define("");
+  const dialogReboot = Define(false), dialogReset = Define(false);
   const currentVersion = Define(""), newVersion = Define(""), fotaLoading = Define(false);
   const openFotaDialog = Define(false);
   const tips = Define("");
-  const OpenDialog = (types) => {
+  const OpenDialogReboot = (types) => {
     if (types == "reboot") {
-      tips.set("When you reboot your CPE, it will lost some information of connected devices, and all devices connected to this CPE will also be disconnected. When the reboot completes, the CPE will need to be set up again and then all devices will have to reconnect the new settings.")
+      tips.set("")
     } else if (types == "reset") {
-      tips.set("When you reset your CPE, it will lost all of connected devices's information, and all devices connected to this CPE will also be disconnected. When the reset completes, the CPE will need to be set up again and then all devices will have to reconnect the new settings.")
+      tips.set("")
     }
     type.set(types);
     openDialog.set(true);
   }
+
+  const OpenDialogReset = (types) => {
+    if (types == "reboot") {
+      tips.set("When you reboot your CPE, it will lost some information of connected devices, and all devices connected to this CPE will also be disconnected.")
+    } else if (types == "reset") {
+      tips.set("When the reset your CPE completes, the CPE will need to be set up again and then all devices will have to reconnect the new settings.")
+    }
+    type.set(types);
+    openDialog.set(true);
+  }
+
   const CloseDialog = () => {
     if (type.get() == "reboot") {
       //调用重启函数
@@ -62,9 +74,9 @@ export default function SetSystem() {
 
   /*********createEffect**********/
   createEffect(async () => {
-    
 
-    
+
+
   })
 
   /*********functions**********/
@@ -77,6 +89,29 @@ export default function SetSystem() {
 
     })
   }
+  const onReboot = async () => {
+    const form = {
+      reboot: 1
+    }
+    return console.log(form)
+    const result = await webcmd(`system.reboot`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+      dialogReboot.set(false)
+    }
+  }
+  const onReset = async () => {
+    const form = {
+      reset: 1
+    }
+    return console.log(form)
+    const result = await webcmd(`system.reset`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+      dialogReset.set(false)
+    }
+  }
+
   /*********styles**********/
 
   return useObserver(() => (
@@ -90,7 +125,7 @@ export default function SetSystem() {
 
       <Stack alignItems={`center`}>
 
-        <StackButton onClick={(e) => OpenDialog("reboot")}>Reboot</StackButton>
+        <StackButton onClick={() => dialogReboot.set(true)}>Reboot</StackButton>
         <Stack>
           <Alert variant="filled" severity="error">
             {`Tips: Some data will be lost after restart !!!`}
@@ -98,7 +133,7 @@ export default function SetSystem() {
         </Stack>
         <Divider orientation="horizontal" />
 
-        <StackButton onClick={(e) => OpenDialog("reset")}>RESET</StackButton>
+        <StackButton onClick={() => dialogReset.set(true)}>RESET</StackButton>
         <Stack>
           <Alert variant="filled" severity="error">
             {`Tips: All content and set items will be lost after RESET.`}
@@ -106,7 +141,7 @@ export default function SetSystem() {
         </Stack>
 
         <Stack sx={{ mt: "3rem", mb: "1rem", width: { md: "40%", xs: "100%" } }}>
-          <LoadingButton onClick={(e) => checkNewV()} loading={fotaLoading.get()} loadingIndicator="Loading…" variant="outlined" >
+          <LoadingButton onClick={(e) => checkNewV()} loading={fotaLoading.get()} loadingIndicator="Loading…" variant="outlined" disabled >
             Check FOTA
           </LoadingButton>
         </Stack>
@@ -119,23 +154,52 @@ export default function SetSystem() {
           </Alert>
         </Stack>
 
-        <Dialog open={openDialog.get()} onClose={CloseDialog} >
+
+        <Dialog open={dialogReboot.get()} onClose={() => dialogReboot.set(false)} >
           <DialogTitle>
-            <ErrorOutlineIcon color='error' sx={{ position: "relative", top: "7px", fontSize: 40 }} /><Typography sx={{ display: "inline-block", fontSize: 28 }}>Warning</Typography>
+            <Stack direction="row" alignItems="center">
+              <ErrorOutlineIcon color='error' sx={{ mr: `0.5rem` }} />
+              <Typography variant="subtitle1" >
+                {`Reboot Warning`}
+              </Typography>
+            </Stack>
           </DialogTitle>
-          <DialogContent>
-            <DialogContentText>{tips.get()}<br /><br />Do you want to continue?</DialogContentText>
+          <DialogContent dividers>
+            <DialogContentText>
+              <Typography variant="body2" >
+                {`When you restarting this device, some saved temporary information will be lost, and every connected client will be disconnected.`}<br /><br />Do you want to continue?
+              </Typography>
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={CloseDialog}>No</Button>
-            <Button onClick={CloseDialog}>Yes</Button>
+            <Button variant="outlined" onClick={() => dialogReboot.set(false)}>No</Button>
+            <Button variant="outlined" onClick={onReboot}>Yes</Button>
           </DialogActions>
         </Dialog>
 
-        <Dialog
-          open={openFotaDialog.get()}
-          onClose={() => { openFotaDialog.set(false) }}
-        >
+        <Dialog open={dialogReset.get()} onClose={() => dialogReset.set(false)} >
+          <DialogTitle>
+            <Stack direction="row" alignItems="center">
+              <ErrorOutlineIcon color='error' sx={{ mr: `0.5rem` }} />
+              <Typography variant="subtitle1" >
+                {`Reset Warning`}
+              </Typography>
+            </Stack>
+          </DialogTitle>
+          <DialogContent dividers>
+            <DialogContentText>
+              <Typography variant="body2" >
+                {`When the Reset this device, All the set content will be cleared and cannot be retrieved. Please record the set information in detail to prevent loss.`}<br /><br />Do you want to continue?
+              </Typography>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined" onClick={() => dialogReset.set(false)}>No</Button>
+            <Button variant="outlined" onClick={onReset}>Yes</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={openFotaDialog.get()} onClose={() => { openFotaDialog.set(false) }}>
           <DialogTitle>
             <SystemUpdateIcon color='success' sx={{ position: "relative", top: "7px", fontSize: 40 }} /><Typography sx={{ display: "inline-block", fontSize: 28 }}>Update</Typography>
           </DialogTitle>

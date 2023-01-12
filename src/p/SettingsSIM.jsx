@@ -135,31 +135,46 @@ export default function SetSIM() {
         </Divider>
 
         <Box px={{ md: '4rem' }}>
+
           <Grid container spacing={2}>
-            <Grid xs={4} md={3} sx={{ textAlign: "left" }}>
+            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Network`}
                 </Typography>
               </Item>
+            </Grid>
+            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+              <Item>
+                <BpCheckbox label="Enable" checked={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />
+              </Item>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Roaming`}
                 </Typography>
               </Item>
+            </Grid>
+            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+              <Item>
+                <BpCheckbox label="Enable" checked={roaming.get()} onChange={(e) => HandleChangeBoolean(roaming, e)} />
+              </Item>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DataMode`}
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={4} md={6} sx={{ textAlign: "left" }}>
-              <Item>
-                <BpCheckbox label="Enable" checked={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />
-              </Item>
-              <Item>
-                <BpCheckbox label="Enable" checked={roaming.get()} onChange={(e) => HandleChangeBoolean(roaming, e)} />
-              </Item>
+            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Select size="small" value={dataMode.get()} onChange={(e) => HandleChangeValue(dataMode, e)} >
                   {modes.map((mode) => (
@@ -169,8 +184,11 @@ export default function SetSIM() {
               </Item>
             </Grid>
           </Grid>
+          
         </Box>
 
+        {/* ⬇ This is APN  */}
+        {/* 
         <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
           <Typography variant="h6">
             <b>APN Configuration</b>
@@ -202,13 +220,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl md={{ paddingLeft: "9px" }} xs={{ paddingLeft: "0px" }}>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    value={selectMode.get()}
-                    onChange={(e) => HandleChangeValue(selectMode, e)}
-                  >
+                  <RadioGroup row name="row-radio-buttons-group" value={selectMode.get()} onChange={(e) => HandleChangeValue(selectMode, e)}>
                     <FormControlLabel value="auto" control={<Radio />} label="Auto" />
                     <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
                   </RadioGroup>
@@ -259,13 +271,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl sx={{ paddingLeft: "9px", flexDirection: "row", }}>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    value={authType.get()}
-                    onChange={(e) => HandleChangeValue(authType, e)}
-                  >
+                  <RadioGroup row name="row-radio-buttons-group" value={authType.get()} onChange={(e) => HandleChangeValue(authType, e)}>
                     <FormControlLabel value="0" control={<Radio />} label="PAP" />
                     <FormControlLabel value="1" control={<Radio />} label="CHAP" />
                     <FormControlLabel value="2" control={<Radio />} label="PAP/CHAP" />
@@ -276,7 +282,7 @@ export default function SetSIM() {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid xs={12} md={3} sx={{ textAlign: "left", marginTop: "30px" }}>
+            <Grid xs={12} md={3} sx={{ textAlign: "left" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Username`}
@@ -300,6 +306,7 @@ export default function SetSIM() {
             </Grid>
           </Grid>
         </Box>
+         */}
       </Box>
 
       <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
