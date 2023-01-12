@@ -128,7 +128,7 @@ export default function SetSystem() {
         <StackButton onClick={() => dialogReboot.set(true)}>Reboot</StackButton>
         <Stack>
           <Alert variant="filled" severity="error">
-            {`Tips: Some data will be lost after restart !!!`}
+            {`Tips: Some data will be lost after reboot !!!`}
           </Alert>
         </Stack>
         <Divider orientation="horizontal" />
@@ -136,7 +136,7 @@ export default function SetSystem() {
         <StackButton onClick={() => dialogReset.set(true)}>RESET</StackButton>
         <Stack>
           <Alert variant="filled" severity="error">
-            {`Tips: All content and set items will be lost after RESET.`}
+            {`Tips: All content and set items will be lost after reset.`}
           </Alert>
         </Stack>
 
