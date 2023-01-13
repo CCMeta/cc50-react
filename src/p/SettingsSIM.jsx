@@ -6,6 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
 import { boolToInt, Define, webcmd } from './utils';
+import HelpPopover from './c/HelpPopover';
 
 function BpCheckbox(props) {
   return (
@@ -141,6 +142,9 @@ export default function SetSIM() {
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Network`}
+                  <HelpPopover>
+                    {`Disable or Enable the Mobile Network`}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
@@ -156,6 +160,9 @@ export default function SetSIM() {
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Roaming`}
+                  <HelpPopover>
+                    {`If Disable this option, Mobile Network will not support Roaming.`}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
@@ -171,6 +178,9 @@ export default function SetSIM() {
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DataMode`}
+                  <HelpPopover>
+                    {`Check well you SIM card, select the same data mode or let him auto.`}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
