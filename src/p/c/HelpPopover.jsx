@@ -11,7 +11,7 @@ export default props => {
   return useObserver(() => (
     <Box component="span">
       <IconButton onMouseEnter={e => HelperLeaseTime.set(e.currentTarget)} size="small">
-        <Typography lineHeight={1} variant="caption" component="span" color="#08979c">
+        <Typography lineHeight={1} variant="caption" component="span" color="#29b6f6">
           <HelpIcon fontSize="small" />
         </Typography>
       </IconButton>

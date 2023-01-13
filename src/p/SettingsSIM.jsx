@@ -58,6 +58,9 @@ export default function SetSIM() {
   const HandleChangeValue = (dom, event) => {
     dom.set(event.target.value); //输入框、选择框等
   };
+  const helpTextRoaming = `If Disable this option, Mobile Network will not support Roaming.`
+  const helpTextDataMode = `Check well you SIM card, select the same data mode or let him auto.`
+  const helpTextNetwork = `Disable or Enable the Mobile Network`
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -105,17 +108,32 @@ export default function SetSIM() {
               </ListItemText>
             </ListItem>
             <ListItem>
-              <ListItemText primary="Network" />
+              <ListItemText>
+                {`Network`}
+                <HelpPopover>
+                  {helpTextNetwork}
+                </HelpPopover>
+              </ListItemText>
               <BpCheckbox label="Enable" checked={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Roaming" />
+              <ListItemText>
+                {`Roaming`}
+                <HelpPopover>
+                  {helpTextRoaming}
+                </HelpPopover>
+              </ListItemText>
               <BpCheckbox label="Enable" checked={roaming.get()} onChange={(e) => HandleChangeBoolean(roaming, e)} />
             </ListItem>
             <ListItem>
               <FormControl fullWidth>
-                <InputLabel id="select-label-Wireless-DataMode">Data Mode</InputLabel>
-                <Select labelId="select-label-Wireless-DataMode" label="Data Mode" variant="outlined" size="small" value={dataMode.get()} onChange={(e) => HandleChangeValue(dataMode, e)}>
+                <InputLabel id="select-label-Wireless-DataMode">
+                  Data Mode
+                  <HelpPopover>
+                    {helpTextDataMode}
+                  </HelpPopover>
+                </InputLabel>
+                <Select sx={{ '& fieldset > legend': { pr: `1rem` } }} labelId="select-label-Wireless-DataMode" label={`Data Mode`} variant="outlined" size="small" value={dataMode.get()} onChange={(e) => HandleChangeValue(dataMode, e)}>
                   {modes.map((mode) => (
                     <MenuItem value={mode.value}>{mode.name}</MenuItem>
                   ))}
@@ -143,7 +161,7 @@ export default function SetSIM() {
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Network`}
                   <HelpPopover>
-                    {`Disable or Enable the Mobile Network`}
+                    {helpTextNetwork}
                   </HelpPopover>
                 </Typography>
               </Item>
@@ -161,7 +179,7 @@ export default function SetSIM() {
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Roaming`}
                   <HelpPopover>
-                    {`If Disable this option, Mobile Network will not support Roaming.`}
+                    {helpTextRoaming}
                   </HelpPopover>
                 </Typography>
               </Item>
@@ -179,7 +197,7 @@ export default function SetSIM() {
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DataMode`}
                   <HelpPopover>
-                    {`Check well you SIM card, select the same data mode or let him auto.`}
+                    {helpTextDataMode}
                   </HelpPopover>
                 </Typography>
               </Item>
@@ -194,7 +212,7 @@ export default function SetSIM() {
               </Item>
             </Grid>
           </Grid>
-          
+
         </Box>
 
         {/* ⬇ This is APN  */}

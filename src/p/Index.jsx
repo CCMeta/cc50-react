@@ -102,10 +102,8 @@ const getRemainDaysOfMonthUsage = start => {
 
 export default () => {
   /*********constants**********/
-  const data_for_month_usage = Define({
-    start: 1,
-    limit: 150,
-  })
+  const data_plan_start = Define(1)
+  const data_plan_limit = Define(150)
 
   const data_for_week_chart = Define((() => {
     let arr = []
@@ -173,7 +171,7 @@ export default () => {
   const data_data_Usage_count = () => {
     let tx = data_traffic_5G.get()?.months?.[0].tx
     let rx = data_traffic_5G.get()?.months?.[0].rx
-    let free = (data_for_month_usage.get().limit * Math.pow(1024, 2)) - (tx + rx)
+    let free = (data_plan_limit.get() * Math.pow(1024, 2)) - (tx + rx)
     const chartData = [
       //data_data_Usage_count
       { "id": "FREE", "value": free },
@@ -222,6 +220,13 @@ export default () => {
     data_clients_info_5G.set((await webcmd(`wifi.stat.5g.get`))?.data || [])
     // data_clients_info_24G.set(await fetching(null, 'wifi', `/sta_info/ra0`))
     data_clients_info_24G.set((await webcmd(`wifi.stat.24g.get`))?.data || [])
+
+    // set traffic plan data
+    await webcmd(`traffic.project.get`).then(v => {
+      const res = v.data
+      data_plan_limit.set(res.limit)
+      data_plan_start.set(res.start)
+    })
 
     data_wan_network_interface_dump.set(await fetching_wan_network_interface_dump())
 
@@ -399,6 +404,17 @@ export default () => {
     })
   }
 
+  const onSubmitPlan = async () => {
+    const form = {
+      limit: data_plan_limit.get(),
+      start: data_plan_start.get(),
+    }
+    return console.log(form)
+    const result = await webcmd(`system.reset`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+  }
 
   /*********styles**********/
 
@@ -685,7 +701,7 @@ export default () => {
                   <ListItemText primary="Data Limit" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color='text.secondary'>
-                      {`${data_for_month_usage.get().limit} GB`}
+                      {`${data_plan_limit.get()} GB`}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -694,7 +710,7 @@ export default () => {
                   <ListItemText primary="Start Day" />
                   <ListItemSecondaryAction>
                     <Typography variant="caption" color='text.secondary'>
-                      {`Day ${data_for_month_usage.get().start}`}
+                      {`Day ${data_plan_start.get()}`}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -705,18 +721,18 @@ export default () => {
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
                         value={normalise(
-                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[0],
-                          getRemainDaysOfMonthUsage(data_for_month_usage.get().start)[1],
+                          getRemainDaysOfMonthUsage(data_plan_start.get())[0],
+                          getRemainDaysOfMonthUsage(data_plan_start.get())[1],
                         )} />
                       <Typography variant="caption">
-                        {`${getRemainDaysOfMonthUsage(data_for_month_usage.get().start).join(' / ')}`}
+                        {`${getRemainDaysOfMonthUsage(data_plan_start.get()).join(' / ')}`}
                       </Typography>
                     </Stack>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant={'contained'}>
-                    Set Usage Plan
+                    Set Traffic Plan
                   </Button>
 
                   <Popover
@@ -727,12 +743,13 @@ export default () => {
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
                     <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                       <ListItem>
-                        <TextField size='small' fullWidth label="Set Limit of GB" type="number" />
+                        <TextField size='small' fullWidth label="Set Month data Limit of GB" value={data_plan_limit.get()} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                          onChange={e => data_plan_limit.set(parseInt(e.target.value))} />
                       </ListItem>
                       <ListItem>
                         <FormControl size="small" fullWidth>
                           <InputLabel>Start Date</InputLabel>
-                          <Select MenuProps={{ PaperProps: { style: { maxHeight: "25vh" } } }} label="Start Date" size="small" fullWidth>
+                          <Select MenuProps={{ PaperProps: { style: { maxHeight: "25vh" } } }} label="Start Date" size="small" fullWidth value={data_plan_start.get()} onChange={e => data_plan_start.set(e.target.value)}>
                             {(() => {
                               let items = []
                               for (let index = 1; index < 32; index++) {
@@ -746,7 +763,7 @@ export default () => {
                         </FormControl>
                       </ListItem>
                       <ListItem>
-                        <Button color="info" fullWidth variant="contained">Confirm</Button>
+                        <Button onClick={onSubmitPlan} color="info" fullWidth variant="contained">Confirm</Button>
                       </ListItem>
                     </List>
                   </Popover>
