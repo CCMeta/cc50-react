@@ -7,6 +7,7 @@ import * as React from 'react';
 import { boolToInt, Define, fetching, FormBuilder, webcmd } from './utils';
 import { CheckCircle, Done, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { display } from '@mui/system';
+import HelpPopover from './c/HelpPopover';
 
 function BpCheckbox(props) {
   return (
@@ -58,7 +59,7 @@ export default function SetWiFi() {
     { value: 1, name: "B only" },
     { value: 4, name: "G only" },
     { value: 9, name: "B/G/GN mode" },
-    { value: 16, name: "HE_2G mode" },
+    { value: 16, name: "B/G/GN/AX mode" },
   ]
   const wirelessModes_5G = [
     { value: 0, name: "B/G mixed" },
@@ -66,7 +67,7 @@ export default function SetWiFi() {
     { value: 8, name: "A/N in 5 band" },
     { value: 14, name: "A/AC/AN mixed" },
     { value: 15, name: "AC/AN mixed" },
-    { value: 17, name: "HE_5G mode" },
+    { value: 17, name: "AC/AN/AX mode" },
   ]
   const channels_24G = [
     { value: 0, name: "Channel 0 (Auto)" },
@@ -209,9 +210,9 @@ export default function SetWiFi() {
     <Grid container spacing={2} sx={{ display: { xs: "none", md: "block" }, my: { xs: '1rem', md: '1rem' } }}>
       <Grid sx={{ textAlign: "left" }}>
         <FormGroup>
-          <FormControlLabel checked={syncConfigures.get()} control={<Checkbox disableRipple />}
+          <BpCheckbox checked={syncConfigures.get()} control={<Checkbox disableRipple />}
             onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G common configuration" />
-          <FormControlLabel checked={showAdvances.get()} control={<Checkbox disableRipple />}
+          <BpCheckbox checked={showAdvances.get()} control={<Checkbox disableRipple />}
             onChange={(e) => ShowOrHide5G(e)} label="Show advanced options" />
         </FormGroup>
       </Grid>
@@ -232,14 +233,14 @@ export default function SetWiFi() {
         </Grid>
         <Grid xs={4} md={4} >
           <Item>
-            <Typography variant="subtitle1" color='text.secondary'>
+            <Typography textAlign="center" variant="subtitle1" color='text.secondary'>
               <b>2.4G</b>
             </Typography>
           </Item>
         </Grid>
         <Grid xs={4} md={4} sx={{ display: { xs: "none", md: "block" } }}>
           <Item>
-            <Typography variant="subtitle1" color='text.secondary'>
+            <Typography textAlign="center" variant="subtitle1" color='text.secondary'>
               <b>5G</b>
             </Typography>
           </Item>
@@ -250,38 +251,60 @@ export default function SetWiFi() {
         <Grid xs={4} sx={{ textAlign: "left", whiteSpace: "nowrap" }}>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
-              {`WiFi Enable`}
+              {`WiFi ON`}
+              <HelpPopover>
+                {`Check this box to open Wi-Fi, uncheck to disable`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`WiFi Name`}
+              <HelpPopover>
+                {`The SSID can be any alphanumeric, case-sensitive entry from 2 to 32 characters.
+                The printable characters plus the space (ASCII 0x20) are allowed.`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`Hide WiFi`}
+              <HelpPopover>
+                {`Check this box to hide WiFi name, do not broadcast`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`WiFi Password`}
+              <HelpPopover>
+                {`The device will accept passwords no less than 8 characters in length, and no more than 32 characters in length.`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`AP Isolation`}
+              <HelpPopover>
+                {`Completely block wireless client-to-client traffic. 
+                Even broadcasts don't go from one wireless client to another.`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`Security Protocol`}
+              <HelpPopover>
+                {`When choosing from among WEP, WPA, WPA2 and WPA3 wireless security protocols, experts agree WPA3 is best for Wi-Fi security. 
+                As the most up-to-date wireless encryption protocol, WPA3 is the most secure choice. 
+                Some wireless APs do not support WPA3, the next best option is WPA2, which is widely deployed in the enterprise space today.`}
+              </HelpPopover>
             </Typography>
           </Item>
         </Grid>
         <Grid xs={8} md={4} sx={{ textAlign: "left", "& input": { fontSize: { xs: "13px", md: "1rem" } } }}>
           <Item>
-            <Switch sx={{ margin: "0 auto" }} checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} />
+            <BpCheckbox label="Enable" checked={wifi_enable.get()} onChange={(e) => HandleChangeBoolean(wifi_enable, e, "enable")} />
             {/* <TextField size="small" label="WiFi Enable" value={wifi_enable.get()} helperText="This is helperText" fullWidth /> */}
           </Item>
           <Item>
@@ -312,8 +335,7 @@ export default function SetWiFi() {
         </Grid>
         <Grid xs={4} sx={{ textAlign: "left", display: { xs: "none", md: "block" } }}>
           <Item>
-            <Switch checked={wifi_enable_5.get()} sx={{ margin: "0 auto", "& input": { fontSize: { xs: "13px", md: "1rem" } } }} disabled={Disable5G.get()}
-              onChange={(e) => HandleChangeBoolean(wifi_enable_5, e)} />
+            <BpCheckbox label="Enable" checked={wifi_enable_5.get()} onChange={(e) => HandleChangeBoolean(wifi_enable_5, e, "enable")} disabled={Disable5G.get()} />
           </Item>
           <Item>
             <TextFieldSelf value={wifi_name_5.get()} disabled={Disable5G.get()}
@@ -367,16 +389,28 @@ export default function SetWiFi() {
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`Wireless Mode`}
+              <HelpPopover>
+                {`Please make sure that your device supports the same version.
+                A higher version is usually backward compatible with a lower version of the mode`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`Channel Bandwidth`}
+              <HelpPopover>
+                {`The channel bandwidth of a wireless signal determines that signal's data rate.
+                At the same distance, the higher the channel bandwidth, the faster the connection.`}
+              </HelpPopover>
             </Typography>
           </Item>
           <Item>
             <Typography variant="subtitle1" color='text.secondary'>
               {`Channels`}
+              <HelpPopover>
+                {`Channel 0 indicates automatic calculation using the channel algorithm built in the device.
+                Then the channel selected with the highest efficiency at present is obtained.`}
+              </HelpPopover>
             </Typography>
           </Item>
         </Grid>

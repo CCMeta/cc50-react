@@ -7,6 +7,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import 'animate.css';
 import * as React from 'react';
 import { Define, webcmd } from './utils';
+import HelpPopover from './c/HelpPopover';
 
 
 function Item(props) {
@@ -113,17 +114,6 @@ export default function SetNetwork() {
               </ListItemText>
             </ListItem>
 
-            <ListItem>
-              <FormControl fullWidth>
-                <InputLabel id="select-label-Wireless-DHCP-Lease-Time">DHCP Lease Time</InputLabel>
-                <Select labelId="select-label-Wireless-DHCP-Lease-Time" label="DHCP Lease Time" variant="outlined" size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
-                  {leaseTimeOptions.map((i) => (
-                    <MenuItem value={i.value}>{i.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </ListItem>
-
             <ListItem secondaryAction={<Typography variant="caption" color="text.secondary">{gateway.get()}</Typography>}>
               <ListItemText primary={`DHCP Gateway`} />
             </ListItem>
@@ -135,10 +125,21 @@ export default function SetNetwork() {
             <ListItem>
               <TextFieldProto fullWidth label="Maximum number of Clients" variant="outlined" size="small" value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
             </ListItem>
+
+            <ListItem>
+              <FormControl fullWidth>
+                <InputLabel id="select-label-Wireless-DHCP-Lease-Time">DHCP Lease Time</InputLabel>
+                <Select labelId="select-label-Wireless-DHCP-Lease-Time" label="DHCP Lease Time" variant="outlined" size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
+                  {leaseTimeOptions.map((i) => (
+                    <MenuItem value={i.value}>{i.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </ListItem>
+
           </List>
         </Paper>
       </Box>
-
 
       {/* PC DHCP Configuration Settings */}
       <Box display={{ xs: "none", md: "block" }}>
@@ -154,7 +155,31 @@ export default function SetNetwork() {
             <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
+                  {`DHCP Gateway`}
+                  <HelpPopover>
+                    {`The default DHCP gateway is readonly in this version`}
+                  </HelpPopover>
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+              <Item>
+                <Typography variant="subtitle1">
+                  {gateway.get()}
+                </Typography>
+              </Item>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Start address`}
+                  <HelpPopover>
+                    {`Only number, Range 2-254. 
+                    The DHCP range min address, DHCP will start with this sub-address`}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
@@ -169,7 +194,11 @@ export default function SetNetwork() {
             <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
-                  {`Maximum number of Clients `}
+                  {`Maximum Number of Clients`}
+                  <HelpPopover>
+                    {`Only number, Range 1-128.
+                    The device could connect clients by this number as limit`}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
@@ -185,19 +214,9 @@ export default function SetNetwork() {
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Lease Time`}
-                  <Box component="span">
-                    <IconButton onMouseEnter={e => HelperLeaseTime.set(e.currentTarget)} size="small" color="info">
-                      <HelpIcon fontSize="inherit" />
-                    </IconButton>
-                    <Popover onClose={e => HelperLeaseTime.set(null)}
-                      anchorEl={HelperLeaseTime.get()}
-                      open={HelperLeaseTime.get() !== null}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center', }}
-                      disableRestoreFocus>
-                      <Alert onMouseLeave={e => HelperLeaseTime.set(null)} severity="info">This is an info alert — check it out!</Alert>
-                    </Popover>
-                  </Box>
+                  <HelpPopover>
+                    {`Only number, Range 1-256, Unit: Hour`}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>

@@ -66,7 +66,7 @@ export default function SetSystem() {
     const form = {
       reboot: 1
     }
-    return console.log(form)
+    // return console.log(form)
     const result = await webcmd(`system.reboot`, form)
     if (result.code === 200) {
       alert(result.msg)
@@ -77,7 +77,7 @@ export default function SetSystem() {
     const form = {
       reset: 1
     }
-    return console.log(form)
+    // return console.log(form)
     const result = await webcmd(`system.reset`, form)
     if (result.code === 200) {
       alert(result.msg)
