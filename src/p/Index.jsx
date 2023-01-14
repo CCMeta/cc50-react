@@ -410,7 +410,7 @@ export default () => {
       start: data_plan_start.get(),
     }
     return console.log(form)
-    const result = await webcmd(`system.reset`, form)
+    const result = await webcmd(`traffic.project.set`, form)
     if (result.code === 200) {
       alert(result.msg)
     }
