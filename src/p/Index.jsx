@@ -1,6 +1,6 @@
 import {
   Badge, Box, Button, Divider, FormControl, IconButton, InputLabel, LinearProgress, List,
-  ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Paper, Popover, Select, Stack, styled, Switch, TextField, Typography
+  ListItem, ListItemButton, ListItemSecondaryAction, ListItemText, MenuItem, Paper, Popover, Select, Stack, styled, Switch, TextField, Typography
 } from '@mui/material';
 import cookie from 'cookie';
 import { createEffect, onCleanup, useObserver } from 'react-solid-state';
@@ -17,7 +17,8 @@ import { MyResponsiveBar } from "./c/ChartBar";
 import { MyResponsiveLine } from "./c/ChartLineArea";
 import { MyResponsivePie } from "./c/ChartPie";
 import HeaderBar from './c/HeaderBar';
-import { bytesToHuman, CmdResultParser, dBmToQuality, Define, fetching, FormBuilder, intToColor, MAP_WirelessMode, rpc as $rpc, secondsToWatch, webcmd } from './utils';
+import { boolToInt, bytesToHuman, CmdResultParser, dBmToQuality, Define, fetching, FormBuilder, intToColor, MAP_WirelessMode, rpc as $rpc, secondsToWatch, webcmd } from './utils';
+import { DATA_MODES } from './constants';
 
 
 
@@ -248,7 +249,10 @@ export default () => {
       data_device_heat.set(await fetching_device_heat())
       data_system_info.set(await fetching_system_info())
 
-      data_sim_network_info.set(await fetching_sim_network_info())
+      // data_sim_network_info.set(await fetching_sim_network_info())
+      await webcmd(`internet.sim.info.get`).then(res => {
+        data_sim_network_info.set(res.data)
+      })
 
       data_luci_conntrack.set(await fetching_luci_conntrack())
       data_traffic_5G.set(await fetching_traffic_5G())
@@ -421,11 +425,22 @@ export default () => {
       limit: data_plan_limit.get(),
       start: data_plan_start.get(),
     }
-    return console.log(form)
+    // return console.log(form)
     const result = await webcmd(`traffic.project.set`, form)
     if (result.code === 200) {
       alert(result.msg)
     }
+  }
+  const onModemChange = async (e) => {
+    const form = {
+      enable: boolToInt(e.target.checked)
+    }
+    // return console.log(form)
+    const result = await webcmd(`internet.sim.enable.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+    data_device_operation_info.set((await webcmd(`system.info.get`))?.data)
   }
 
   /*********styles**********/
@@ -472,7 +487,7 @@ export default () => {
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.cpu)} variant="determinate"
                   value={data_device_performance.get()?.cpu} />
-                <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
                   {`${data_device_performance.get()?.cpu}%`}
                 </Typography>
               </Stack>
@@ -485,7 +500,7 @@ export default () => {
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.mem)} variant="determinate"
                   value={data_device_performance.get()?.mem} />
-                <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
                   {`${data_device_performance.get()?.mem}%`}
                 </Typography>
               </Stack>
@@ -496,7 +511,7 @@ export default () => {
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_heat.get())} variant="determinate" value={data_device_heat.get()} />
-                <Typography variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
                   {`${data_device_heat.get()}℃`}
                 </Typography>
               </Stack>
@@ -509,22 +524,22 @@ export default () => {
           <ListItem>
             <ListItemText primary="Internet" />
             <ListItemSecondaryAction>
-              <MaterialUISwitch checked={data_device_operation_info.get()?.modem === `ONLINE`} />
+              <MaterialUISwitch onChange={onModemChange} checked={boolToInt(data_sim_network_info.get()?.enable)} />
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <ListItemText primary="Operator" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
-                {`${data_sim_network_info.get()?.long_eons} (${data_sim_network_info.get()?.short_eons})`}
+                {`${data_sim_network_info.get()?.["operator"]?.["name"]} (${data_sim_network_info.get()?.["operator"]?.["short_name"]})`}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Net Mode" />
+            <ListItemText primary="Data Mode" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
-                {data_sim_network_info.get()?.radio_tech}
+                {DATA_MODES.find(v => v.value === data_sim_network_info.get()?.["dataMode"])?.name}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -532,7 +547,7 @@ export default () => {
             <ListItemText primary="Roaming" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
-                {data_sim_network_info.get()?.pref_roaming}
+                {data_sim_network_info.get()?.["roaming"]}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -557,37 +572,45 @@ export default () => {
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
+            <ListItemText primary="Signal" />
+            <ListItemSecondaryAction>
+              <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
+                {/* Why signal need to add 25?  this is the SIM RSRP counting algorithm */}
+                {/* (x+125)*2 => 100+((x+75)*2) */}
+
+                {/*
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)} />
+                <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                  {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)}%`}
+                </Typography>
+                */}
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(parseInt(100 * data_sim_network_info.get()?.['signal'] / 4), `desc`)} variant="determinate" value={parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)} />
+                <Typography textAlign="right" variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                  {`${parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)}%`}
+                </Typography>
+
+              </Stack>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItemButton disabled>
             <ListItemText primary="PIN State" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
                 {`N/A`}
               </Typography>
             </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Signal" />
-            <ListItemSecondaryAction>
-              <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
-                {/* Why signal need to add 25?  this is the SIM RSRP counting algorithm */}
-                {/* (x+125)*2 => 100+((x+75)*2) */}
-                <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)} />
-                <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                  {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)}%`}
-                </Typography>
-              </Stack>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem>
+          </ListItemButton>
+          <ListItemButton disabled>
             <ListItemText primary="Connection" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_luci_conntrack.get().length)} variant="determinate" value={data_luci_conntrack.get().length} />
-                <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                <Typography textAlign="right" variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
                   {data_luci_conntrack.get().length}
                 </Typography>
               </Stack>
             </ListItemSecondaryAction>
-          </ListItem>
+          </ListItemButton>
 
 
 
@@ -616,7 +639,7 @@ export default () => {
                     {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
                   </Typography>
                 </Stack>
-                <IconButton variant="outlined" color='info' size="small">
+                <IconButton disabled variant="outlined" color='info' size="small">
                   <ChevronRightRoundedIcon />
                 </IconButton>
               </Stack>
@@ -686,7 +709,7 @@ export default () => {
               <Typography pl={1} variant={`subtitle1`}>
                 {`Month Data Usage`}
               </Typography>
-              <IconButton variant="outlined" color='info' size="small">
+              <IconButton disabled variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
               </IconButton>
             </Stack>
@@ -796,7 +819,7 @@ export default () => {
               <Typography pl={1} variant={`subtitle1`}>
                 {`WiFi Overview 5G`}
               </Typography>
-              <IconButton variant="outlined" color='info' size="small">
+              <IconButton disabled variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
               </IconButton>
             </Stack>
@@ -931,7 +954,7 @@ export default () => {
               <Typography pl={1} variant={`subtitle1`}>
                 {`WiFi Overview 2.4G`}
               </Typography>
-              <IconButton variant="outlined" color='info' size="small">
+              <IconButton disabled variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
               </IconButton>
             </Stack>
@@ -1092,7 +1115,7 @@ export default () => {
                   {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
                 </Typography>
               </Stack>
-              <IconButton variant="outlined" color='info' size="small">
+              <IconButton disabled variant="outlined" color='info' size="small">
                 <ChevronRightRoundedIcon />
               </IconButton>
             </Stack>

@@ -681,7 +681,7 @@ export default function SetWiFi() {
 
     {/* PC + mobile WiFi 2.4G + 5G submit button */}
     <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-      <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
+      <Button onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</Button>
     </Box>
 
   </Stack >))

@@ -21,15 +21,9 @@ function Item(props) {
   );
 }
 
-function TextFieldSelf(props) {
-  return (
-    <TextField label="" variant="outlined" type="number" size="small" {...props} />
-  );
-}
-
 function TextFieldProto(props) {
   return (
-    <TextField label="" variant="outlined" type="number" size="small" {...props} />
+    <TextField label="" variant="outlined" size="small" {...props} />
   );
 }
 
@@ -62,7 +56,7 @@ export default function SetNetwork() {
     } else if (event.target.value < 0) {
       element.set(0);
     } else {
-      element.set(event.target.value); //输入框、选择框等
+      element.set(parseInt(event.target.value)); //输入框、选择框等
     }
   };
 
@@ -235,7 +229,7 @@ export default function SetNetwork() {
       </Box>
 
       <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-        <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
+        <Button onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</Button>
       </Box>
 
     </Stack>

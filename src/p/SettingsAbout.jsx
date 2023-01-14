@@ -317,7 +317,7 @@ export default function SetAbout() {
                   </TableRow>
                 </TableBody>
               </Table>
-              <Button fullWidth color="error" variant="contained">Click to free space</Button>
+              <Button fullWidth color="Aqua_Blue" variant="contained">Click to free space</Button>
             </Box>
           </Paper>
         </Stack>

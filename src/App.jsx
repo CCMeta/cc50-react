@@ -16,6 +16,12 @@ import LoginPage from "./p/Login";
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    Aqua_Blue: {
+      light: '#29b6f6',
+      main: '#198fcf',
+      dark: '#0c6ca8',
+      contrastText: '#DDD',
+    },
   },
 });
 

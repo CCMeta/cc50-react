@@ -7,11 +7,11 @@ import 'animate.css';
 import * as React from 'react';
 import { boolToInt, Define, webcmd } from './utils';
 import HelpPopover from './c/HelpPopover';
+import { DATA_MODES } from './constants'
 
 function BpCheckbox(props) {
   return (
-    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} size="small" {...props} />}
-    />
+    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} size="small" {...props} />} />
   );
 }
 
@@ -35,14 +35,6 @@ function TextFieldSelf(props) {
 
 export default function SetSIM() {
   /*********constants**********/
-  const modes = [
-    { value: 0, name: "2G" },
-    { value: 1, name: "3G" },
-    { value: 3, name: "4G" },
-    { value: 15, name: "5G" },
-    { value: 19, name: "4G/5G" },
-    { value: 21, name: "3G/4G/5G" },
-  ]
   const pdps = [
     { value: 0, name: "IPV4" },
     { value: 1, name: "IPV6" },
@@ -134,7 +126,7 @@ export default function SetSIM() {
                   </HelpPopover>
                 </InputLabel>
                 <Select sx={{ '& fieldset > legend': { pr: `1rem` } }} labelId="select-label-Wireless-DataMode" label={`Data Mode`} variant="outlined" size="small" value={dataMode.get()} onChange={(e) => HandleChangeValue(dataMode, e)}>
-                  {modes.map((mode) => (
+                  {DATA_MODES.map((mode) => (
                     <MenuItem value={mode.value}>{mode.name}</MenuItem>
                   ))}
                 </Select>
@@ -205,7 +197,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Select size="small" value={dataMode.get()} onChange={(e) => HandleChangeValue(dataMode, e)} >
-                  {modes.map((mode) => (
+                  {DATA_MODES.map((mode) => (
                     <MenuItem value={mode.value}>{mode.name}</MenuItem>
                   ))}
                 </Select>
@@ -338,7 +330,7 @@ export default function SetSIM() {
       </Box>
 
       <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-        <Button onClick={onSubmit} fullWidth color="error" startIcon={<CheckCircle />} variant="contained">Save</Button>
+        <Button onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</Button>
       </Box>
 
     </Stack>
