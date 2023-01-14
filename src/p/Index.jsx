@@ -138,6 +138,7 @@ export default () => {
   const data_system_info = Define({ "uptime": 0 })
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
+  const isOutOfLimit = Define(false)
   const data_wifi_clients_5G = () => {
     const result = []
     var wifi_mode_counter = {}
@@ -172,6 +173,15 @@ export default () => {
     let tx = data_traffic_5G.get()?.months?.[0].tx
     let rx = data_traffic_5G.get()?.months?.[0].rx
     let free = (data_plan_limit.get() * Math.pow(1024, 2)) - (tx + rx)
+    if (free < 0) {
+      // out of limit
+      isOutOfLimit.set(true)
+      free = 0 - free
+    } else {
+      // Into limit
+      isOutOfLimit.set(false)
+    }
+
     const chartData = [
       //data_data_Usage_count
       { "id": "FREE", "value": free },
@@ -180,7 +190,9 @@ export default () => {
     ]
     const textData = {
       free: bytesToHuman(free, `KiB`),
-      ratio: Math.round(100 * free / (tx + rx + free))
+      ratio: isOutOfLimit.get()
+        ? Math.round(100 * (tx + rx) / (tx + rx + (-free)))
+        : Math.round(100 * free / (tx + rx + free))
     }
     return { chartData, textData }
   }
@@ -685,14 +697,14 @@ export default () => {
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Typography textAlign="center" variant={`subtitle2`} component="div">
+                  <Typography color={isOutOfLimit.get() ? "#f5222d" : null} textAlign="center" variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div">
-                      {`Free (${data_data_Usage_count().textData.ratio}%)`}
+                      {`${isOutOfLimit.get() ? "Over" : "Free"} (${data_data_Usage_count().textData.ratio}%)`}
                     </Typography>
                     {`${data_data_Usage_count().textData.free}`}
                   </Typography>
                 </Box>
-                <MyResponsivePie theme={chart_theme} data={data_data_Usage_count().chartData} />
+                <MyResponsivePie scheme={isOutOfLimit.get() ? "red_grey" : null} theme={chart_theme} data={data_data_Usage_count().chartData} />
               </Stack>
 
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
