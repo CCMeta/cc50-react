@@ -56,7 +56,7 @@ export default function SetNetwork() {
     } else if (event.target.value < 0) {
       element.set(0);
     } else {
-      element.set(parseInt(event.target.value)); //输入框、选择框等
+      element.set(parseInt(event.target.value) || 0); //输入框、选择框等
     }
   };
 

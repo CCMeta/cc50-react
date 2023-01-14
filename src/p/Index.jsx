@@ -779,7 +779,7 @@ export default () => {
                     <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                       <ListItem>
                         <TextField size='small' fullWidth label="Set Month data Limit of GB" value={data_plan_limit.get()} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                          onChange={e => data_plan_limit.set(parseInt(e.target.value))} />
+                          onChange={e => data_plan_limit.set(parseInt(e.target.value || 0))} />
                       </ListItem>
                       <ListItem>
                         <FormControl size="small" fullWidth>
