@@ -12,15 +12,14 @@ import { LoadingButton } from '@mui/lab';
 
 function BpCheckbox(props) {
   return (
-    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} size="small" {...props} />}
-    />
+    <FormControlLabel label={props.label} control={<Checkbox sx={{ '&:hover': { bgcolor: 'transparent' }, }} size="small" {...props} />} />
   );
 }
 
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Stack justifyContent={`center`} sx={{ height: { md: "60px", xs: "40px" }, lineHeight: { md: "60px", xs: "40px" } }} {...other} >
+    <Stack justifyContent={`center`} sx={{ height: { md: "60px", xs: "40px" }, lineHeight: { md: "60px", xs: "40px" } }} {...other}>
       {children}
     </Stack>
   );

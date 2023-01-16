@@ -19,10 +19,8 @@ function BpCheckbox(props) {
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Stack justifyContent={`center`}
-      sx={{ height: "50px", lineHeight: "50px", mb: "5px", margin: "0 auto", fontSize: { xs: "15px", md: "1rem" } }}
-      {...other}
-    >
+    <Stack justifyContent={`center`} {...other}
+      sx={{ height: "60px", lineHeight: "60px", fontSize: { xs: "15px", md: "1rem" }, marginBottom: "0" }}>
       {children}
     </Stack>
   );

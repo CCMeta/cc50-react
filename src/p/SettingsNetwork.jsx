@@ -14,9 +14,8 @@ import { LoadingButton } from '@mui/lab';
 function Item(props) {
   const { children, ...other } = props;
   return (
-    <Stack justifyContent={`center`}
-      sx={{ height: "60px", lineHeight: "60px", fontSize: { xs: "15px", md: "1rem" }, marginBottom: "0" }}
-      {...other} >
+    <Stack justifyContent={`center`} {...other}
+      sx={{ height: "60px", lineHeight: "60px", fontSize: { xs: "15px", md: "1rem" }, marginBottom: "0" }}>
       {children}
     </Stack>
   );
@@ -192,7 +191,7 @@ export default function SetNetwork() {
             <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
-                  {`Maximum Number of Clients`}
+                  {`Maximum Clients`}
                   <HelpPopover>
                     {`Only number, Range 1-128.
                     The device could connect clients by this number as limit`}

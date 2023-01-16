@@ -688,7 +688,7 @@ export default () => {
                 <Stack justifyContent={'space-evenly'} direction={'row'}>
                   <Stack p={1} alignItems={'flex-start'}>
                     <Typography component={'div'} variant={'caption'}>
-                      Week Data
+                      {`Week Data`}
                     </Typography>
                     <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
                       {`${bytesToHuman(
@@ -700,13 +700,13 @@ export default () => {
                   <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
                     <Stack direction={'row'} >
                       <DownloadIcon color={'info'} fontSize={'small'} />
-                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                         {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
                       </Typography>
                     </Stack>
                     <Stack direction={'row'} >
                       <UploadIcon color={'success'} fontSize={'small'} />
-                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                         {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
                       </Typography>
                     </Stack>
@@ -725,13 +725,13 @@ export default () => {
                   <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
                     <Stack direction={'row'} >
                       <DownloadIcon color={'info'} fontSize={'small'} />
-                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                         {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
                       </Typography>
                     </Stack>
                     <Stack direction={'row'} >
                       <UploadIcon color={'success'} fontSize={'small'} />
-                      <Typography sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
                         {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
                       </Typography>
                     </Stack>
