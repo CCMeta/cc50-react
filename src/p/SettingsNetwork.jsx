@@ -8,6 +8,7 @@ import 'animate.css';
 import * as React from 'react';
 import { Define, webcmd } from './utils';
 import HelpPopover from './c/HelpPopover';
+import { LoadingButton } from '@mui/lab';
 
 
 function Item(props) {
@@ -41,6 +42,7 @@ export default function SetNetwork() {
   const start1 = Define(""), end1 = Define(""), start2 = Define(""), end2 = Define("");
   const start = Define(100), limit = Define(150), expire = Define(`12h`)
   const HelperLeaseTime = Define(null)
+  const submitLoading = Define(false)
 
   const HandleChangeBoolean = (element, event) => {
     element.set(event.target.checked); //滑动按钮、勾选框等
@@ -74,6 +76,7 @@ export default function SetNetwork() {
 
   /*********functions**********/
   const onSubmit = async () => {
+    submitLoading.set(true)
     const form = {
       start: parseInt(start.get()),
       limit: parseInt(limit.get()),
@@ -84,6 +87,7 @@ export default function SetNetwork() {
     if (result.code === 200) {
       alert(result.msg)
     }
+    submitLoading.set(false)
   }
 
   /*********styles**********/
@@ -229,7 +233,7 @@ export default function SetNetwork() {
       </Box>
 
       <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-        <Button onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</Button>
+        <LoadingButton loading={submitLoading.get()} onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
       </Box>
 
     </Stack>

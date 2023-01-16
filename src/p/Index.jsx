@@ -19,6 +19,8 @@ import { MyResponsivePie } from "./c/ChartPie";
 import HeaderBar from './c/HeaderBar';
 import { boolToInt, bytesToHuman, CmdResultParser, dBmToQuality, Define, fetching, FormBuilder, intToColor, MAP_WirelessMode, rpc as $rpc, secondsToWatch, webcmd } from './utils';
 import { DATA_MODES } from './constants';
+import { LoadingButton } from '@mui/lab';
+import { CheckCircle } from '@mui/icons-material';
 
 
 
@@ -141,6 +143,8 @@ export default () => {
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
   const isOutOfLimit = Define(false)
+  const submitLoading = Define(false)
+
   const data_wifi_clients_5G = () => {
     const result = []
     var wifi_mode_counter = {}
@@ -429,6 +433,7 @@ export default () => {
   }
 
   const onSubmitPlan = async () => {
+    submitLoading.set(true)
     const form = {
       limit: data_plan_limit.get(),
       start: data_plan_start.get(),
@@ -438,6 +443,7 @@ export default () => {
     if (result.code === 200) {
       alert(result.msg)
     }
+    submitLoading.set(false)
   }
   const onModemSwitch = async (e) => {
     const form = {
@@ -615,8 +621,8 @@ export default () => {
                 </Typography>
                 */}
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(parseInt(100 * data_sim_network_info.get()?.['signal'] / 4), `desc`)} variant="determinate" value={parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)} />
-                <Typography textAlign="right" variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                  {`${parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)}%`}
+                <Typography textAlign="right" variant="caption" sx={{ width: "2rem" }} color={intToColor(parseInt(100 * data_sim_network_info.get()?.['signal'] / 4), `desc`) + `.main`}>
+                  {isNaN(data_sim_network_info.get()?.['signal']) ? `N/A` : `${parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)}%`}
                 </Typography>
 
               </Stack>
@@ -796,7 +802,7 @@ export default () => {
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
-                  <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant={'contained'}>
+                  <Button onClick={e => planPopoverOpen.set(e.currentTarget)} startIcon={<EventNoteIcon />} color='info' fullWidth size='small' variant="outlined">
                     Set Traffic Plan
                   </Button>
 
@@ -828,7 +834,7 @@ export default () => {
                         </FormControl>
                       </ListItem>
                       <ListItem>
-                        <Button onClick={onSubmitPlan} color="info" fullWidth variant="contained">Save</Button>
+                        <LoadingButton loading={submitLoading.get()} onClick={onSubmitPlan} color="Aqua_Blue" fullWidth startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
                       </ListItem>
                     </List>
                   </Popover>
@@ -894,7 +900,7 @@ export default () => {
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
-                      <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                      <Typography variant="caption" sx={{ width: "2rem" }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`) + `.main`}>
                         {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}%`}
                       </Typography>
                     </Stack>
@@ -1030,7 +1036,7 @@ export default () => {
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
-                      <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                      <Typography variant="caption" sx={{ width: "2rem" }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`) + `.main`}>
                         {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}%`}
                       </Typography>
                     </Stack>

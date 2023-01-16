@@ -1,6 +1,6 @@
 import {
   Button, Divider, InputAdornment, List,
-  ListItem, Popover, Stack, TextField
+  ListItem, Popover, Stack, TextField, Typography
 } from '@mui/material';
 import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
@@ -11,7 +11,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import HeaderBar from './c/HeaderBar';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder } from './utils';
+import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder, dBmToQuality, intToColor } from './utils';
 
 
 export default () => {
@@ -23,19 +23,36 @@ export default () => {
     { field: 'ipaddr', headerName: 'IPv4/IPv6', width: 150, },
     { field: 'expires', headerName: 'Expires', width: 100, },
     { field: 'PhyMode', headerName: 'PhyMode', width: 100, },
-    { field: 'AvgRssi0', type: 'number', headerName: 'Signal', width: 80, },
     { field: 'online', type: 'boolean', headerName: 'Online', width: 80, },
-    { field: 'rx_s', type: 'number', headerName: 'RX_S', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'rx', type: 'number', headerName: 'RX', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'tx_s', type: 'number', headerName: 'TX_S', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), },
-    { field: 'tx', type: 'number', headerName: 'TX', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), },
+    {
+      field: 'AvgRssi0', type: 'number', headerName: 'Signal', width: 150, renderCell: p =>
+        <Typography variant="caption" color={intToColor(dBmToQuality(parseInt(p.value)), `desc`) + `.main`}>
+          {isNaN(p.value) ? `N/A` : `${p.value}dBm (${dBmToQuality(parseInt(p.value))}%)`}
+        </Typography>
+    },
+    {
+      field: 'rx_s', type: 'number', headerName: 'DL Speed', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+        <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#1677ff"}>{p.value}</Typography>
+    },
+    {
+      field: 'rx', type: 'number', headerName: 'DL Total', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+        <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#0958d9"}>{p.value}</Typography>
+    },
+    {
+      field: 'tx_s', type: 'number', headerName: 'UL Speed', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+        <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#52c41a"}>{p.value}</Typography>
+    },
+    {
+      field: 'tx', type: 'number', headerName: 'UL Total', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+        <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#389e0d"}>{p.value}</Typography>
+    },
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Action',
       getActions: (params) => [
-        <GridActionsCellItem icon={<LockIcon color="info" />} label="Lock" />,
-        <GridActionsCellItem onClick={e => QoS_PopoverOpen.set(e.currentTarget)} icon={<EditIcon color="info" />} label="QoS" />,
+        <GridActionsCellItem disabled icon={<LockIcon color="Aqua_Blue" />} label="Lock" />,
+        <GridActionsCellItem onClick={e => QoS_PopoverOpen.set(e.currentTarget)} icon={<EditIcon color="Aqua_Blue" />} label="QoS" />,
       ]
     },
     // { field: 'CONNECT', headerName: 'CONNECT' },
@@ -116,7 +133,7 @@ export default () => {
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
       <Stack className='styled-scrollbars' height={`95vh`} sx={{ flexBasis: 0, flexGrow: 4 }}>
         <Stack sx={{ m: 2 }}>
-          <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="contained" sx={{ width: `20rem` }}>
+          <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="outlined" sx={{ width: `20rem` }}>
             Set Global QoS
           </Button>
 

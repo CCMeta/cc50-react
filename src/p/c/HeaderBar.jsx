@@ -11,7 +11,7 @@ export default props => {
 
       <Tooltip title="Language">
         <IconButton onClick={_ => window.location.href = ''} sx={{ p: 0 }}>
-          <Avatar alt="Index Page" variant="square" sx={{ width: `auto`, "& img": { width: `auto`, height: `4vh`, objectFit: `contain` } }} src="https://ccmeta.com/sagereal.png"></Avatar>
+          <Avatar alt="Index Page" variant="square" sx={{ width: `auto`, "& img": { width: `auto`, height: `4vh`, objectFit: `contain` } }} src="/logo.png"></Avatar>
         </IconButton>
       </Tooltip>
 

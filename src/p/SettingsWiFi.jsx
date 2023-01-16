@@ -8,6 +8,7 @@ import { boolToInt, Define, fetching, FormBuilder, webcmd } from './utils';
 import { CheckCircle, Done, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { display } from '@mui/system';
 import HelpPopover from './c/HelpPopover';
+import { LoadingButton } from '@mui/lab';
 
 function BpCheckbox(props) {
   return (
@@ -48,6 +49,7 @@ export default function SetWiFi() {
   const channel = Define("1"), channel_5 = Define("0");
 
   const showPassword = Define(false), showPassword_5 = Define(false);
+  const submitLoading = Define(false)
 
   const securities = [
     { value: "WPAPSKWPA2PSK", name: "WPAPSK / WPA2PSK" },
@@ -170,6 +172,7 @@ export default function SetWiFi() {
 
   /*********functions**********/
   const onSubmit = async () => {
+    submitLoading.set(true)
     const form = {
       "2g": {
         authMode: security.get(),
@@ -199,6 +202,7 @@ export default function SetWiFi() {
     if (result.code === 200) {
       alert(result.msg)
     }
+    submitLoading.set(false)
   }
 
   /*********styles**********/
@@ -681,7 +685,7 @@ export default function SetWiFi() {
 
     {/* PC + mobile WiFi 2.4G + 5G submit button */}
     <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-      <Button onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</Button>
+      <LoadingButton loading={submitLoading.get()} onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
     </Box>
 
   </Stack >))

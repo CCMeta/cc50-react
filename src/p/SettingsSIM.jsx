@@ -8,6 +8,7 @@ import * as React from 'react';
 import { boolToInt, Define, webcmd } from './utils';
 import HelpPopover from './c/HelpPopover';
 import { DATA_MODES } from './constants'
+import { LoadingButton } from '@mui/lab';
 
 function BpCheckbox(props) {
   return (
@@ -53,6 +54,7 @@ export default function SetSIM() {
   const helpTextRoaming = `If Disable this option, Mobile Network will not support Roaming.`
   const helpTextDataMode = `Check well you SIM card, select the same data mode or let him auto.`
   const helpTextNetwork = `Disable or Enable the Mobile Network`
+  const submitLoading = Define(false)
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -67,7 +69,8 @@ export default function SetSIM() {
   })
 
   /*********functions**********/
-  const onSubmit = async () => {
+  const onSubmit = async e => {
+    submitLoading.set(true)
     const form = {
       enable: boolToInt(enable.get()),
       roaming: boolToInt(roaming.get()),
@@ -78,6 +81,7 @@ export default function SetSIM() {
     if (result.code === 200) {
       alert(result.msg)
     }
+    submitLoading.set(false)
   }
   /*********styles**********/
 
@@ -330,7 +334,7 @@ export default function SetSIM() {
       </Box>
 
       <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-        <Button onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</Button>
+        <LoadingButton loading={submitLoading.get()} onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
       </Box>
 
     </Stack>

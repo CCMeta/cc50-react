@@ -44,9 +44,9 @@ export default () => {
     await fetching(FormBuilder(form), 'login')
       .then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
       .then(_ => {
-        // window.location.reload()
-        modalOpen.set(false)
-        navigate('/')
+        window.location.reload()
+        // modalOpen.set(false)
+        // navigate('/')
       })
   }
 
@@ -81,7 +81,7 @@ export default () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => modalOpen.set(false)} color="info" startIcon={<CloseRounded />} variant="outlined" size="small">Close</Button>
-        <Button onClick={onSubmit} color="info" startIcon={<CheckCircle />} variant="outlined" size="small">Submit</Button>
+        <Button onClick={onSubmit} color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained" size="small">Enter</Button>
       </DialogActions>
     </Dialog>
 

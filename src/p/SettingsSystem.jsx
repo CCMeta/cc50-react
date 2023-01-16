@@ -21,7 +21,7 @@ function BackColorTypography(props) {
 function StackButton(props) {
   return (
     <Stack sx={{ mt: "3rem", mb: "1rem", width: { md: "40%", xs: "100%" } }}>
-      <Button variant="contained" color="error" {...props}></Button>
+      <Button size="small" variant="contained" color="error" {...props}></Button>
     </Stack>
   );
 }
@@ -140,8 +140,8 @@ export default function SetSystem() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" onClick={() => dialogReboot.set(false)}>No</Button>
-            <Button variant="outlined" onClick={onReboot}>Yes</Button>
+            <Button size="small" variant="outlined" onClick={() => dialogReboot.set(false)}>No</Button>
+            <Button size="small" variant="contained" color="error" onClick={onReboot}>Confirm</Button>
           </DialogActions>
         </Dialog>
 
@@ -162,8 +162,8 @@ export default function SetSystem() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" onClick={() => dialogReset.set(false)}>No</Button>
-            <Button variant="outlined" onClick={onReset}>Yes</Button>
+            <Button size="small" variant="outlined" onClick={() => dialogReset.set(false)}>No</Button>
+            <Button size="small" variant="contained" color="error" onClick={onReset}>Confirm</Button>
           </DialogActions>
         </Dialog>
 
@@ -175,8 +175,8 @@ export default function SetSystem() {
             <DialogContentText>There is a new version for your device.<br /><br />Do you want to update?</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => { openFotaDialog.set(false) }}>No</Button>
-            <Button onClick={() => updateSystem}>Yes</Button>
+            <Button size="small" onClick={() => { openFotaDialog.set(false) }}>No</Button>
+            <Button size="small" variant="contained" color="error" onClick={() => updateSystem}>Confirm</Button>
           </DialogActions>
         </Dialog>
 
