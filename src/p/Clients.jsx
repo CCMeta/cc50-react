@@ -138,7 +138,7 @@ export default () => {
                 }} />
               </ListItem>
               <ListItem>
-                <Button disabled fullWidth variant="contained">Confirm</Button>
+                <Button disabled fullWidth variant="contained">Save</Button>
               </ListItem>
             </List>
           </Popover>

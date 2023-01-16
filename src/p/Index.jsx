@@ -105,6 +105,7 @@ export default () => {
   /*********constants**********/
   const data_plan_start = Define(1)
   const data_plan_limit = Define(150)
+  const data_latency = Define(0)
 
   const data_for_week_chart = Define((() => {
     let arr = []
@@ -245,6 +246,13 @@ export default () => {
 
     // setInterval api below 
     const interval_apis = async () => {
+      // data_latency
+      const StartTimeStamp = Date.now()
+      await webcmd(`hello`).then(v => {
+        console.log(Date.now() - StartTimeStamp)
+        data_latency.set(Date.now() - StartTimeStamp)
+      })
+
       data_device_performance.set(await fetching_device_performance())
       data_device_heat.set(await fetching_device_heat())
       data_system_info.set(await fetching_system_info())
@@ -431,7 +439,7 @@ export default () => {
       alert(result.msg)
     }
   }
-  const onModemChange = async (e) => {
+  const onModemSwitch = async (e) => {
     const form = {
       enable: boolToInt(e.target.checked)
     }
@@ -441,6 +449,28 @@ export default () => {
       alert(result.msg)
     }
     data_device_operation_info.set((await webcmd(`system.info.get`))?.data)
+  }
+  const on24GSwitch = async (e) => {
+    const form = {
+      enable: boolToInt(e.target.checked)
+    }
+    // return console.log(form)
+    const result = await webcmd(`wifi.enable.24g.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+    data_iwinfo_24G.set((await webcmd(`wifi.status.24g.get`))?.data)
+  }
+  const on5GSwitch = async (e) => {
+    const form = {
+      enable: boolToInt(e.target.checked)
+    }
+    // return console.log(form)
+    const result = await webcmd(`wifi.enable.5g.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+    data_iwinfo_5G.set((await webcmd(`wifi.status.5g.get`))?.data)
   }
 
   /*********styles**********/
@@ -524,7 +554,7 @@ export default () => {
           <ListItem>
             <ListItemText primary="Internet" />
             <ListItemSecondaryAction>
-              <MaterialUISwitch onChange={onModemChange} checked={boolToInt(data_sim_network_info.get()?.enable)} />
+              <MaterialUISwitch onChange={onModemSwitch} checked={boolToInt(data_sim_network_info.get()?.enable)} />
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
@@ -798,7 +828,7 @@ export default () => {
                         </FormControl>
                       </ListItem>
                       <ListItem>
-                        <Button onClick={onSubmitPlan} color="info" fullWidth variant="contained">Confirm</Button>
+                        <Button onClick={onSubmitPlan} color="info" fullWidth variant="contained">Save</Button>
                       </ListItem>
                     </List>
                   </Popover>
@@ -846,7 +876,7 @@ export default () => {
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                   <ListItemText primary="ON / OFF" />
                   <ListItemSecondaryAction>
-                    <MaterialUISwitch checked={data_iwinfo_5G.get()?.enable === `1`} />
+                    <MaterialUISwitch onChange={on5GSwitch} checked={boolToInt(parseInt(data_iwinfo_5G.get()?.enable))} />
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
@@ -981,7 +1011,8 @@ export default () => {
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                   <ListItemText primary="ON / OFF" />
                   <ListItemSecondaryAction>
-                    <MaterialUISwitch checked={data_iwinfo_24G.get()?.enable === `1`} />
+                    <MaterialUISwitch onChange={on24GSwitch} checked={boolToInt(
+                      parseInt(data_iwinfo_24G.get()?.enable))} />
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
@@ -1100,7 +1131,7 @@ export default () => {
               <Stack direction={'row'} >
                 <HourglassEmptyIcon color='info' fontSize={'small'} sx={{ zoom: 0.9 }} />
                 <Typography variant={'caption'}>
-                  {`26 ms`}
+                  {`${data_latency.get()} ms`}
                 </Typography>
               </Stack>
               <Stack direction={'row'} >
