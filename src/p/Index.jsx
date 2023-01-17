@@ -294,9 +294,7 @@ export default () => {
       "cmd": `ubus call luci getConntrackList`,
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
-    ).then(res => {
-      return res.result
-    })
+    ).then(res => res?.result || [])
   }
 
   const fetching_traffic_5G = async () => {
@@ -305,6 +303,8 @@ export default () => {
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
+      if (typeof res.interfaces === undefined)
+        return {}
       const last7Days = res.interfaces[0].traffic.days.slice(0, 7).reverse()
       data_for_week_chart.set(
         data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length)
@@ -375,7 +375,7 @@ export default () => {
     }
     data_iwinfo_24G.set((await webcmd(`wifi.status.24g.get`))?.data)
   }
-  
+
   const on5GSwitch = async (e) => {
     const form = {
       enable: boolToInt(e.target.checked)
