@@ -108,13 +108,13 @@ export const MAP_WirelessMode = {
   "0": "B/G mixed",
   "1": "B only",
   "4": "G only",
-  "9": "B/G/GN mode",
-  "16": "HE_2G mode",
+  "9": "B/G/GN mixed",
+  "16": "B/G/GN/AX mixed",
   "2": "A only",
   "8": "A/N in 5 band",
   "14": "A/AC/AN mixed",
   "15": "AC/AN mixed",
-  "17": "AC/AN/AX mode",
+  "17": "AC/AN/AX mixed",
 }
 
 /**

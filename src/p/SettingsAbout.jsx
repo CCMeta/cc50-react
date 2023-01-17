@@ -95,10 +95,10 @@ export default function SetAbout() {
             <ListItem>
               <ListItemText primary={`Serial Number`} secondary={data_system_info.get()?.imei} />
             </ListItem>
-            <Divider component="li" />
+            {/* <Divider component="li" />
             <ListItem>
               <ListItemText primary={`MAC Address`} secondary={mac.get()} />
-            </ListItem>
+            </ListItem> */}
           </List>
         </Paper>
 
@@ -117,14 +117,14 @@ export default function SetAbout() {
             <ListItem>
               <ListItemText primary={`WAN`} secondary={data_network_info.get()?.wan_ip} />
             </ListItem>
-            <Divider component="li" />
+            {/* <Divider component="li" />
             <ListItem>
               <ListItemText primary={`PINLockState`} secondary={data_network_info.get()?.PINLockState} />
-            </ListItem>
-            <Divider component="li" />
+            </ListItem> */}
+            {/* <Divider component="li" />
             <ListItem>
               <ListItemText primary={`PINCodeState`} secondary={data_network_info.get()?.PINCodeState} />
-            </ListItem>
+            </ListItem> */}
           </List>
         </Paper>
 

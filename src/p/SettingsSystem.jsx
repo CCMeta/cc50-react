@@ -53,15 +53,6 @@ export default function SetSystem() {
   })
 
   /*********functions**********/
-  const fetching_get_wifi_setting = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `internet.setting.sim.get`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-
-    })
-  }
   const onReboot = async () => {
     const form = {
       reboot: 1

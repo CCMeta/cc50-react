@@ -130,7 +130,8 @@ export default () => {
     ]
   }])
   const data_lan_speed_now = Define({ rx: 0, tx: 0 })
-  const data_device_performance = Define({ cpu: 0, mem: 0 })
+  const data_system_cpu = Define(0)
+  const data_system_ram = Define(0)
   const data_device_heat = Define(0)
   const data_luci_conntrack = Define([])
   const data_device_operation_info = Define({})
@@ -138,8 +139,6 @@ export default () => {
   const wifi24GPopoverOpen = Define(null)
   const wifi5GPopoverOpen = Define(null)
   const planPopoverOpen = Define(null)
-  const data_wan_network_interface_dump = Define()
-  const data_system_info = Define({ "uptime": 0 })
   const data_clients_info_5G = Define([])
   const data_clients_info_24G = Define([])
   const isOutOfLimit = Define(false)
@@ -214,18 +213,8 @@ export default () => {
       document.getElementsByTagName(`html`)[0].style.fontSize = `${window.innerWidth / 15}%`
     // console.log(bodyZoom)
 
-    //login process
-    // await fetching(FormBuilder({
-    //   "luci_username": "root", "luci_password": "123456",
-    // }), 'login'
-    // ).then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
-
     // Once api without interval
-    // data_device_operation_info.set(await fetching_device_operation_info())
     data_device_operation_info.set((await webcmd(`system.info.get`))?.data)
-    // await webcmd(`wifi.test`, {
-    //   "enable": `motherfucker[]\\'"`
-    // })
 
     // data_iwinfo_5G.set(await fetching_iwinfo_5G())
     data_iwinfo_5G.set((await webcmd(`wifi.status.5g.get`))?.data)
@@ -240,28 +229,35 @@ export default () => {
     data_clients_info_24G.set((await webcmd(`wifi.stat.24g.get`))?.data || [])
 
     // set traffic plan data
-    await webcmd(`traffic.project.get`).then(v => {
-      const res = v.data
-      data_plan_limit.set(res.limit)
-      data_plan_start.set(res.start)
+    await webcmd(`traffic.project.get`).then(res => {
+      const data = res.data
+      data_plan_limit.set(data?.limit)
+      data_plan_start.set(data?.start)
     })
-
-    data_wan_network_interface_dump.set(await fetching_wan_network_interface_dump())
 
     // setInterval api below 
     const interval_apis = async () => {
       // data_latency
       const StartTimeStamp = Date.now()
-      await webcmd(`hello`).then(v => {
+      await webcmd(`hello`).then(res => {
         console.log(Date.now() - StartTimeStamp)
         data_latency.set(Date.now() - StartTimeStamp)
       })
 
-      data_device_performance.set(await fetching_device_performance())
-      data_device_heat.set(await fetching_device_heat())
-      data_system_info.set(await fetching_system_info())
+      await webcmd(`system.info.cpu.get`).then(res => {
+        const used = 100 - parseInt(res?.data?.["cpuIdle"])
+        data_system_cpu.set(used)
+      })
 
-      // data_sim_network_info.set(await fetching_sim_network_info())
+      await webcmd(`system.info.ram.get`).then(res => {
+        const used = parseInt(100 * (res?.data?.["memoryTotal"] - res?.data?.["memoryFree"]) / res?.data?.["memoryTotal"])
+        data_system_ram.set(used)
+      })
+
+      await webcmd(`system.info.heat.get`).then(res => {
+        data_device_heat.set(parseInt(res?.data?.["temp"]))
+      })
+
       await webcmd(`internet.sim.info.get`).then(res => {
         data_sim_network_info.set(res.data)
       })
@@ -292,39 +288,6 @@ export default () => {
   onCleanup(() => clearInterval(timer))
 
   /*********functions**********/
-  const fetching_iwinfo_5G = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `ubus call iwinfo info '{"device":"rai0"}'`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    )
-  }
-
-  const fetching_iwinfo_24G = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `ubus call iwinfo info '{"device":"ra0"}'`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    )
-  }
-
-  const fetching_wan_network_interface_dump = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `ubus call network.interface dump`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      return res.interface.find(i => i.interface === `wan`)
-    })
-  }
-
-  const fetching_system_info = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `ubus call system info`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    )
-  }
 
   const fetching_luci_conntrack = async () => {
     return await fetching(FormBuilder({
@@ -333,45 +296,6 @@ export default () => {
     }), 'webcmd'
     ).then(res => {
       return res.result
-    })
-  }
-
-  const fetching_device_heat = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `/root/list_heat.sh`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      return Math.round(res.split('\n')[0] / 1000)
-    })
-  }
-
-  const fetching_sim_network_info = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `( echo "0" && echo "4" && echo "5" && echo "7" && echo "8" && echo "-1") | sample_nw`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      return {
-        pref_roaming: CmdResultParser(res, 'pref_roaming => '),
-        long_eons: CmdResultParser(res, 'long_eons = '),
-        short_eons: CmdResultParser(res, 'short_eons = '),
-        radio_tech: CmdResultParser(res, 'radio_tech ='),
-        signal: CmdResultParser(res, 'rsrp=', ','),
-      }
-    })
-  }
-
-  const fetching_device_operation_info = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `( echo "0" && echo "3" && echo "7" && echo "-1") | sample_dm`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      return {
-        modem: CmdResultParser(res, 'modem state is '),
-        imei: CmdResultParser(res, ' imei:'),
-      }
     })
   }
 
@@ -414,24 +338,6 @@ export default () => {
     }))
   }
 
-  const fetching_device_performance = async () => {
-    return await fetching(FormBuilder({
-      "cmd": `top -n 1 -b | head -2`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      const localCmdResultParser = (res) => {
-        let cpu_idle = Math.round(CmdResultParser(res, `nic `, `% idle`))
-        let mem_used = parseInt(CmdResultParser(res, `Mem:`, `used, `))
-        let mem_free = parseInt(CmdResultParser(res, `used, `, `free, `))
-        let cpu = Math.round(100 - cpu_idle)
-        let mem = Math.round(100 * mem_used / (mem_free + mem_used))
-        return { cpu, mem, }
-      }
-      return localCmdResultParser(res)
-    })
-  }
-
   const onSubmitPlan = async () => {
     submitLoading.set(true)
     const form = {
@@ -445,6 +351,7 @@ export default () => {
     }
     submitLoading.set(false)
   }
+
   const onModemSwitch = async (e) => {
     const form = {
       enable: boolToInt(e.target.checked)
@@ -456,6 +363,7 @@ export default () => {
     }
     data_device_operation_info.set((await webcmd(`system.info.get`))?.data)
   }
+
   const on24GSwitch = async (e) => {
     const form = {
       enable: boolToInt(e.target.checked)
@@ -467,6 +375,7 @@ export default () => {
     }
     data_iwinfo_24G.set((await webcmd(`wifi.status.24g.get`))?.data)
   }
+  
   const on5GSwitch = async (e) => {
     const form = {
       enable: boolToInt(e.target.checked)
@@ -496,7 +405,7 @@ export default () => {
             <ListItemText primary="Uptime" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
-                {`${secondsToWatch(data_system_info.get().uptime)}`}
+                {`${secondsToWatch(data_device_operation_info.get()?.["uptime"])}`}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -521,10 +430,9 @@ export default () => {
             <ListItemText primary="CPU Rate" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.cpu)} variant="determinate"
-                  value={data_device_performance.get()?.cpu} />
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_system_cpu.get())} variant="determinate" value={data_system_cpu.get()} />
                 <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
-                  {`${data_device_performance.get()?.cpu}%`}
+                  {`${data_system_cpu.get()}%`}
                 </Typography>
               </Stack>
             </ListItemSecondaryAction>
@@ -534,10 +442,10 @@ export default () => {
             <ListItemText primary="Memory" />
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_performance.get()?.mem)} variant="determinate"
-                  value={data_device_performance.get()?.mem} />
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_system_ram.get())} variant="determinate"
+                  value={data_system_ram.get()} />
                 <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
-                  {`${data_device_performance.get()?.mem}%`}
+                  {`${data_system_ram.get()}%`}
                 </Typography>
               </Stack>
             </ListItemSecondaryAction>
@@ -588,12 +496,11 @@ export default () => {
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="WAN IP" />
+            <ListItemText primary="IP Address" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
-                {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.address}
-                {`/`}
-                {data_wan_network_interface_dump?.get()?.["ipv4-address"]?.[0]?.mask}
+                {data_sim_network_info.get()?.["wan_ip"]}/
+                {data_sim_network_info.get()?.["mask"]}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
@@ -601,9 +508,7 @@ export default () => {
             <ListItemText primary="Gateway" />
             <ListItemSecondaryAction>
               <Typography variant='caption' color='text.secondary'>
-                {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.nexthop}
-                {`/`}
-                {data_wan_network_interface_dump?.get()?.["route"]?.[1]?.mask}
+                {data_sim_network_info.get()?.["gateway"]}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
