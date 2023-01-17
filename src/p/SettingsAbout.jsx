@@ -48,12 +48,6 @@ function AboutTextField(props) {
 export default function SetAbout() {
   /*********constants**********/
   //定义动态变量
-
-  const hardwareV = Define("CC50_HW_V01"), softwareV = Define("CC50_SW_V01");
-  const firmwareV = Define("CC50_Firmware_V01"), uiV = Define("CC50_Web_V01");
-  const model = Define("CC50_CPE_SKU6_EU_FR");
-  const mac = Define("XX:XX:XX:XX:XX:XX"), IMEI = Define("123456789");
-  const IMSI = Define("123456789"), sn = Define("123456789");
   const storage = Define(15);
   const rom = Define("100MB"), romFree = Define("15MB");
   const data_system_info = Define()
@@ -91,14 +85,14 @@ export default function SetAbout() {
             <ListItem>
               <ListItemText primary={`IMEI Version`} secondary={data_system_info.get()?.imei} />
             </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText primary={`Serial Number`} secondary={data_system_info.get()?.imei} />
-            </ListItem>
             {/* <Divider component="li" />
             <ListItem>
-              <ListItemText primary={`MAC Address`} secondary={mac.get()} />
+              <ListItemText primary={`Serial Number`} secondary={data_system_info.get()?.imei} />
             </ListItem> */}
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText primary={`MAC Address`} secondary={data_system_info.get()?.mac} />
+            </ListItem>
           </List>
         </Paper>
 
@@ -179,7 +173,7 @@ export default function SetAbout() {
                       <Typography variant="subtitle2" >{data_system_info.get()?.imei}</Typography>
                     </TableCell>
                   </TableRow>
-                  <TableRow>
+                  {/* <TableRow>
                     <TableCell>
                       <Typography variant="subtitle2" color='text.secondary'>
                         {`Serial Number`}
@@ -188,7 +182,7 @@ export default function SetAbout() {
                     <TableCell>
                       <Typography variant="subtitle2" >{data_system_info.get()?.imei}</Typography>
                     </TableCell>
-                  </TableRow>
+                  </TableRow> */}
                   <TableRow>
                     <TableCell>
                       <Typography variant="subtitle2" color='text.secondary'>
@@ -196,7 +190,7 @@ export default function SetAbout() {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2" >{mac.get()}</Typography>
+                      <Typography variant="subtitle2" >{data_system_info.get()?.mac}</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -237,7 +231,7 @@ export default function SetAbout() {
                     </TableCell>
                     <TableCell>{data_network_info.get()?.wan_ip}</TableCell>
                   </TableRow>
-                  <TableRow>
+                  {/* <TableRow>
                     <TableCell>
                       <Typography variant="subtitle2" color='text.secondary'>
                         {`PINLockState`}
@@ -252,7 +246,7 @@ export default function SetAbout() {
                       </Typography>
                     </TableCell>
                     <TableCell>{data_network_info.get()?.PINCodeState}</TableCell>
-                  </TableRow>
+                  </TableRow> */}
                 </TableBody>
               </Table>
             </Box>
@@ -297,7 +291,7 @@ export default function SetAbout() {
 
         </Stack>
 
-        <Stack direction="row" spacing={'2.5rem'} >
+        {/* <Stack direction="row" spacing={'2.5rem'} >
           <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
             <Box p={'2.5rem'}>
               <Table>
@@ -320,7 +314,7 @@ export default function SetAbout() {
               <Button fullWidth color="Aqua_Blue" variant="contained">Click to free space</Button>
             </Box>
           </Paper>
-        </Stack>
+        </Stack> */}
       </Box>
 
 

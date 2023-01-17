@@ -13,7 +13,7 @@ import { Define, fetching, FormBuilder, webcmd } from './utils';
 
 export default () => {
   /*********constants**********/
-  const modalOpen = Define(true)
+  const modalOpen = Define(false)
   const navigate = useNavigate()
   const username = Define(`root`)
   const password = Define("123456")
@@ -27,9 +27,9 @@ export default () => {
 
     //If no need login, close login modal
     await webcmd(`hello`).then(res => {
-      if (res.code === 200) {
+      if (res.code !== 200) {
         console.log(`login result msg = ${res.msg}`)
-        modalOpen.set(false)
+        modalOpen.set(true)
       }
     })
 

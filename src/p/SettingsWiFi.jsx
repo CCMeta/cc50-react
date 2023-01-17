@@ -417,9 +417,9 @@ export default function SetWiFi() {
             </Typography>
           </Item>
         </Grid>
-        <Grid xs={8} md={4} sx={{ textAlign: "center", whiteSpace: "nowrap" }}>
+        <Grid xs={8} md={4} sx={{ whiteSpace: "nowrap" }}>
           <Item>
-            <Typography variant="subtitle1" color='text.secondary'>
+            <Typography textAlign="center" variant="subtitle1" color='text.secondary'>
               <b>2.4G</b>
             </Typography>
           </Item>
@@ -446,9 +446,9 @@ export default function SetWiFi() {
             </Select>
           </Item>
         </Grid>
-        <Grid xs={4} sx={{ textAlign: "center", whiteSpace: "nowrap", display: { xs: "none", md: "block" } }}>
+        <Grid xs={4} sx={{ whiteSpace: "nowrap", display: { xs: "none", md: "block" } }}>
           <Item>
-            <Typography variant="subtitle1" color='text.secondary'>
+            <Typography textAlign="center" variant="subtitle1" color='text.secondary'>
               <b>5G</b>
             </Typography>
           </Item>
