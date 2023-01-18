@@ -726,7 +726,7 @@ export default () => {
                     </Typography>
                   </ListItemText>
                   <ListItemSecondaryAction>
-                    <Typography variant="body2" color='text.secondary'>
+                    <Typography variant="body2">
                       {`${data_plan_limit.get()} GB`}
                     </Typography>
                   </ListItemSecondaryAction>
