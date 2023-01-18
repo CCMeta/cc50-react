@@ -223,7 +223,7 @@ export default function SetWiFi() {
 
     {/* PC WiFi 2.4G + 5G base Configuration title */}
     <Divider textAlign="left" sx={{ display: { xs: "none", md: "flex" }, my: { md: '3rem' } }}>
-      <Typography variant="h6">
+      <Typography variant="h6" color="text.secondary">
         <b>Common Configuration</b>
       </Typography>
     </Divider>
@@ -379,7 +379,7 @@ export default function SetWiFi() {
 
     {/* PC WiFi 2.4G + 5G Advanced Configuration title */}
     <Divider textAlign="left" sx={{ my: { md: '3rem' }, display: { xs: "none", md: showAdvances.get() ? "flex" : "none" } }}>
-      <Typography variant="h6">
+      <Typography variant="h6" color="text.secondary">
         <b>Advanced Configuration</b>
       </Typography>
     </Divider >

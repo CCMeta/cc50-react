@@ -26,7 +26,7 @@ export default () => {
     { field: 'online', type: 'boolean', headerName: 'Online', width: 80, },
     {
       field: 'AvgRssi0', type: 'number', headerName: 'Signal', width: 150, renderCell: p =>
-        <Typography variant="caption" color={intToColor(dBmToQuality(parseInt(p.value)), `desc`) + `.main`}>
+        <Typography variant="body2" color={intToColor(dBmToQuality(parseInt(p.value)), `desc`) + `.main`}>
           {isNaN(p.value) ? `N/A` : `${p.value}dBm (${dBmToQuality(parseInt(p.value))}%)`}
         </Typography>
     },

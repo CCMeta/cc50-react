@@ -82,7 +82,7 @@ export default function SetSystem() {
     <Box>
 
       <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
-        <Typography variant="h6">
+        <Typography variant="h6" color="text.secondary">
           <b>System Operation</b>
         </Typography>
       </Divider>

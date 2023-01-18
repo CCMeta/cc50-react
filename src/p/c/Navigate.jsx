@@ -3,7 +3,7 @@ import { useObserver } from 'react-solid-state';
 
 import { Define } from '../utils';
 
-import LanIcon from '@mui/icons-material/LanRounded';
+import LanIcon from '@mui/icons-material/LanOutlined';
 import ClientsIcon from '@mui/icons-material/DevicesOther';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import KeyIcon from '@mui/icons-material/Key';
@@ -14,7 +14,7 @@ import PolylineIcon from '@mui/icons-material/Polyline';
 import RouteIcon from '@mui/icons-material/Route';
 import SettingsIcon from '@mui/icons-material/SettingsRounded';
 import SystemIcon from '@mui/icons-material/RouterOutlined';
-import SimCardIcon from '@mui/icons-material/SimCardOutlined';
+import SimCardIcon from '@mui/icons-material/CellTowerOutlined';
 import SpeedIcon from '@mui/icons-material/Speed';
 import WifiIcon from '@mui/icons-material/Wifi';
 import { BottomNavigation, BottomNavigationAction, Box, IconButton, Menu, MenuItem, Paper } from '@mui/material';

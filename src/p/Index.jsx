@@ -1,5 +1,5 @@
 import {
-  Badge, Box, Button, Divider, FormControl, IconButton, InputLabel, LinearProgress, List,
+  Badge, Box, Button, Divider, FormControl, FormControlLabel, IconButton, InputLabel, LinearProgress, List,
   ListItem, ListItemButton, ListItemSecondaryAction, ListItemText, MenuItem, Paper, Popover, Select, Stack, styled, Switch, TextField, Typography
 } from '@mui/material';
 import cookie from 'cookie';
@@ -20,7 +20,7 @@ import HeaderBar from './c/HeaderBar';
 import { boolToInt, bytesToHuman, CmdResultParser, dBmToQuality, Define, fetching, FormBuilder, intToColor, MAP_WirelessMode, rpc as $rpc, secondsToWatch, webcmd } from './utils';
 import { DATA_MODES } from './constants';
 import { LoadingButton } from '@mui/lab';
-import { CheckCircle } from '@mui/icons-material';
+import { AccessAlarmRounded, CheckCircle } from '@mui/icons-material';
 
 
 
@@ -46,9 +46,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       color: '#fff',
       transform: 'translateX(22px)',
       '& .MuiSwitch-thumb:before': {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-          '#fff',
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 1024 1024"><path fill="${encodeURIComponent('#EEE',)}" d="M954.88 323.437714q0 22.820571-16.018286 38.838857l-491.446857 491.446857q-16.018286 16.018286-38.838857 16.018286t-38.838857-16.018286l-284.598857-284.598857q-16.018286-16.018286-16.018286-38.838857t16.018286-38.838857l77.677714-77.677714q16.018286-16.018286 38.838857-16.018286t38.838857 16.018286l168.009143 168.594286 374.857143-375.442286q16.018286-16.018286 38.838857-16.018286t38.838857 16.018286l77.677714 77.677714q16.018286 16.018286 16.018286 38.838857z"/></svg>')`,
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
@@ -69,9 +67,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       top: 0,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg height="20" width="20" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path  fill="${encodeURIComponent(
-        '#FFF',
-      )}" d="M192.596 531.41C202.63 699.1 341.774 832 511.976 832c75.914 0 145.636-26.454 200.5-70.622C634.46 739.108 548 707.844 459.124 669.234 361.462 626.808 269.914 579.354 192.596 531.41zM214.762 393.258c79.822 54.22 184.14 110.26 295.358 158.574 87.182 37.876 174.226 69.11 251.718 90.328 12.992 3.558 25.668 6.812 37.976 9.766 3.37-6.924 6.498-13.988 9.376-21.182 14.682-36.716 22.772-76.786 22.772-118.744 0-6.52-0.218-12.986-0.602-19.41C821.322 324.9 682.18 192 511.976 192c-75.912 0-145.634 26.454-200.496 70.622-36.592 29.458-66.568 66.796-87.34 109.452C220.766 378.998 217.638 386.064 214.762 393.258zM859.334 569.062c-2.512 23.124-4.754 27.254-11.782 49.39 33.756 24.078 62.064 47.412 82.274 67.876 6.57 6.656 11.75 12.45 15.824 17.404-3.368 0.168-7.114 0.266-11.262 0.266-43.772 0-108.052-11-181.002-30.976-78.934-21.612-167.46-53.37-256.016-91.84-117.862-51.2-228.316-111.082-311.02-168.614-38.162-26.55-70.054-52.452-92.226-74.9-6.57-6.656-11.75-12.45-15.824-17.404 3.366-0.168 7.112-0.266 11.264-0.266 30.616 0 71.274 5.388 117.904 15.458 11.65-20.008 13.958-25.402 29.326-42.818C185.326 274 133.25 261.044 89.568 256c-48.806-5.636-80.68 11.042-87.968 34.28C-20.548 360.914 190 517.436 471.872 639.884 660.996 722.044 834.208 768 934.388 768c49.13 0 80.676-11.042 87.964-34.282C1035.032 693.286 973.93 640 859.334 569.062z"></path></svg>')`,
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 1024 1024" version="1.1"><path fill="${encodeURIComponent('#EEE',)}" d="M851.428571 755.428571q0 22.857143-16 38.857143l-77.714286 77.714286q-16 16-38.857143 16t-38.857143-16l-168-168-168 168q-16 16-38.857143 16t-38.857143-16l-77.714286-77.714286q-16-16-16-38.857143t16-38.857143l168-168-168-168q-16-16-16-38.857143t16-38.857143l77.714286-77.714286q16-16 38.857143-16t38.857143 16l168 168 168-168q16-16 38.857143-16t38.857143 16l77.714286 77.714286q16 16 16 38.857143t-16 38.857143l-168 168 168 168q16 16 16 38.857143z"/></svg>')`,
     },
   },
   '& .MuiSwitch-track': {
@@ -203,13 +199,13 @@ export default () => {
   }
 
   /*********createEffect**********/
-  var timer
+  var intervalFlag
   createEffect(async () => {
 
     // to be continued
     var bodyZoom = (((window.innerWidth / 1500) - 1) / 2) + 1
     document.body.style.setProperty(`--a`, bodyZoom)
-    if (window.innerWidth > 900)
+    if (window.innerWidth > 900 && false)
       document.getElementsByTagName(`html`)[0].style.fontSize = `${window.innerWidth / 15}%`
     // console.log(bodyZoom)
 
@@ -235,14 +231,12 @@ export default () => {
       data_plan_start.set(data?.start)
     })
 
-    // setInterval api below 
+    // SetInterval api below 
+    const intervalDuration = 3000
     const interval_apis = async () => {
       // data_latency
       const StartTimeStamp = Date.now()
-      await webcmd(`hello`).then(res => {
-        console.log(Date.now() - StartTimeStamp)
-        data_latency.set(Date.now() - StartTimeStamp)
-      })
+      await webcmd(`hello`).then(_ => data_latency.set(Date.now() - StartTimeStamp - 80))
 
       await webcmd(`system.info.cpu.get`).then(res => {
         const used = 100 - parseInt(res?.data?.["cpuIdle"])
@@ -283,9 +277,11 @@ export default () => {
 
       return interval_apis
     }
-    timer = setInterval(await interval_apis(), 3000);
+
+    // await interval_apis() //first initial
+    intervalFlag = setInterval(await interval_apis(), intervalDuration);
   })
-  onCleanup(() => clearInterval(timer))
+  onCleanup(() => clearInterval(intervalFlag))
 
   /*********functions**********/
 
@@ -399,144 +395,192 @@ export default () => {
 
       <Stack sx={{ display: { xs: "none", md: "flex" }, flexBasis: 0, flexGrow: 1 }}>
         <List dense>
-          <Divider>Device</Divider>
+          <Divider>
+            <Typography variant="subtitle1" color='text.secondary'>
+              <b>System</b>
+            </Typography>
+          </Divider>
 
           <ListItem>
-            <ListItemText primary="Uptime" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Uptime`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
+              <Typography variant='body2'>
                 {`${secondsToWatch(data_device_operation_info.get()?.["uptime"])}`}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="IMEI" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`IMEI`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant="caption" color='text.secondary'>
+              <Typography variant='body2'>
                 {data_device_operation_info.get()?.imei}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Model" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Model`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant="caption" color='text.secondary'>
+              <Typography variant='body2'>
                 {data_device_operation_info.get()?.model}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
-
           <ListItem>
-            <ListItemText primary="CPU Rate" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`CPU Rate`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_system_cpu.get())} variant="determinate" value={data_system_cpu.get()} />
-                <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                <Typography textAlign="right" variant="body2" color={intToColor(data_system_cpu.get()) + `.main`} sx={{ width: "2rem" }}>
                   {`${data_system_cpu.get()}%`}
                 </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
-
           <ListItem>
-            <ListItemText primary="Memory" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Memory`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_system_ram.get())} variant="determinate"
-                  value={data_system_ram.get()} />
-                <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_system_ram.get())} variant="determinate" value={data_system_ram.get()} />
+                <Typography textAlign="right" variant="body2" color={intToColor(data_system_ram.get()) + `.main`} sx={{ width: "2rem" }}>
                   {`${data_system_ram.get()}%`}
                 </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Temperature" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Temperature`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_device_heat.get())} variant="determinate" value={data_device_heat.get()} />
-                <Typography textAlign="right" variant="caption" color='text.secondary' sx={{ width: "2rem" }}>
+                <Typography textAlign="right" variant="body2" color={intToColor(data_device_heat.get()) + `.main`} sx={{ width: "2rem" }}>
                   {`${data_device_heat.get()}℃`}
                 </Typography>
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
-
         </List>
-        <Divider>Internet</Divider>
+        <Divider>
+          <Typography variant="subtitle1" color='text.secondary'>
+            <b>Internet</b>
+          </Typography>
+        </Divider>
         <List dense>
           <ListItem>
-            <ListItemText primary="Internet" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Network`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
               <MaterialUISwitch onChange={onModemSwitch} checked={boolToInt(data_sim_network_info.get()?.enable)} />
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Operator" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Operator`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
-                {`${data_sim_network_info.get()?.["operator"]?.["name"]} (${data_sim_network_info.get()?.["operator"]?.["short_name"]})`}
+              <Typography variant='body2'>
+                {`${data_sim_network_info.get()?.["operator"]?.["name"] || ``}`}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Data Mode" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Data Mode`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
+              <Typography variant='body2'>
                 {DATA_MODES.find(v => v.value === data_sim_network_info.get()?.["dataMode"])?.name}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Roaming" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Roaming`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
-                {data_sim_network_info.get()?.["roaming"]}
+              <Typography variant='body2'>
+                <Switch disabled color="warning" checked={boolToInt(data_sim_network_info.get()?.["roaming"])} />
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="IP Address" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`IP Address`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
+              <Typography variant='body2'>
                 {data_sim_network_info.get()?.["wan_ip"]}/
                 {data_sim_network_info.get()?.["mask"]}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Gateway" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Gateway`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
+              <Typography variant='body2'>
                 {data_sim_network_info.get()?.["gateway"]}
               </Typography>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary="Signal" />
+            <ListItemText>
+              <Typography variant='body2' color='text.secondary'>
+                {`Signal`}
+              </Typography>
+            </ListItemText>
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                 {/* Why signal need to add 25?  this is the SIM RSRP counting algorithm */}
                 {/* (x+125)*2 => 100+((x+75)*2) */}
-
-                {/*
-                <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)} />
-                <Typography variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
-                  {`${dBmToQuality(parseInt(data_sim_network_info.get()?.signal) + 25)}%`}
-                </Typography>
-                */}
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(parseInt(100 * data_sim_network_info.get()?.['signal'] / 4), `desc`)} variant="determinate" value={parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)} />
-                <Typography textAlign="right" variant="caption" sx={{ width: "2rem" }} color={intToColor(parseInt(100 * data_sim_network_info.get()?.['signal'] / 4), `desc`) + `.main`}>
+                <Typography textAlign="right" variant="body2" sx={{ width: "2rem" }} color={intToColor(parseInt(100 * data_sim_network_info.get()?.['signal'] / 4), `desc`) + `.main`}>
                   {isNaN(data_sim_network_info.get()?.['signal']) ? `N/A` : `${parseInt(100 * data_sim_network_info.get()?.['signal'] / 4)}%`}
                 </Typography>
-
               </Stack>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItemButton disabled>
             <ListItemText primary="PIN State" />
             <ListItemSecondaryAction>
-              <Typography variant='caption' color='text.secondary'>
+              <Typography variant='body2' color='text.secondary'>
                 {`N/A`}
               </Typography>
             </ListItemSecondaryAction>
@@ -546,7 +590,7 @@ export default () => {
             <ListItemSecondaryAction>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <LinearProgress sx={{ width: '6rem' }} color={intToColor(data_luci_conntrack.get().length)} variant="determinate" value={data_luci_conntrack.get().length} />
-                <Typography textAlign="right" variant="caption" sx={{ width: "2rem" }} color='text.secondary'>
+                <Typography textAlign="right" variant="body2" sx={{ width: "2rem" }} color='text.secondary'>
                   {data_luci_conntrack.get().length}
                 </Typography>
               </Stack>
@@ -565,18 +609,20 @@ export default () => {
         <Stack direction={{ xs: "column", md: "row" }} sx={{ flexBasis: 0, flexGrow: 1, height: { md: "30vh" } }} spacing={2} px={2} py={1}>
           <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
-              <Typography pl={1} variant={`subtitle1`}>{`Traffic Overview`}</Typography>
+              <Typography pl={1} variant={`subtitle1`} color='text.secondary'>
+                {`Traffic Overview`}
+              </Typography>
 
               <Stack spacing={1} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}>
-                <Stack direction={'row'} >
+                <Stack direction={'row'}>
                   <DownloadIcon color={'info'} fontSize={'small'} />
-                  <Typography variant={'caption'} color='text.secondary'>
+                  <Typography variant={'body2'}>
                     {bytesToHuman(data_traffic_5G.get()?.days?.[0].tx, `KiB`)}
                   </Typography>
                 </Stack>
-                <Stack direction={'row'} >
+                <Stack direction={'row'}>
                   <UploadIcon color={'success'} fontSize={'small'} />
-                  <Typography variant={'caption'} color='text.secondary'>
+                  <Typography variant={'body2'}>
                     {bytesToHuman(data_traffic_5G.get()?.days?.[0].rx, `KiB`)}
                   </Typography>
                 </Stack>
@@ -592,10 +638,10 @@ export default () => {
               <Stack justifyContent={{ md: "space-evenly" }} sx={{ height: { md: "20vh" }, flexGrow: 1, whiteSpace: "nowrap" }}>
                 <Stack justifyContent={'space-evenly'} direction={'row'}>
                   <Stack p={1} alignItems={'flex-start'}>
-                    <Typography component={'div'} variant={'caption'}>
+                    <Typography component={'div'} variant={'body2'} color='text.secondary'>
                       {`Week Data`}
                     </Typography>
-                    <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
+                    <Typography component={'div'} variant={'subtitle1'}>
                       {`${bytesToHuman(
                         data_traffic_5G.get()?.weeks?.[0].tx +
                         data_traffic_5G.get()?.weeks?.[0].rx
@@ -603,15 +649,15 @@ export default () => {
                     </Typography>
                   </Stack>
                   <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
-                    <Stack direction={'row'} >
+                    <Stack direction={'row'}>
                       <DownloadIcon color={'info'} fontSize={'small'} />
-                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'body2'}>
                         {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].tx, `KiB`)}
                       </Typography>
                     </Stack>
-                    <Stack direction={'row'} >
+                    <Stack direction={'row'}>
                       <UploadIcon color={'success'} fontSize={'small'} />
-                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'body2'}>
                         {bytesToHuman(data_traffic_5G.get()?.weeks?.[0].rx, `KiB`)}
                       </Typography>
                     </Stack>
@@ -619,24 +665,24 @@ export default () => {
                 </Stack>
                 <Stack justifyContent={'space-evenly'} direction={'row'}>
                   <Stack p={1} alignItems={'flex-start'}>
-                    <Typography component={'div'} variant={'caption'}>
+                    <Typography component={'div'} variant={'body2'} color='text.secondary'>
                       {`Month Data`}
                     </Typography>
-                    <Typography component={'div'} variant={'subtitle1'} color='text.secondary'>
+                    <Typography component={'div'} variant={'subtitle1'}>
                       {`${bytesToHuman(data_traffic_5G.get()?.months?.[0].tx +
                         data_traffic_5G.get()?.months?.[0].rx, `KiB`)}`}
                     </Typography>
                   </Stack>
                   <Stack justifyContent={'space-evenly'} alignItems={'stretch'}>
-                    <Stack direction={'row'} >
+                    <Stack direction={'row'}>
                       <DownloadIcon color={'info'} fontSize={'small'} />
-                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'body2'}>
                         {bytesToHuman(data_traffic_5G.get()?.months?.[0].tx, `KiB`)}
                       </Typography>
                     </Stack>
-                    <Stack direction={'row'} >
+                    <Stack direction={'row'}>
                       <UploadIcon color={'success'} fontSize={'small'} />
-                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'caption'} color='text.secondary'>
+                      <Typography textAlign="right" sx={{ flexGrow: 1 }} variant={'body2'}>
                         {bytesToHuman(data_traffic_5G.get()?.months?.[0].rx, `KiB`)}
                       </Typography>
                     </Stack>
@@ -647,7 +693,7 @@ export default () => {
           </Paper>
           <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-              <Typography pl={1} variant={`subtitle1`}>
+              <Typography pl={1} variant={`subtitle1`} color='text.secondary'>
                 {`Month Data Usage`}
               </Typography>
               <IconButton disabled variant="outlined" color='info' size="small">
@@ -661,7 +707,7 @@ export default () => {
                 <Box sx={{
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Typography color={isOutOfLimit.get() ? "#f5222d" : null} textAlign="center" variant={`subtitle2`} component="div">
+                  <Typography color={isOutOfLimit.get() ? "#f5222d" : "text.secondary"} textAlign="center" variant={`subtitle2`} component="div">
                     <Typography variant={`caption`} component="div">
                       {`${isOutOfLimit.get() ? "Over" : "Free"} (${data_data_Usage_count().textData.ratio}%)`}
                     </Typography>
@@ -674,25 +720,37 @@ export default () => {
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
                 <ListItem>
                   <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="Data Limit" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`Data Limit`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
-                    <Typography variant="caption" color='text.secondary'>
+                    <Typography variant="body2" color='text.secondary'>
                       {`${data_plan_limit.get()} GB`}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="Start Day" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`Start Day`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
-                    <Typography variant="caption" color='text.secondary'>
+                    <Typography variant="body2">
                       {`Day ${data_plan_start.get()}`}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <Badge color={'info'} variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="Remains" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`Remains`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color="info" variant="determinate"
@@ -700,7 +758,7 @@ export default () => {
                           getRemainDaysOfMonthUsage(data_plan_start.get())[0],
                           getRemainDaysOfMonthUsage(data_plan_start.get())[1],
                         )} />
-                      <Typography variant="caption">
+                      <Typography variant="body2">
                         {`${getRemainDaysOfMonthUsage(data_plan_start.get()).join(' / ')}`}
                       </Typography>
                     </Stack>
@@ -757,7 +815,7 @@ export default () => {
 
           <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-              <Typography pl={1} variant={`subtitle1`}>
+              <Typography pl={1} variant={`subtitle1`} color='text.secondary'>
                 {`WiFi Overview 5G`}
               </Typography>
               <IconButton disabled variant="outlined" color='info' size="small">
@@ -772,7 +830,7 @@ export default () => {
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <Typography textAlign="center" variant={`subtitle2`} component="div">
-                    <Typography variant={`caption`} component="div">
+                    <Typography variant={`caption`} component="div" color='text.secondary'>
                       {`5G Clients`}
                     </Typography>
                     {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_5G.get().length})`}<br />
@@ -785,27 +843,39 @@ export default () => {
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
                 <ListItem>
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="ON / OFF" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`ON / OFF`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
                     <MaterialUISwitch onChange={on5GSwitch} checked={boolToInt(parseInt(data_iwinfo_5G.get()?.enable))} />
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="WiFi Name" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`WiFi Name`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
-                    <Typography variant="caption" color='text.secondary'>
+                    <Typography variant="body2">
                       {data_iwinfo_5G.get()?.name}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="Signal" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`Signal`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))} />
-                      <Typography variant="caption" sx={{ width: "2rem" }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`) + `.main`}>
+                      <Typography variant="body2" sx={{ width: "2rem" }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal)), `desc`) + `.main`}>
                         {`${dBmToQuality(parseInt(data_iwinfo_5G.get()?.signal))}%`}
                       </Typography>
                     </Stack>
@@ -825,9 +895,13 @@ export default () => {
                     <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Auth" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Auth`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {data_iwinfo_5G.get()?.authMode}
                           </Typography>
                         </ListItemSecondaryAction>
@@ -836,16 +910,20 @@ export default () => {
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Encryption" />
                           <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
+                            <Typography variant="body2" color='text.secondary'>
                               AES
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem> */}
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Password" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Password`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {data_iwinfo_5G.get()?.password}
                           </Typography>
                         </ListItemSecondaryAction>
@@ -853,46 +931,54 @@ export default () => {
                       <Divider variant="middle" />
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Bandwidth" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Bandwidth`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {`${data_iwinfo_5G.get()?.bandwidth} MHz`}
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Channel" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Channel`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {`Ch.${data_iwinfo_5G.get()?.channel}`}
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Mode" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Mode`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {MAP_WirelessMode[data_iwinfo_5G.get()?.wirelessMode]}
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItem>
-
                     </List>
-
                   </Popover>
                 </ListItem>
               </List>
-
-
             </Stack>
             {/* content */}
           </Paper>
 
           <Paper variant='outlined' sx={{ flexBasis: 0, flexGrow: 1, p: 2, m: 0 }} elevation={0}>
             <Stack direction={`row`} alignItems={`center`} justifyContent={`space-between`}>
-              <Typography pl={1} variant={`subtitle1`}>
+              <Typography pl={1} variant={`subtitle1`} color='text.secondary'>
                 {`WiFi Overview 2.4G`}
               </Typography>
               <IconButton disabled variant="outlined" color='info' size="small">
@@ -907,7 +993,7 @@ export default () => {
                   top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <Typography textAlign="center" variant={`subtitle2`} component="div">
-                    <Typography variant={`caption`} component="div">
+                    <Typography variant={`caption`} component="div" color='text.secondary'>
                       {`2.4G Clients`}
                     </Typography>
                     {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_24G.get().length})`}<br />
@@ -920,7 +1006,11 @@ export default () => {
               <List sx={{ flexBasis: 0, flexGrow: 1, ml: 2 }} dense>
                 <ListItem>
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="ON / OFF" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`ON / OFF`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
                     <MaterialUISwitch onChange={on24GSwitch} checked={boolToInt(
                       parseInt(data_iwinfo_24G.get()?.enable))} />
@@ -928,20 +1018,28 @@ export default () => {
                 </ListItem>
                 <ListItem>
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="WiFi Name" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`WiFi Name`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
-                    <Typography variant="caption" color='text.secondary'>
+                    <Typography variant="body2">
                       {data_iwinfo_24G.get()?.name}
                     </Typography>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
                   <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                  <ListItemText primary="Signal" />
+                  <ListItemText>
+                    <Typography variant='body2' color='text.secondary'>
+                      {`Signal`}
+                    </Typography>
+                  </ListItemText>
                   <ListItemSecondaryAction>
                     <Stack direction="row" alignItems="center" justifyContent="space-evenly" spacing={1}>
                       <LinearProgress sx={{ width: '6rem' }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`)} variant="determinate" value={dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))} />
-                      <Typography variant="caption" sx={{ width: "2rem" }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`) + `.main`}>
+                      <Typography variant="body2" sx={{ width: "2rem" }} color={intToColor(dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal)), `desc`) + `.main`}>
                         {`${dBmToQuality(parseInt(data_iwinfo_24G.get()?.signal))}%`}
                       </Typography>
                     </Stack>
@@ -961,9 +1059,13 @@ export default () => {
                     <List sx={{ width: { xs: "80vw", md: "20vw" } }} dense>
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Auth" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Auth`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {data_iwinfo_24G.get()?.authMode}
                           </Typography>
                         </ListItemSecondaryAction>
@@ -972,16 +1074,20 @@ export default () => {
                           <Badge color="info" variant="dot" sx={{ mr: 2 }} />
                           <ListItemText primary="Encryption" />
                           <ListItemSecondaryAction>
-                            <Typography variant="caption" color='text.secondary'>
+                            <Typography variant="body2" color='text.secondary'>
                               AES
                             </Typography>
                           </ListItemSecondaryAction>
                         </ListItem> */}
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Password" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Password`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {data_iwinfo_24G.get()?.password}
                           </Typography>
                         </ListItemSecondaryAction>
@@ -989,27 +1095,39 @@ export default () => {
                       <Divider variant="middle" />
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Bandwidth" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Bandwidth`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {`${data_iwinfo_24G.get()?.bandwidth} MHz`}
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Channel" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Channel`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {`Ch.${data_iwinfo_24G.get()?.channel}`}
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItem>
                       <ListItem>
                         <Badge color="info" variant="dot" sx={{ mr: 2 }} />
-                        <ListItemText primary="Mode" />
+                        <ListItemText>
+                          <Typography variant='body2' color='text.secondary'>
+                            {`Mode`}
+                          </Typography>
+                        </ListItemText>
                         <ListItemSecondaryAction>
-                          <Typography variant="caption" color='text.secondary'>
+                          <Typography variant="body2">
                             {MAP_WirelessMode[data_iwinfo_24G.get()?.wirelessMode]}
                           </Typography>
                         </ListItemSecondaryAction>
@@ -1031,29 +1149,29 @@ export default () => {
 
         <Stack sx={{ flexBasis: 0, flexGrow: 1, px: 2, height: { md: "30vh" } }}>
           <Stack flexWrap={`wrap`} direction={`row`} alignItems={`center`} justifyContent={{ md: `space-between`, xs: `center` }}>
-            <Typography pl={1} variant={`subtitle1`}>
-              {`Speed Flow  `}
-              <Typography variant={'caption'} color='text.secondary'>
+            <Typography pl={1} pr={1} variant={`subtitle1`} color='text.secondary'>
+              {`Speed Flow`}
+              <Typography variant={'caption'}>
                 {`(1 minute window, 3 second interval)`}
               </Typography>
             </Typography>
 
             <Stack spacing={1} direction={'row'} alignSelf={`flex-end`} justifyContent={'space-evenly'} alignItems={'center'}>
-              <Stack direction={'row'} >
-                <HourglassEmptyIcon color='info' fontSize={'small'} sx={{ zoom: 0.9 }} />
-                <Typography variant={'caption'}>
-                  {`${data_latency.get()} ms`}
+              <Stack alignItems="center" direction={'row'}>
+                <AccessAlarmRounded color="secondary" fontSize={'small'} sx={{ zoom: 0.9 }} />
+                <Typography whiteSpace="pre" variant={'body2'} color="secondary.main">
+                  {` ${data_latency.get()} ms`}
                 </Typography>
               </Stack>
-              <Stack direction={'row'} >
+              <Stack direction={'row'}>
                 <DownloadIcon color={'info'} fontSize={'small'} />
-                <Typography variant={'caption'} color={'info.main'}>
+                <Typography variant={'body2'} color={'info.main'}>
                   {`${bytesToMbit(data_lan_speed_now.get()?.tx)} Mbit/S`}
                 </Typography>
               </Stack>
-              <Stack direction={'row'} >
+              <Stack direction={'row'}>
                 <UploadIcon color={'success'} fontSize={'small'} />
-                <Typography variant={'caption'} color={'success.main'}>
+                <Typography variant={'body2'} color={'success.main'}>
                   {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
                 </Typography>
               </Stack>
@@ -1073,5 +1191,5 @@ export default () => {
       {/* end of right side content */}
     </Stack>
 
-  </div >))
+  </div>))
 }

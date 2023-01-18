@@ -142,7 +142,7 @@ export default function SetSIM() {
       {/* PC SIM Settings */}
       <Box display={{ xs: "none", md: "block" }}>
         <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
-          <Typography variant="h6">
+          <Typography variant="h6" color="text.secondary">
             <b>SIM Network Configuration</b>
           </Typography>
         </Divider>

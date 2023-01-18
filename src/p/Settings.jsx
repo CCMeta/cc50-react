@@ -3,12 +3,12 @@ import {
 } from '@mui/material';
 import { createEffect, useObserver } from 'react-solid-state';
 
-import LanIcon from '@mui/icons-material/LanRounded';
+import LanIcon from '@mui/icons-material/LanOutlined';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/LanguageOutlined';
 import SystemIcon from '@mui/icons-material/RouterOutlined';
 import SecurityIcon from '@mui/icons-material/ShieldOutlined';
-import SimCardIcon from '@mui/icons-material/SimCardOutlined';
+import SimCardIcon from '@mui/icons-material/CellTowerOutlined';
 import WifiIcon from '@mui/icons-material/Wifi';
 
 import 'animate.css';
