@@ -111,7 +111,7 @@ export default function SetNetwork() {
               </ListItemText>
             </ListItem>
 
-            <ListItem secondaryAction={<Typography variant="caption" color="text.secondary">{gateway.get()}</Typography>}>
+            <ListItem secondaryAction={<Typography color="text.secondary">{gateway.get()}</Typography>}>
               <ListItemText primary={`DHCP Gateway`} />
             </ListItem>
 

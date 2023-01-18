@@ -102,9 +102,9 @@ const _data = [
 ]
 
 
-export const MyResponsiveLine = ({ data, theme }) => (
+export const MyResponsiveLine = (props) => (
   <ResponsiveLine
-    data={data ?? _data}
+    data={props.data ?? _data}
     margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
     areaOpacity={0.2}
     axisLeft={{ tickValues: 6 }}
@@ -119,6 +119,7 @@ export const MyResponsiveLine = ({ data, theme }) => (
     useMesh={true}
     enableGridX={false}
     enableGridY={false}
-    theme={theme}
+    theme={props.theme}
+    {...props}
   />
 )

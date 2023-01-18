@@ -21,7 +21,8 @@ import { boolToInt, bytesToHuman, CmdResultParser, dBmToQuality, Define, fetchin
 import { DATA_MODES } from './constants';
 import { LoadingButton } from '@mui/lab';
 import { AccessAlarmRounded, CheckCircle } from '@mui/icons-material';
-
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const chart_theme = {
@@ -203,8 +204,8 @@ export default () => {
   createEffect(async () => {
 
     // to be continued
-    var bodyZoom = (((window.innerWidth / 1500) - 1) / 2) + 1
-    document.body.style.setProperty(`--a`, bodyZoom)
+    // var bodyZoom = (((window.innerWidth / 1500) - 1) / 2) + 1
+    // document.body.style.setProperty(`--a`, bodyZoom)
     if (window.innerWidth > 900 && false)
       document.getElementsByTagName(`html`)[0].style.fontSize = `${window.innerWidth / 15}%`
     // console.log(bodyZoom)
@@ -1158,9 +1159,9 @@ export default () => {
 
             <Stack spacing={1} direction={'row'} alignSelf={`flex-end`} justifyContent={'space-evenly'} alignItems={'center'}>
               <Stack alignItems="center" direction={'row'}>
-                <AccessAlarmRounded color="secondary" fontSize={'small'} sx={{ zoom: 0.9 }} />
+                <AccessAlarmRounded color="secondary" fontSize={'small'} sx={{ position: `relative`, top: `-1px`, }} />
                 <Typography whiteSpace="pre" variant={'body2'} color="secondary.main">
-                  {` ${data_latency.get()} ms`}
+                  {`${data_latency.get()} ms`}
                 </Typography>
               </Stack>
               <Stack direction={'row'}>
@@ -1182,7 +1183,10 @@ export default () => {
           </Stack>
 
           <Stack sx={{ height: '25vh', mb: { xs: "10vh", md: "0" } }} justifyContent="center">
-            <MyResponsiveLine theme={chart_theme} data={data_lan_speed_chart.get()} />
+            {(() => useMediaQuery(useTheme().breakpoints.up('md'))
+              ? <MyResponsiveLine theme={chart_theme} data={data_lan_speed_chart.get()} />
+              : <MyResponsiveLine axisBottom={null} theme={chart_theme} data={data_lan_speed_chart.get()} />
+            )()}
           </Stack>
         </Stack>
         {/* end of right side row 3; REALTIME TRAFFIC CHART */}
