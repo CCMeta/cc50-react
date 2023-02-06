@@ -102,7 +102,7 @@ export default function SetWiFi() {
     element.set(event.target.value); //输入框、选择框等
     if (key && syncConfigures.get()) {
       switch (key) {
-        case "name": wifi_name_5.set(event.target.value); break;
+        case "name": wifi_name_5.set(`${event.target.value}_5G`); break;
         case "pwd": wifi_pwd_5.set(event.target.value); break;
         case "security": security_5.set(event.target.value); break;
       }
@@ -128,7 +128,7 @@ export default function SetWiFi() {
       return
     wifi_enable_5.set(wifi_enable.get());
     hide_wifi_name_5.set(hide_wifi_name.get());
-    wifi_name_5.set(wifi_name.get());
+    wifi_name_5.set(`${wifi_name.get()}_5G`);
     wifi_pwd_5.set(wifi_pwd.get());
     ap_5.set(ap.get());
     security_5.set(security.get());
