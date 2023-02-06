@@ -109,7 +109,8 @@ export const MyResponsiveLine = (props) => (
     areaOpacity={0.2}
     axisLeft={{ tickValues: 6 }}
     // axisBottom={null}
-    curve="catmullRom"
+    // curve="catmullRom"
+    curve="linear"
     colors={{ scheme: 'paired' }}
     lineWidth={1}
     pointBorderWidth={2}

@@ -74,9 +74,9 @@ export default function SetAbout() {
       {/* Mobile About  */}
       <Box display={{ md: "none" }}>
 
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ borderRadius: "10px", border: "2px solid rgb(151 128 229 / 70%)", '& *': { backgroundColor: "unset !important" }, my: '1rem' }}>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
-            <ListSubheader component="div">{`System Information`}</ListSubheader>}>
+            <ListSubheader disableSticky component="div">{`System Information`}</ListSubheader>}>
             <Divider component="li" />
             <ListItem>
               <ListItemText primary={`Model Version`} secondary={data_system_info.get()?.model} />
@@ -96,9 +96,9 @@ export default function SetAbout() {
           </List>
         </Paper>
 
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ borderRadius: "10px", border: "2px solid rgb(128 222 234 / 70%)", '& *': { backgroundColor: "unset !important" }, my: '1rem' }}>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
-            <ListSubheader component="div">{`Network Information`}</ListSubheader>}>
+            <ListSubheader disableSticky component="div">{`Network Information`}</ListSubheader>}>
             <Divider component="li" />
             <ListItem>
               <ListItemText primary={`Operator`} secondary={data_network_info.get()?.operator?.name} />
@@ -122,10 +122,9 @@ export default function SetAbout() {
           </List>
         </Paper>
 
-
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ borderRadius: "10px", border: "2px solid rgb(255 171 145 / 70%)", '& *': { backgroundColor: "unset !important" }, my: '1rem' }}>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} subheader={
-            <ListSubheader component="div">{`Versions Information`}</ListSubheader>}>
+            <ListSubheader disableSticky component="div">{`Versions Information`}</ListSubheader>}>
             <Divider component="li" />
             <ListItem>
               <ListItemText primary={`Software Version`} secondary={data_system_info.get()?.softwareVersion} />
@@ -149,7 +148,7 @@ export default function SetAbout() {
 
         <Stack direction={{ md: "row", xs: "column" }} spacing={`2.5rem`}>
 
-          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Paper sx={{ borderRadius: "10px", border: "2px solid rgb(151 128 229 / 70%)", flexBasis: 0, flexGrow: 1, }} elevation={0}>
             <Box p={'2.5rem'}>
               <Table>
                 <TableBody>
@@ -198,7 +197,7 @@ export default function SetAbout() {
             </Box>
           </Paper>
 
-          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Paper sx={{ borderRadius: "10px", border: "2px solid rgb(128 222 234 / 70%)", flexBasis: 0, flexGrow: 1, }} elevation={0}>
 
             <Box p={'2.5rem'}>
               <Table>
@@ -258,7 +257,7 @@ export default function SetAbout() {
 
         <Stack direction="row" spacing={'2.5rem'} py={'2.5rem'}>
 
-          <Paper sx={{ flexBasis: 0, flexGrow: 1 }} elevation={0}>
+          <Paper sx={{ borderRadius: "10px", border: "2px solid rgb(255 171 145 / 70%)", flexBasis: 0, flexGrow: 1, }} elevation={0}>
             <Box p={'2.5rem'} sx={{ lineBreak: "anywhere" }}>
               <Table>
                 <TableBody>
