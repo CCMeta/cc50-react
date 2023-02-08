@@ -114,8 +114,8 @@ export default () => {
   /*********functions**********/
   const fetching_conntrack_list = async () => {
     return await fetching(FormBuilder({
-      "cmd": `ubus call luci-rpc getDHCPLeases`,
-      "token": sessionStorage.getItem('sid'),
+      "command": `ubus call luci-rpc getDHCPLeases`,
+      "sessionid": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
       return res.dhcp_leases

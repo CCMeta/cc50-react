@@ -13,7 +13,7 @@ import WifiIcon from '@mui/icons-material/Wifi';
 
 import 'animate.css';
 import * as React from 'react';
-import { Define } from './utils';
+import { Define, rpc } from './utils';
 
 import HeaderBar from './c/HeaderBar';
 import SettingsAbout from './SettingsAbout';
@@ -39,6 +39,9 @@ export default props => {
 
   /*********createEffect**********/
   createEffect(async () => {
+
+    // const fuck = rpc.post(`file`, `exec`, { "command": "ls" }, `ubus`)
+    // console.log(fuck)
 
   })
 

@@ -172,8 +172,8 @@ export default () => {
     return result
   }
   const data_data_Usage_count = () => {
-    let tx = data_traffic_modem.get()?.months?.[0].tx
-    let rx = data_traffic_modem.get()?.months?.[0].rx
+    let tx = data_traffic_modem.get()?.months?.[0].tx || 0
+    let rx = data_traffic_modem.get()?.months?.[0].rx || 0
     let free = (data_plan_limit.get() * Math.pow(1024, 2)) - (tx + rx)
     if (free < 0) {
       // out of limit
@@ -266,13 +266,13 @@ export default () => {
         id: "rx",
         data: [
           ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
-          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx) }
+          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx || 0) }
         ]
       }, {
         id: "tx",
         data: [
           ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
-          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx) }
+          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx || 0) }
         ]
       }])
 
@@ -288,19 +288,25 @@ export default () => {
 
   const fetching_luci_conntrack = async () => {
     return await fetching(FormBuilder({
-      "cmd": `ubus call luci getConntrackList`,
-      "token": sessionStorage.getItem('sid'),
+      "command": `ubus call luci getConntrackList`,
+      "sessionid": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => res?.result || [])
   }
 
   const fetching_traffic_modem = async () => {
     return await fetching(FormBuilder({
-      "cmd": `vnstat -i ccmni1 -u && vnstat -i ccmni1 --json`,
-      "token": sessionStorage.getItem('sid'),
+      "command": `vnstat -i ccmni1 -u`,
+      "sessionid": sessionStorage.getItem('sid'),
     }), 'webcmd'
-    ).then(res => {
-      if (typeof res.interfaces === undefined)
+    ).then(async _ => {
+      return await fetching(FormBuilder({
+        "command": `vnstat -i ccmni1 --json`,
+        "sessionid": sessionStorage.getItem('sid'),
+      }), 'webcmd'
+      )
+    }).then(res => {
+      if (typeof res.interfaces === "undefined")
         return {}
       const last7Days = res.interfaces[0].traffic.days.slice(0, 7).reverse()
       data_for_week_chart.set(
@@ -326,8 +332,8 @@ export default () => {
 
   const fetching_realtime_traffic = async () => {
     return await fetching(FormBuilder({
-      "cmd": `vnstat -i ccmni1 -tr 3 --json`,
-      "token": sessionStorage.getItem('sid'),
+      "command": `vnstat -i ccmni1 -tr 3 --json`,
+      "sessionid": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => ({
       rx: res?.rx?.bytespersecond,
@@ -829,7 +835,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color='text.secondary'>
                       {`5G Clients`}
                     </Typography>
-                    {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_5G.get().length})`}<br />
+                    {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)) || 0}% (${data_clients_info_5G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -991,7 +997,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color='text.secondary'>
                       {`2.4G Clients`}
                     </Typography>
-                    {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_24G.get().length})`}<br />
+                    {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)) || 0}% (${data_clients_info_24G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -1369,7 +1375,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color='text.secondary'>
                       {`5G Clients`}
                     </Typography>
-                    {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_5G.get().length})`}<br />
+                    {`${Math.round(data_clients_info_5G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)) || 0}% (${data_clients_info_5G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -1532,7 +1538,7 @@ export default () => {
                     <Typography variant={`caption`} component="div" color='text.secondary'>
                       {`2.4G Clients`}
                     </Typography>
-                    {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length))}% (${data_clients_info_24G.get().length})`}<br />
+                    {`${Math.round(data_clients_info_24G.get().length * 100 / (data_clients_info_24G.get().length + data_clients_info_5G.get().length)) || 0}% (${data_clients_info_24G.get().length})`}<br />
                     {`Total ${data_clients_info_24G.get().length + data_clients_info_5G.get().length}`}
                   </Typography>
                 </Box>
@@ -1702,13 +1708,13 @@ export default () => {
               <Stack direction={'row'}>
                 <DownloadIcon color={'info'} fontSize={'small'} />
                 <Typography variant={'body2'} color={'info.main'}>
-                  {`${bytesToMbit(data_lan_speed_now.get()?.rx)} Mbit/S`}
+                  {`${bytesToMbit(data_lan_speed_now.get()?.rx || 0)} Mbit/S`}
                 </Typography>
               </Stack>
               <Stack direction={'row'}>
                 <UploadIcon color={'success'} fontSize={'small'} />
                 <Typography variant={'body2'} color={'success.main'}>
-                  {`${bytesToMbit(data_lan_speed_now.get()?.tx)} Mbit/S`}
+                  {`${bytesToMbit(data_lan_speed_now.get()?.tx || 0)} Mbit/S`}
                 </Typography>
               </Stack>
               <IconButton disabled variant="outlined" color='info' size="small">

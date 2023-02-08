@@ -27,12 +27,15 @@ export const secondsToWatch = v => {
 export async function fetching(body, type = `login`, subpath = ``) {
   let path = ''
   let method = 'post'
+  const headers = {}
   switch (type) {
     case 'login':
       path = `/cgi-bin/luci`
       break;
     case 'webcmd':
-      path = `/cgi-bin/luci/admin/mtk/webcmd`
+      // path = `/cgi-bin/luci/admin/mtk/webcmd`
+      path = `/cgi-bin/cgi-exec`
+      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
       break;
     case 'wifi':
       path = `/cgi-bin/luci/admin/mtk/wifi${subpath}`
@@ -47,7 +50,7 @@ export async function fetching(body, type = `login`, subpath = ``) {
   }
 
   const options = {
-    method, body, mode: 'cors', credentials: 'include', // headers,
+    method, body, mode: 'cors', credentials: 'include', headers,
   }
 
   const res = await fetch(path, options)
@@ -69,7 +72,8 @@ export function CmdResultParser(raw, keyword, endword = '\n') {
 }
 
 export function FormBuilder(data) {
-  const form = new FormData()
+  // const form = new FormData()
+  const form = new URLSearchParams()
   for (let i in data) {
     form.append(i, data[i])
   }
@@ -124,20 +128,30 @@ export const MAP_WirelessMode = {
  * @returns API response data
  */
 export async function webcmd(action, data = ``) {
-  let path = `/cgi-bin/luci/admin/mtk/webcmd`
-  let method = 'post'
+  // const path = `/cgi-bin/luci/admin/mtk/webcmd`
+  const path = `/cgi-bin/cgi-exec`
+  const method = 'post'
 
   // This replace is for char slash and char quote.
   // To replace single char and the result will be `hello xxx.xxx "{\"key\":\"value\"}"`
-  let data_json = data ?
-    `"${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}"` : ``
+  const data_json = data ?
+    // `"${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}"` : ``
+    // `${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}` : ``
+    `${JSON.stringify(data)}` : ``
 
-  let body = FormBuilder({
-    "cmd": `hellapi ${action} ${data_json}`,
-    "token": sessionStorage.getItem('sid'),
+  const body = FormBuilder({
+    "sessionid": sessionStorage.getItem('sid'),
+    "command": `hellapi ${action} ${data_json}`,
+    // "command": `/usr/sbin/iptables --line-numbers -w -nvxL -t nat`,
+    // "cmd": `hellapi ${action} ${data_json}`,
+    // "token": sessionStorage.getItem('sid'),
   })
+
   const options = {
     method, body, mode: 'cors', credentials: 'include', // headers,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    },
   }
 
   const res = await fetch(path, options)
