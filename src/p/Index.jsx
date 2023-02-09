@@ -237,7 +237,7 @@ export default () => {
     const interval_apis = async () => {
       // data_latency
       const StartTimeStamp = Date.now()
-      await webcmd(`hello`).then(_ => data_latency.set(Date.now() - StartTimeStamp - 80))
+      await webcmd(`hello`).then(_ => data_latency.set(Date.now() - StartTimeStamp))
 
       await webcmd(`system.info.cpu.get`).then(res => {
         const used = 100 - parseInt(res?.data?.["cpuIdle"])

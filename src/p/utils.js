@@ -129,7 +129,7 @@ export const MAP_WirelessMode = {
  */
 export async function webcmd(action, data = ``) {
   // const path = `/cgi-bin/luci/admin/mtk/webcmd`
-  const path = `/cgi-bin/cgi-exec`
+  const path = `/cgi-bin/cgi-hell`
   const method = 'post'
 
   // This replace is for char slash and char quote.
