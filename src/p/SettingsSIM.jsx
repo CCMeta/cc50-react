@@ -146,7 +146,6 @@ export default function SetSIM() {
             <b>SIM Network Configuration</b>
           </Typography>
         </Divider>
-
         <Box px={{ md: '4rem' }}>
 
           <Grid container spacing={2}>
@@ -208,9 +207,10 @@ export default function SetSIM() {
           </Grid>
 
         </Box>
+      </Box>
 
-        {/* ⬇ This is APN  */}
-        {/* 
+      {/* ⬇ This is APN  */}
+      {/* <Box display={{ xs: "none", md: "block" }}>
         <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
           <Typography variant="h6">
             <b>APN Configuration</b>
@@ -328,8 +328,7 @@ export default function SetSIM() {
             </Grid>
           </Grid>
         </Box>
-         */}
-      </Box>
+      </Box> */}
 
       <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
         <LoadingButton loading={submitLoading.get()} onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>

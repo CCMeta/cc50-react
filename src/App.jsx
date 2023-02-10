@@ -1,4 +1,3 @@
-import { Login } from "@mui/icons-material";
 import { Box, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Route, Routes } from "react-router-dom";
@@ -11,6 +10,7 @@ import ClientsPage from "./p/Clients";
 import IndexPage from './p/Index';
 import SettingsPage from "./p/Settings";
 import LoginPage from "./p/Login";
+import SMSPage from "./p/SMS";
 
 
 const darkTheme = createTheme({
@@ -37,6 +37,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="clients" element={<ClientsPage />} />
+            <Route path="sms" element={<SMSPage />} />
             <Route path="settings" element={<SettingsPage store={store} />} />
           </Routes>
         </Box>

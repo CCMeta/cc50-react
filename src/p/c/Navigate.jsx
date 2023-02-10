@@ -6,7 +6,7 @@ import { Define } from '../utils';
 import LanIcon from '@mui/icons-material/LanOutlined';
 import ClientsIcon from '@mui/icons-material/DevicesOther';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
-import KeyIcon from '@mui/icons-material/Key';
+import MailIcon from '@mui/icons-material/MailRounded';
 import MouseIcon from '@mui/icons-material/Mouse';
 import PinIcon from '@mui/icons-material/Pin';
 import PolicyIcon from '@mui/icons-material/Policy';
@@ -50,7 +50,7 @@ export default props => {
   const menuMetaData = [
     { title: 'DashBoard', value: `/`, icon: <SpeedIcon color="info" /> },
     { title: 'Clients', value: `clients`, icon: <ClientsIcon color="info" /> },
-    // { title: 'SMS', value: `about`, icon: <MailIcon color="info" /> },
+    { title: 'SMS', value: `sms`, icon: <MailIcon color="info" /> },
     // { title: 'Call', value: `about`, icon: <CallIcon color="info" /> },
     { title: 'Settings', value: `settings`, icon: <SettingsIcon color="info" /> },
   ]

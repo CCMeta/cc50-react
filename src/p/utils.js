@@ -2,6 +2,9 @@
 import { createSignal, createStore } from 'react-solid-state'
 export { rpc } from './rpc'
 
+// const GO_HELL = true
+
+
 export function Define(value = '') {
   const [getValue, setValue] = createSignal(value)
   return { get: getValue, set: setValue }
@@ -33,9 +36,10 @@ export async function fetching(body, type = `login`, subpath = ``) {
       path = `/cgi-bin/luci`
       break;
     case 'webcmd':
-      // path = `/cgi-bin/luci/admin/mtk/webcmd`
-      path = `/cgi-bin/cgi-exec`
-      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+      if (typeof GO_HELL === 'undefined') {
+        headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
+      path = typeof GO_HELL === 'undefined' ? `/cgi-bin/luci/admin/mtk/webcmd` : `/cgi-bin/cgi-exec`
       break;
     case 'wifi':
       path = `/cgi-bin/luci/admin/mtk/wifi${subpath}`
@@ -128,8 +132,14 @@ export const MAP_WirelessMode = {
  * @returns API response data
  */
 export async function webcmd(action, data = ``) {
-  // const path = `/cgi-bin/luci/admin/mtk/webcmd`
-  const path = `/cgi-bin/cgi-hell`
+  const headers = {}
+
+  if (typeof GO_HELL === 'undefined') {
+    headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+  }
+  const path = typeof GO_HELL === 'undefined' ? `/cgi-bin/luci/admin/mtk/webcmd` : `/cgi-bin/cgi-hell`
+
+
   const method = 'post'
 
   // This replace is for char slash and char quote.
@@ -143,15 +153,12 @@ export async function webcmd(action, data = ``) {
     "sessionid": sessionStorage.getItem('sid'),
     "command": `hellapi ${action} ${data_json}`,
     // "command": `/usr/sbin/iptables --line-numbers -w -nvxL -t nat`,
-    // "cmd": `hellapi ${action} ${data_json}`,
-    // "token": sessionStorage.getItem('sid'),
+    "cmd": `hellapi ${action} ${data_json}`,
+    "token": sessionStorage.getItem('sid'),
   })
 
   const options = {
-    method, body, mode: 'cors', credentials: 'include', // headers,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    },
+    method, body, mode: 'cors', credentials: 'include', headers,
   }
 
   const res = await fetch(path, options)

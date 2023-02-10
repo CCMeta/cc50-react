@@ -290,6 +290,8 @@ export default () => {
     return await fetching(FormBuilder({
       "command": `ubus call luci getConntrackList`,
       "sessionid": sessionStorage.getItem('sid'),
+      "cmd": `ubus call luci getConntrackList`,
+      "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => res?.result || [])
   }
@@ -298,11 +300,15 @@ export default () => {
     return await fetching(FormBuilder({
       "command": `vnstat -i ccmni1 -u`,
       "sessionid": sessionStorage.getItem('sid'),
+      "cmd": `vnstat -i ccmni1 -u`,
+      "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(async _ => {
       return await fetching(FormBuilder({
         "command": `vnstat -i ccmni1 --json`,
         "sessionid": sessionStorage.getItem('sid'),
+        "cmd": `vnstat -i ccmni1 --json`,
+        "token": sessionStorage.getItem('sid'),
       }), 'webcmd'
       )
     }).then(res => {
@@ -334,6 +340,8 @@ export default () => {
     return await fetching(FormBuilder({
       "command": `vnstat -i ccmni1 -tr 3 --json`,
       "sessionid": sessionStorage.getItem('sid'),
+      "cmd": `vnstat -i ccmni1 -tr 3 --json`,
+      "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => ({
       rx: res?.rx?.bytespersecond,
