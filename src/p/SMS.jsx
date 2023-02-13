@@ -127,7 +127,7 @@ export default () => {
             <Button color="success" onClick={onRefreshSMS} startIcon={<RefreshSMSIcon />} variant="outlined">
               Refresh
             </Button>
-            <Button color="info" onClick={onSettingSMS} startIcon={<AppSettingsAltRounded />} variant="outlined">
+            <Button disabled color="info" onClick={onSettingSMS} startIcon={<AppSettingsAltRounded />} variant="outlined">
               Setting
             </Button>
           </Stack>
