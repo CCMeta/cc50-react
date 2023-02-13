@@ -5,12 +5,10 @@ import {
 } from '@mui/material';
 import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
-import EditIcon from '@mui/icons-material/Edit';
-import LockIcon from '@mui/icons-material/Lock';
 import { LoadingButton } from '@mui/lab';
 
-import { AppSettingsAltRounded, CheckCircle, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { AppSettingsAltRounded, ChatBubbleOutlineRounded, CheckCircle, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
+import { DataGrid } from '@mui/x-data-grid';
 import 'animate.css';
 import { Define } from './utils';
 
@@ -21,20 +19,26 @@ export default () => {
     { field: 'id', type: 'number', headerName: 'ID', width: 60, },
     { field: 'date', headerName: 'Date', width: 200, },
     { field: 'number', headerName: 'Number', width: 150, },
+    {
+      field: 'unread', headerName: 'Unread', type: 'number', width: 80, renderCell: (p) =>
+        <Typography color={p.value > 0 ? `warning.main` : `text.secondary`}>
+          {p.value}
+        </Typography>
+    },
     { field: 'total', type: 'number', headerName: 'Total', width: 80, },
     {
       field: 'content', headerName: 'Content (Click content to read)', flex: 1, renderCell: (p) =>
-        <Typography onClick={() => onReadSMS(p.row)} variant="body2" color="pink" sx={{ cursor: "pointer" }}>
+        <Typography onClick={() => onReadSMS(p.row)} variant="body2" color="text.secondary" sx={{ cursor: "pointer" }}>
           {p.value}
         </Typography>
     },
   ]
   const data_get_sms_list = Define([
-    { id: "1", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
-    { id: "2", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
-    { id: "3", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
-    { id: "4", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
-    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
+    { id: "1", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    { id: "2", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    { id: "3", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    { id: "4", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
   ])
   const QoS_PopoverOpen = Define(null)
   const dialogCreateSMS = Define(false)
@@ -168,7 +172,7 @@ export default () => {
       <Dialog fullWidth maxWidth="md" scroll="paper" open={dialogReadSMS.get()} onClose={() => dialogReadSMS.set(false)}>
         <DialogTitle>
           <Stack direction="row" alignItems="center">
-            <NewSMSIcon color="primary" sx={{ mr: `0.5rem` }} />
+            <ChatBubbleOutlineRounded color="primary" sx={{ mr: `0.5rem` }} />
             <Typography variant="subtitle1" >
               {`Read Message`}
             </Typography>
@@ -178,7 +182,7 @@ export default () => {
           <DialogContentText>
             <TextField value={readNumber.get()} variant="standard" label="Cell Number" disabled />
             <Divider sx={{ my: `1rem` }} />
-            <Typography>
+            <Typography color="text.primary">
               {readContent.get()}
             </Typography>
           </DialogContentText>
