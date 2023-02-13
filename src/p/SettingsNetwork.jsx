@@ -149,7 +149,7 @@ export default function SetNetwork() {
         <Box px={{ md: '4rem' }}>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Gateway`}
@@ -159,7 +159,7 @@ export default function SetNetwork() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <Typography variant="subtitle1">
                   {gateway.get()}
@@ -169,7 +169,7 @@ export default function SetNetwork() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Start address`}
@@ -180,7 +180,7 @@ export default function SetNetwork() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <TextFieldProto value={start.get()} onChange={(e) => HandleJudgeValue(start, e)} />
               </Item>
@@ -188,7 +188,7 @@ export default function SetNetwork() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Maximum Clients`}
@@ -199,7 +199,7 @@ export default function SetNetwork() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <TextFieldProto value={limit.get()} onChange={(e) => HandleJudgeValue(limit, e)} />
               </Item>
@@ -207,7 +207,7 @@ export default function SetNetwork() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={8} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Lease Time`}
@@ -217,7 +217,7 @@ export default function SetNetwork() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <Select size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
                   {leaseTimeOptions.map((i) => (

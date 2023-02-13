@@ -41,8 +41,9 @@ export default function SetSIM() {
   ]
   //定义动态变量
   const enable = Define(false), roaming = Define(false), dataMode = Define(0);
-  const selectMode = Define("auto"), pdp = Define(""), apnName = Define("");
+  const selectMode = Define("auto"), pdpType = Define(""), apnName = Define("");
   const authType = Define("0"), username = Define(""), password = Define(""), current = Define("");
+  const pinState = Define(`disable`), pinAction = Define(`disable`), pinCurrentCode = Define(``), pinNewCode = Define(``);
   const HandleChangeBoolean = (dom, event) => {
     dom.set(event.target.checked); //滑动按钮、勾选框等
   };
@@ -52,7 +53,9 @@ export default function SetSIM() {
   const helpTextRoaming = `If Disable this option, Mobile Network will not support Roaming.`
   const helpTextDataMode = `Check well you SIM card, select the same data mode or let him auto.`
   const helpTextNetwork = `Disable or Enable the Mobile Network`
-  const submitLoading = Define(false)
+  const onSubmitNetworkLoading = Define(false)
+  const onSubmitAPNLoading = Define(false)
+  const onSubmitPINLoading = Define(false)
 
   /*********createEffect**********/
   createEffect(async () => {
@@ -67,19 +70,50 @@ export default function SetSIM() {
   })
 
   /*********functions**********/
-  const onSubmit = async e => {
-    submitLoading.set(true)
+  const onSubmitNetwork = async e => {
+    onSubmitNetworkLoading.set(true)
     const form = {
       enable: boolToInt(enable.get()),
       roaming: boolToInt(roaming.get()),
       dataMode: dataMode.get(),
     }
-    // return console.log(form)
+    return console.log(form)
     const result = await webcmd(`internet.setting.sim.set`, form)
     if (result.code === 200) {
       alert(result.msg)
     }
-    submitLoading.set(false)
+    onSubmitNetworkLoading.set(false)
+  }
+  const onSubmitPIN = async e => {
+    onSubmitPINLoading.set(true)
+    const form = {
+      pinAction: pinAction.get(),
+      pinOldCode: pinCurrentCode.get(),
+      pinNewCode: pinNewCode.get(),
+    }
+    return console.log(form)
+    const result = await webcmd(`internet.setting.sim.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+    onSubmitPINLoading.set(false)
+  }
+  const onSubmitAPN = async e => {
+    onSubmitAPNLoading.set(true)
+    const form = {
+      selectMode: selectMode.get(),
+      pdpType: pdpType.get(),
+      apnName: apnName.get(),
+      authType: authType.get(),
+      username: username.get(),
+      password: password.get(),
+    }
+    return console.log(form)
+    const result = await webcmd(`internet.setting.sim.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+    onSubmitAPNLoading.set(false)
   }
   /*********styles**********/
 
@@ -93,7 +127,7 @@ export default function SetSIM() {
           <List>
             <ListSubheader>
               <Typography align="left" variant="caption" component="div">
-                {"SIM Card Network Configuration"}
+                {"SIM Network Configuration"}
               </Typography>
             </ListSubheader>
             <ListItem>
@@ -134,6 +168,9 @@ export default function SetSIM() {
                 </Select>
               </FormControl>
             </ListItem>
+            <ListItem>
+              <LoadingButton loading={onSubmitNetworkLoading.get()} onClick={onSubmitNetwork} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+            </ListItem>
           </List>
         </Paper>
 
@@ -143,13 +180,13 @@ export default function SetSIM() {
       <Box display={{ xs: "none", md: "block" }}>
         <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
           <Typography variant="h6" color="text.secondary">
-            <b>SIM Network Configuration</b>
+            <b>Network Configuration</b>
           </Typography>
         </Divider>
         <Box px={{ md: '4rem' }}>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Network`}
@@ -159,7 +196,7 @@ export default function SetSIM() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <BpCheckbox label="Enable" checked={enable.get()} onChange={(e) => HandleChangeBoolean(enable, e)} />
               </Item>
@@ -167,7 +204,7 @@ export default function SetSIM() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Roaming`}
@@ -177,7 +214,7 @@ export default function SetSIM() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <BpCheckbox label="Enable" checked={roaming.get()} onChange={(e) => HandleChangeBoolean(roaming, e)} />
               </Item>
@@ -185,7 +222,7 @@ export default function SetSIM() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DataMode`}
@@ -195,7 +232,7 @@ export default function SetSIM() {
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <Select size="small" value={dataMode.get()} onChange={(e) => HandleChangeValue(dataMode, e)} >
                   {DATA_MODES.map((mode) => (
@@ -205,14 +242,97 @@ export default function SetSIM() {
               </Item>
             </Grid>
           </Grid>
-
+          <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
+            <LoadingButton loading={onSubmitNetworkLoading.get()} onClick={onSubmitNetwork} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+          </Box>
         </Box>
       </Box>
 
-      {/* ⬇ This is APN  */}
-      {/* <Box display={{ xs: "none", md: "block" }}>
+      {/* PC PIN Settings */}
+      <Box display={{ xs: "none", md: "block" }}>
         <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
-          <Typography variant="h6">
+          <Typography variant="h6" color="text.secondary">
+            <b>PIN Configuration</b>
+          </Typography>
+        </Divider>
+        <Box px={{ md: '4rem' }}>
+
+          <Grid container spacing={2}>
+            <Grid xs={0} md={3}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`PIN State`}
+                  <HelpPopover>
+                  </HelpPopover>
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <Item>
+                <Typography variant="subtitle1" >
+                  {pinState.get()}
+                </Typography>
+              </Item>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid xs={0} md={3}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Action`}
+                  <HelpPopover>
+                  </HelpPopover>
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <Item>
+                <Select size="small" value={pinAction.get()} onChange={(e) => HandleChangeValue(pinAction, e)} >
+                  <MenuItem value={`enable`}>{`enable`}</MenuItem>
+                  <MenuItem value={`disable`}>{`disable`}</MenuItem>
+                  <MenuItem value={`change`}>{`change`}</MenuItem>
+                </Select>
+              </Item>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid xs={12} md={3}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`Current PIN Code`}
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <Item>
+                <TextFieldSelf label={`Enter the Current pin code`} value={pinCurrentCode.get()} onChange={(e) => HandleChangeValue(pinCurrentCode, e)} />
+              </Item>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid xs={12} md={3}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
+                  {`New PIN Code`}
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <Item>
+                <TextFieldSelf disabled={pinAction.get() !== `change`} label={pinAction.get() !== `change` ? "disabled" : `Enter the new pin code`} value={pinNewCode.get()} onChange={(e) => HandleChangeValue(pinNewCode, e)} />
+              </Item>
+            </Grid>
+          </Grid>
+          <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
+            <LoadingButton loading={onSubmitPINLoading.get()} onClick={onSubmitPIN} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* PC APN Settings */}
+      <Box display={{ xs: "none", md: "block" }}>
+        <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
+          <Typography variant="h6" color='text.secondary'>
             <b>APN Configuration</b>
           </Typography>
         </Divider>
@@ -261,7 +381,7 @@ export default function SetSIM() {
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left" }}>
               <Item>
-                <Select size="small" value={pdp.get()} onChange={(e) => HandleChangeValue(pdp, e)} >
+                <Select size="small" value={pdpType.get()} onChange={(e) => HandleChangeValue(pdpType, e)} >
                   {pdps.map((pdpp) => (
                     <MenuItem value={pdpp.value}>{pdpp.name}</MenuItem>
                   ))}
@@ -327,11 +447,11 @@ export default function SetSIM() {
               <Item><TextFieldSelf value={password.get()} onChange={(e) => HandleChangeValue(password, e)} maxLength="30" /></Item>
             </Grid>
           </Grid>
-        </Box>
-      </Box> */}
 
-      <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
-        <LoadingButton loading={submitLoading.get()} onClick={onSubmit} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+          <Box px={{ md: `10rem` }} py={{ xs: '3rem', md: '3rem' }}>
+            <LoadingButton loading={onSubmitAPNLoading.get()} onClick={onSubmitAPN} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+          </Box>
+        </Box>
       </Box>
 
     </Stack>

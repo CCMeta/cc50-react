@@ -202,14 +202,14 @@ export default function SetNetwork() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={0} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Range`}
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={9} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={9}>
               <Item>
                 <Stack direction={`row`} alignItems="center">
                   <Typography component={`span`}>
@@ -232,14 +232,14 @@ export default function SetNetwork() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid xs={8} md={3} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={8} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`DHCP Lease`}
                 </Typography>
               </Item>
             </Grid>
-            <Grid xs={12} md={6} sx={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid xs={12} md={6}>
               <Item>
                 <Select size="small" value={lease.get()} onChange={(e) => HandleChangeValue(lease, e)}>
                   {leaseTimeOptions.map((i) => (
