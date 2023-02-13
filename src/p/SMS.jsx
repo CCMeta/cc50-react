@@ -7,8 +7,9 @@ import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
 import EditIcon from '@mui/icons-material/Edit';
 import LockIcon from '@mui/icons-material/Lock';
+import { LoadingButton } from '@mui/lab';
 
-import { AppSettingsAltRounded, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
+import { AppSettingsAltRounded, CheckCircle, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import { Define } from './utils';
@@ -42,11 +43,13 @@ export default () => {
     { id: "2", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
     { id: "3", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
     { id: "4", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
-    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
+    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 1我是爸爸" },
   ])
   const QoS_PopoverOpen = Define(null)
   const dialogCreateSMS = Define(false)
   const content = Define("")
+  const onCreateSMSLoading = Define(false)
+  const selectedSMS = Define([])
 
   /*********createEffect**********/
   var timer
@@ -66,11 +69,13 @@ export default () => {
 
   /*********functions**********/
   const onCreateSMS = () => {
+    onCreateSMSLoading.set(true)
     alert(content.get())
+    onCreateSMSLoading.set(false)
     dialogCreateSMS.set(false)
   }
   const onDeleteSMS = () => {
-    alert(`onDeleteSMS`)
+    alert(`onDeleteSMS${selectedSMS.get()} length = ${selectedSMS.get().length}`)
   }
   const onRefreshSMS = () => {
     alert(`onRefreshSMS`)
@@ -112,7 +117,7 @@ export default () => {
               </DialogContent>
               <DialogActions>
                 <Button variant="outlined" color="info" onClick={() => dialogCreateSMS.set(false)}>Cancel</Button>
-                <Button variant="contained" color="Aqua_Blue" onClick={onCreateSMS}>Send</Button>
+                <LoadingButton loading={onCreateSMSLoading.get()} onClick={onCreateSMS} color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Send</LoadingButton>
               </DialogActions>
             </Dialog>
 
@@ -151,7 +156,10 @@ export default () => {
           </Popover>
         </Stack>
 
-        <DataGrid checkboxSelection rows={data_get_sms_list.get()} columns={columns} />
+        <DataGrid checkboxSelection disableSelectionOnClick selectionModel={selectedSMS.get()} onSelectionModelChange={(newSelectionModel) => {
+          selectedSMS.set(newSelectionModel)
+          console.log(selectedSMS.get())
+        }} rows={data_get_sms_list.get()} columns={columns} />
       </Stack>
 
     </Stack>

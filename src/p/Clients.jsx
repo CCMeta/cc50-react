@@ -160,7 +160,7 @@ export default () => {
             </List>
           </Popover>
         </Stack>
-        <DataGrid rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
+        <DataGrid disableSelectionOnClick rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
       </Stack>
 
     </Stack>
