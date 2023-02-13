@@ -23,19 +23,10 @@ export default () => {
     { field: 'number', headerName: 'Number', width: 150, },
     { field: 'total', type: 'number', headerName: 'Total', width: 80, },
     {
-      field: 'content', headerName: 'Content', flex: 1, renderCell: p =>
-        <Typography variant="body2" color="pink" sx={{ cursor: "pointer" }}>
+      field: 'content', headerName: 'Content (Click content to read)', flex: 1, renderCell: (p) =>
+        <Typography onClick={() => onReadSMS(p.row)} variant="body2" color="pink" sx={{ cursor: "pointer" }}>
           {p.value}
         </Typography>
-    },
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Action',
-      getActions: (params) => [
-        <GridActionsCellItem disabled icon={<LockIcon color="Aqua_Blue" />} label="Lock" />,
-        <GridActionsCellItem onClick={e => QoS_PopoverOpen.set(e.currentTarget)} icon={<EditIcon color="Aqua_Blue" />} label="QoS" />,
-      ]
     },
   ]
   const data_get_sms_list = Define([
@@ -43,11 +34,15 @@ export default () => {
     { id: "2", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
     { id: "3", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
     { id: "4", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
-    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 1我是爸爸" },
+    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, content: "谁是爸爸 我是爸爸" },
   ])
   const QoS_PopoverOpen = Define(null)
   const dialogCreateSMS = Define(false)
-  const content = Define("")
+  const dialogReadSMS = Define(false)
+  const createNumber = Define("")
+  const createContent = Define("")
+  const readNumber = Define("")
+  const readContent = Define("")
   const onCreateSMSLoading = Define(false)
   const selectedSMS = Define([])
 
@@ -70,7 +65,7 @@ export default () => {
   /*********functions**********/
   const onCreateSMS = () => {
     onCreateSMSLoading.set(true)
-    alert(content.get())
+    alert(createContent.get())
     onCreateSMSLoading.set(false)
     dialogCreateSMS.set(false)
   }
@@ -82,6 +77,12 @@ export default () => {
   }
   const onSettingSMS = () => {
     alert(`onSettingSMS`)
+  }
+  const onReadSMS = (sms) => {
+    console.log(sms)
+    readNumber.set(sms.number)
+    readContent.set(sms.content)
+    dialogReadSMS.set(true)
   }
 
   /*********styles**********/
@@ -100,26 +101,6 @@ export default () => {
             <Button color="primary" onClick={() => dialogCreateSMS.set(true)} startIcon={<NewSMSIcon />} variant="outlined">
               Create
             </Button>
-
-            <Dialog fullWidth maxWidth="md" scroll="paper" open={dialogCreateSMS.get()} onClose={() => dialogCreateSMS.set(false)}>
-              <DialogTitle>
-                <Stack direction="row" alignItems="center">
-                  <NewSMSIcon color="primary" sx={{ mr: `0.5rem` }} />
-                  <Typography variant="subtitle1" >
-                    {`New Message`}
-                  </Typography>
-                </Stack>
-              </DialogTitle>
-              <DialogContent dividers>
-                <DialogContentText>
-                  <TextField value={content.get()} onChange={e => content.set(e.target.value)} label={content.get().length > 0 ? `${content.get().length} / 200` : `Please Enter Your Message Content in there`} multiline minRows={10} fullWidth autoFocus />
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button variant="outlined" color="info" onClick={() => dialogCreateSMS.set(false)}>Cancel</Button>
-                <LoadingButton loading={onCreateSMSLoading.get()} onClick={onCreateSMS} color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Send</LoadingButton>
-              </DialogActions>
-            </Dialog>
 
             <Button color="error" onClick={onDeleteSMS} startIcon={<DeleteSMSIcon />} variant="outlined">
               Delete
@@ -161,6 +142,51 @@ export default () => {
           console.log(selectedSMS.get())
         }} rows={data_get_sms_list.get()} columns={columns} />
       </Stack>
+
+      <Dialog fullWidth maxWidth="md" scroll="paper" open={dialogCreateSMS.get()} onClose={() => dialogCreateSMS.set(false)}>
+        <DialogTitle>
+          <Stack direction="row" alignItems="center">
+            <NewSMSIcon color="primary" sx={{ mr: `0.5rem` }} />
+            <Typography variant="subtitle1" >
+              {`New Message`}
+            </Typography>
+          </Stack>
+        </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
+            <TextField value={createNumber.get()} onChange={e => createNumber.set(e.target.value)} variant="standard" label="Cell Number" fullWidth autoFocus />
+            <Divider sx={{ my: `1rem` }} />
+            <TextField value={createContent.get()} onChange={e => createContent.set(e.target.value)} label={createContent.get().length > 0 ? `${createContent.get().length} / 200` : `Please Enter Your Message Content in there`} multiline minRows={10} fullWidth />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" color="info" onClick={() => dialogCreateSMS.set(false)}>Cancel</Button>
+          <LoadingButton loading={onCreateSMSLoading.get()} onClick={onCreateSMS} color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Send</LoadingButton>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog fullWidth maxWidth="md" scroll="paper" open={dialogReadSMS.get()} onClose={() => dialogReadSMS.set(false)}>
+        <DialogTitle>
+          <Stack direction="row" alignItems="center">
+            <NewSMSIcon color="primary" sx={{ mr: `0.5rem` }} />
+            <Typography variant="subtitle1" >
+              {`Read Message`}
+            </Typography>
+          </Stack>
+        </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
+            <TextField value={readNumber.get()} variant="standard" label="Cell Number" disabled />
+            <Divider sx={{ my: `1rem` }} />
+            <Typography>
+              {readContent.get()}
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" color="info" onClick={() => dialogReadSMS.set(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
 
     </Stack>
 

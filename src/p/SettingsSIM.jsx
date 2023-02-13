@@ -34,14 +34,14 @@ function TextFieldSelf(props) {
 
 export default function SetSIM() {
   /*********constants**********/
-  const pdps = [
+  const pdpTypes = [
     { value: 0, name: "IPV4" },
     { value: 1, name: "IPV6" },
     { value: 2, name: "IPv4v6" }
   ]
   //定义动态变量
   const enable = Define(false), roaming = Define(false), dataMode = Define(0);
-  const selectMode = Define("auto"), pdpType = Define(""), apnName = Define("");
+  const apnMode = Define("auto"), pdpType = Define(2), apnName = Define("");
   const authType = Define("0"), username = Define(""), password = Define(""), current = Define("");
   const pinState = Define(`disable`), pinAction = Define(`disable`), pinCurrentCode = Define(``), pinNewCode = Define(``);
   const HandleChangeBoolean = (dom, event) => {
@@ -53,6 +53,14 @@ export default function SetSIM() {
   const helpTextRoaming = `If Disable this option, Mobile Network will not support Roaming.`
   const helpTextDataMode = `Check well you SIM card, select the same data mode or let him auto.`
   const helpTextNetwork = `Disable or Enable the Mobile Network`
+  const helpTextPINAction = `The PIN code can only be changed when the PIN code state is enabled.`
+  const helpTextPINState = `After the PIN code is enabled, you need to enter the PIN code when you start the device next time.
+  After you disable the PIN code, you do not need to enter the PIN code when you start the device next time.`
+  const helpTextPdpMode = `Mode: Select Manual APN if your service provider provided you with a fixed APN.
+  If not provided, select "Auto" and the device will get the parameters automatically.`
+  const helpTextApnAuthentication = `Authentication: Provided by your Internet Service Provider (ISP).
+  Password Authentication Protocol (PAP) uses two handshakes to establish a peer's identity without encryption.
+  The Challenge Handshake Authentication Protocol (CHAP) periodically verifies the identity of the peer through a three-way handshake.`
   const onSubmitNetworkLoading = Define(false)
   const onSubmitAPNLoading = Define(false)
   const onSubmitPINLoading = Define(false)
@@ -101,7 +109,7 @@ export default function SetSIM() {
   const onSubmitAPN = async e => {
     onSubmitAPNLoading.set(true)
     const form = {
-      selectMode: selectMode.get(),
+      selectMode: apnMode.get(),
       pdpType: pdpType.get(),
       apnName: apnName.get(),
       authType: authType.get(),
@@ -263,6 +271,7 @@ export default function SetSIM() {
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`PIN State`}
                   <HelpPopover>
+                    {helpTextPINState}
                   </HelpPopover>
                 </Typography>
               </Item>
@@ -281,6 +290,7 @@ export default function SetSIM() {
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Action`}
                   <HelpPopover>
+                    {helpTextPINAction}
                   </HelpPopover>
                 </Typography>
               </Item>
@@ -289,8 +299,8 @@ export default function SetSIM() {
               <Item>
                 <Select size="small" value={pinAction.get()} onChange={(e) => HandleChangeValue(pinAction, e)} >
                   <MenuItem value={`enable`}>{`enable`}</MenuItem>
-                  <MenuItem value={`disable`}>{`disable`}</MenuItem>
-                  <MenuItem value={`change`}>{`change`}</MenuItem>
+                  <MenuItem value={`disable`}>{`Disable`}</MenuItem>
+                  <MenuItem value={`change`}>{`Change`}</MenuItem>
                 </Select>
               </Item>
             </Grid>
@@ -356,13 +366,16 @@ export default function SetSIM() {
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`APN Select Mode`}
+                  <HelpPopover>
+                    {helpTextPdpMode}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl md={{ paddingLeft: "9px" }} xs={{ paddingLeft: "0px" }}>
-                  <RadioGroup row name="row-radio-buttons-group" value={selectMode.get()} onChange={(e) => HandleChangeValue(selectMode, e)}>
+                  <RadioGroup row name="row-radio-buttons-group" value={apnMode.get()} onChange={(e) => HandleChangeValue(apnMode, e)}>
                     <FormControlLabel value="auto" control={<Radio />} label="Auto" />
                     <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
                   </RadioGroup>
@@ -381,8 +394,8 @@ export default function SetSIM() {
             </Grid>
             <Grid xs={12} md={6} sx={{ textAlign: "left" }}>
               <Item>
-                <Select size="small" value={pdpType.get()} onChange={(e) => HandleChangeValue(pdpType, e)} >
-                  {pdps.map((pdpp) => (
+                <Select disabled={apnMode.get() === `auto`} size="small" value={pdpType.get()} onChange={(e) => HandleChangeValue(pdpType, e)} >
+                  {pdpTypes.map((pdpp) => (
                     <MenuItem value={pdpp.value}>{pdpp.name}</MenuItem>
                   ))}
                 </Select>
@@ -399,7 +412,9 @@ export default function SetSIM() {
               </Item>
             </Grid>
             <Grid xs={12} md={6}>
-              <Item><TextFieldSelf value={current.get()} onChange={(e) => HandleChangeValue(current, e)} /></Item>
+              <Item>
+                <TextFieldSelf disabled={apnMode.get() === `auto`} value={current.get()} onChange={(e) => HandleChangeValue(current, e)} />
+                </Item>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -407,12 +422,15 @@ export default function SetSIM() {
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
                   {`Auth Type`}
+                  <HelpPopover>
+                    {helpTextApnAuthentication}
+                  </HelpPopover>
                 </Typography>
               </Item>
             </Grid>
             <Grid xs={12} md={6}>
               <Item>
-                <FormControl sx={{ paddingLeft: "9px", flexDirection: "row", }}>
+                <FormControl disabled={apnMode.get() === `auto`} sx={{ paddingLeft: "9px", flexDirection: "row", }}>
                   <RadioGroup row name="row-radio-buttons-group" value={authType.get()} onChange={(e) => HandleChangeValue(authType, e)}>
                     <FormControlLabel value="0" control={<Radio />} label="PAP" />
                     <FormControlLabel value="1" control={<Radio />} label="CHAP" />
@@ -432,7 +450,9 @@ export default function SetSIM() {
               </Item>
             </Grid>
             <Grid xs={12} md={6}>
-              <Item><TextFieldSelf value={username.get()} onChange={(e) => HandleChangeValue(username, e)} maxLength="30" /></Item>
+              <Item>
+                <TextFieldSelf disabled={apnMode.get() === `auto`} value={username.get()} onChange={(e) => HandleChangeValue(username, e)} maxLength="30" />
+                </Item>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -444,7 +464,9 @@ export default function SetSIM() {
               </Item>
             </Grid>
             <Grid xs={12} md={6}>
-              <Item><TextFieldSelf value={password.get()} onChange={(e) => HandleChangeValue(password, e)} maxLength="30" /></Item>
+              <Item>
+                <TextFieldSelf disabled={apnMode.get() === `auto`} value={password.get()} onChange={(e) => HandleChangeValue(password, e)} maxLength="30" />
+                </Item>
             </Grid>
           </Grid>
 
