@@ -98,7 +98,7 @@ export default function SetNetwork() {
       {/* Mobile DHCP Configuration Settings */}
       <Box display={{ md: "none" }}>
 
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px", borderColor: "#198fcfaa",borderStyle:"solid" }}>
           <List>
             <ListSubheader>
               <Typography align="left" variant="caption" component="div">

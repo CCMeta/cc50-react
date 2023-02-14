@@ -110,7 +110,7 @@ export default function SetSIM() {
     onSubmitAPNLoading.set(true)
     const form = {
       selectMode: apnMode.get(),
-      pdpType: pdpType.get(),
+      pdp: pdpType.get(),
       apnName: apnName.get(),
       authType: authType.get(),
       username: username.get(),
@@ -130,9 +130,9 @@ export default function SetSIM() {
 
       {/* Mobile SIM Settings */}
       <Box display={{ md: "none" }}>
-        
+
         {/* network */}
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px solid rgb(151 128 229 / 50%)", }}>
           <List>
             <ListSubheader>
               <Typography align="left" variant="caption" component="div">
@@ -183,7 +183,7 @@ export default function SetSIM() {
           </List>
         </Paper>
         {/* PIN */}
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px solid rgb(128 222 234 / 50%)", }}>
           <List>
             <ListSubheader>
               <Typography align="left" variant="caption" component="div">
@@ -230,7 +230,7 @@ export default function SetSIM() {
           </List>
         </Paper>
         {/* APN */}
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px solid rgb(255 171 145 / 50%)", }}>
           <List>
             <ListSubheader>
               <Typography align="left" variant="caption" component="div">

@@ -489,7 +489,7 @@ export default function SetWiFi() {
     </Box>
 
     {/* mobile WiFi global Configuration */}
-    <Paper variant="outlined" elevation={0} sx={{ my: '1rem', display: { md: "none" }, position: "sticky", top: 0, zIndex: "9999" }}>
+    <Paper variant="outlined" elevation={0} sx={{ my: '1rem', display: { md: "none" }, position: "sticky", top: 0, zIndex: "9999", borderRadius: "10px", border: "2px solid rgb(255 171 145 / 50%)", }}>
       <List dense disablePadding>
         <ListItem >
           <FormControlLabel checked={syncConfigures.get()} control={<Checkbox size="small" />} onChange={(e) => Synchronize(e)} label="Synchronous 2.4 and 5G options" />
@@ -501,7 +501,7 @@ export default function SetWiFi() {
     </Paper >
 
     {/* mobile WiFi 2.4G Base + Advanced Configuration */}
-    <Paper variant="outlined" elevation={0} sx={{ display: { md: "none" }, my: '1rem' }}>
+    <Paper variant="outlined" elevation={0} sx={{ display: { md: "none" }, my: '1rem', borderRadius: "10px", border: "2px solid rgb(128 222 234 / 50%)", }}>
       <List>
         <ListSubheader>
           <Typography align="left" variant="caption" component="div">
@@ -591,7 +591,7 @@ export default function SetWiFi() {
     </Paper>
 
     {/* mobile WiFi 5G Base + Advanced Configuration */}
-    <Paper variant="outlined" elevation={0} sx={{ display: { md: "none" }, my: '1rem' }}>
+    <Paper variant="outlined" elevation={0} sx={{ display: { md: "none" }, my: '1rem', borderRadius: "10px", border: "2px solid rgb(151 128 229 / 50%)", }}>
       <List>
         <ListSubheader>
           <Typography align="left" variant="caption" component="div">
