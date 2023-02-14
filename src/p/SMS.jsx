@@ -1,16 +1,19 @@
 import {
-  Button, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Divider, InputAdornment, List,
-  ListItem, Popover, Stack, TextField, Typography
+  Button, ButtonGroup, Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle, Divider, IconButton, InputAdornment, List,
+  ListItem, Paper, Popover, Stack, TextField, Typography
 } from '@mui/material';
 import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
+import EditIcon from '@mui/icons-material/Edit';
+import LockIcon from '@mui/icons-material/Lock';
 import { LoadingButton } from '@mui/lab';
 
-import { AppSettingsAltRounded, ChatBubbleOutlineRounded, CheckCircle, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
-import { DataGrid } from '@mui/x-data-grid';
+import { AppSettingsAltRounded, ChatBubbleOutlineRounded, ChatBubbleRounded, CheckCircle, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import { Define } from './utils';
+import { display } from '@mui/system';
 
 
 export default () => {
@@ -100,45 +103,41 @@ export default () => {
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
       <Stack className='styled-scrollbars' height={`95vh`} sx={{ flexBasis: 0, flexGrow: 4 }}>
 
-        <Stack sx={{ m: 2 }}>
-          <Stack direction="row" spacing={`1rem`}>
-            <Button color="primary" onClick={() => dialogCreateSMS.set(true)} startIcon={<NewSMSIcon />} variant="outlined">
-              Create
-            </Button>
-
-            <Button color="error" onClick={onDeleteSMS} startIcon={<DeleteSMSIcon />} variant="outlined">
-              Delete
-            </Button>
-            <Button color="success" onClick={onRefreshSMS} startIcon={<RefreshSMSIcon />} variant="outlined">
-              Refresh
-            </Button>
-            <Button disabled color="info" onClick={onSettingSMS} startIcon={<AppSettingsAltRounded />} variant="outlined">
-              Setting
-            </Button>
+        {/* MOBILE BUTTONS */}
+        <Paper elevation={0} variant="outlined" sx={{ width: 'fit-content', m: `1rem`, display: { xs: "flex", md: "none" } }}>
+          <Stack direction={{ xs: "row" }} spacing={{ xs: `1rem`, md: `1rem` }} sx={{ m: `0.5rem`, width: "calc(90vw - 1rem)", justifyContent: "space-evenly" }}>
+            <IconButton size="small" color="primary" onClick={() => dialogCreateSMS.set(true)}>
+              <NewSMSIcon />
+            </IconButton>
+            <Divider orientation="vertical" flexItem />
+            <IconButton size="small" color="error" onClick={onDeleteSMS} >
+              <DeleteSMSIcon />
+            </IconButton>
+            <Divider orientation="vertical" variant="middle" flexItem />
+            <IconButton size="small" color="success" onClick={onRefreshSMS}>
+              <RefreshSMSIcon />
+            </IconButton>
+            <Divider orientation="vertical" variant="middle" flexItem />
+            <IconButton size="small" color="info" onClick={onSettingSMS}>
+              <AppSettingsAltRounded />
+            </IconButton>
           </Stack>
+        </Paper>
 
-          <Popover
-            onClose={e => QoS_PopoverOpen.set(null)}
-            anchorEl={QoS_PopoverOpen.get()}
-            open={QoS_PopoverOpen.get() !== null}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
-            transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
-            <List sx={{ width: `20rem` }} dense>
-              <ListItem>
-                <TextField color="info" size='small' fullWidth label="Down Rate per Client" InputProps={{
-                  endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,
-                }} />
-              </ListItem>
-              <ListItem>
-                <TextField color="success" size='small' fullWidth label="Up Rate per Client" InputProps={{
-                  endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,
-                }} />
-              </ListItem>
-              <ListItem>
-                <Button disabled fullWidth variant="contained">Save</Button>
-              </ListItem>
-            </List>
-          </Popover>
+        {/* PC BUTTONS */}
+        <Stack display={{ xs: "none", md: "flex" }} direction={{ md: "row" }} spacing={{ xs: `1rem`, md: `1rem` }} sx={{ m: `1rem` }}>
+          <Button color="primary" onClick={() => dialogCreateSMS.set(true)} startIcon={<NewSMSIcon />} variant="outlined">
+            Create
+          </Button>
+          <Button color="error" onClick={onDeleteSMS} startIcon={<DeleteSMSIcon />} variant="outlined">
+            Delete
+          </Button>
+          <Button color="success" onClick={onRefreshSMS} startIcon={<RefreshSMSIcon />} variant="outlined">
+            Refresh
+          </Button>
+          <Button disabled color="info" onClick={onSettingSMS} startIcon={<AppSettingsAltRounded />} variant="outlined">
+            Setting
+          </Button>
         </Stack>
 
         <DataGrid checkboxSelection disableSelectionOnClick selectionModel={selectedSMS.get()} onSelectionModelChange={(newSelectionModel) => {

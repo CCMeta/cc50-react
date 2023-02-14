@@ -42,7 +42,7 @@ export default function SetSIM() {
   //定义动态变量
   const enable = Define(false), roaming = Define(false), dataMode = Define(0);
   const apnMode = Define("auto"), pdpType = Define(2), apnName = Define("");
-  const authType = Define("0"), username = Define(""), password = Define(""), current = Define("");
+  const authType = Define("0"), username = Define(""), password = Define(""), current = Define("undefined");
   const pinState = Define(`disable`), pinAction = Define(`disable`), pinCurrentCode = Define(``), pinNewCode = Define(``);
   const HandleChangeBoolean = (dom, event) => {
     dom.set(event.target.checked); //滑动按钮、勾选框等
@@ -96,7 +96,7 @@ export default function SetSIM() {
     onSubmitPINLoading.set(true)
     const form = {
       pinAction: pinAction.get(),
-      pinOldCode: pinCurrentCode.get(),
+      pinCurrentCode: pinCurrentCode.get(),
       pinNewCode: pinNewCode.get(),
     }
     return console.log(form)
@@ -130,7 +130,8 @@ export default function SetSIM() {
 
       {/* Mobile SIM Settings */}
       <Box display={{ md: "none" }}>
-
+        
+        {/* network */}
         <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
           <List>
             <ListSubheader>
@@ -178,6 +179,126 @@ export default function SetSIM() {
             </ListItem>
             <ListItem>
               <LoadingButton loading={onSubmitNetworkLoading.get()} onClick={onSubmitNetwork} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+            </ListItem>
+          </List>
+        </Paper>
+        {/* PIN */}
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+          <List>
+            <ListSubheader>
+              <Typography align="left" variant="caption" component="div">
+                {"PIN Configuration"}
+              </Typography>
+            </ListSubheader>
+            <ListItem>
+              <ListItemText>
+                <Divider />
+              </ListItemText>
+            </ListItem>
+            <ListItem secondaryAction={pinState.get()}>
+              <ListItemText>
+                {`Current State`}
+                <HelpPopover>
+                  {helpTextPINState}
+                </HelpPopover>
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <FormControl fullWidth>
+                <InputLabel id="select-label-PIN-Action">
+                  {`Action`}
+                  <HelpPopover>
+                    {helpTextPINAction}
+                  </HelpPopover>
+                </InputLabel>
+                <Select sx={{ '& fieldset > legend': { pr: `1rem` } }} labelId="select-label-PIN-Action" label={`Action`} variant="outlined" size="small" value={pinAction.get()} onChange={(e) => HandleChangeValue(pinAction, e)}>
+                  <MenuItem value={`enable`}>{`Enable`}</MenuItem>
+                  <MenuItem value={`disable`}>{`Disable`}</MenuItem>
+                  <MenuItem value={`change`}>{`Change`}</MenuItem>
+                </Select>
+              </FormControl>
+            </ListItem>
+            <ListItem>
+              <TextField fullWidth label="Current PIN Code" variant="outlined" size="small" value={pinCurrentCode.get()} onChange={(e) => HandleChangeValue(pinCurrentCode, e)} />
+            </ListItem>
+            <ListItem>
+              <TextField disabled={pinAction.get() !== `change`} fullWidth label="New PIN Code" variant="outlined" size="small" value={pinNewCode.get()} onChange={(e) => HandleChangeValue(pinNewCode, e)} />
+            </ListItem>
+            <ListItem>
+              <LoadingButton loading={onSubmitPINLoading.get()} onClick={onSubmitPIN} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
+            </ListItem>
+          </List>
+        </Paper>
+        {/* APN */}
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem' }}>
+          <List>
+            <ListSubheader>
+              <Typography align="left" variant="caption" component="div">
+                {"APN Configuration"}
+              </Typography>
+            </ListSubheader>
+            <ListItem>
+              <ListItemText>
+                <Divider />
+              </ListItemText>
+            </ListItem>
+            <ListItem secondaryAction={current.get()}>
+              <ListItemText>
+                {`Current APN`}
+              </ListItemText>
+            </ListItem>
+            <ListItem secondaryAction={<FormControl md={{ paddingLeft: "9px" }} xs={{ paddingLeft: "0px" }}>
+              <RadioGroup row value={apnMode.get()} onChange={(e) => HandleChangeValue(apnMode, e)}>
+                <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+                <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
+              </RadioGroup>
+            </FormControl>}>
+              <ListItemText>
+                {`APN Mode`}
+                <HelpPopover>
+                  {helpTextPdpMode}
+                </HelpPopover>
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <FormControl disabled={apnMode.get() === `auto`} fullWidth>
+                <InputLabel disabled={apnMode.get() === `auto`} id="select-label-PIN-PdpType">
+                  {`PDP Type`}
+                </InputLabel>
+                <Select labelId="select-label-PIN-PdpType" label={`PDP Type`} variant="outlined" size="small" value={pdpType.get()} onChange={(e) => HandleChangeValue(pdpType, e)}>
+                  {pdpTypes.map((pdpp) => (
+                    <MenuItem value={pdpp.value}>{pdpp.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </ListItem>
+            <ListItem>
+              <TextField disabled={apnMode.get() === `auto`} fullWidth label="APN Name" variant="outlined" size="small" value={apnName.get()} onChange={(e) => HandleChangeValue(apnName, e)} />
+            </ListItem>
+            <ListItem>
+              <FormControl disabled={apnMode.get() === `auto`} fullWidth>
+                <InputLabel id="select-label-PIN-AuthType">
+                  {`Auth Type`}
+                  <HelpPopover>
+                    {helpTextApnAuthentication}
+                  </HelpPopover>
+                </InputLabel>
+                <Select sx={{ '& fieldset > legend': { pr: `1rem` } }} labelId="select-label-PIN-AuthType" label={`Auth Type`} variant="outlined" size="small" value={authType.get()} onChange={(e) => HandleChangeValue(authType, e)}>
+                  <MenuItem value={`0`}>{`PAP`}</MenuItem>
+                  <MenuItem value={`1`}>{`CHAP`}</MenuItem>
+                  <MenuItem value={`2`}>{`PAP/CHAP`}</MenuItem>
+                  <MenuItem value={`3`}>{`NONE`}</MenuItem>
+                </Select>
+              </FormControl>
+            </ListItem>
+            <ListItem>
+              <TextField disabled={apnMode.get() === `auto`} fullWidth label="Username" variant="outlined" size="small" value={username.get()} onChange={(e) => HandleChangeValue(username, e)} />
+            </ListItem>
+            <ListItem>
+              <TextField disabled={apnMode.get() === `auto`} fullWidth label="Password" variant="outlined" size="small" value={password.get()} onChange={(e) => HandleChangeValue(password, e)} />
+            </ListItem>
+            <ListItem>
+              <LoadingButton loading={onSubmitAPNLoading.get()} onClick={onSubmitAPN} fullWidth color="Aqua_Blue" startIcon={<CheckCircle />} variant="contained">Save</LoadingButton>
             </ListItem>
           </List>
         </Paper>
@@ -269,7 +390,7 @@ export default function SetSIM() {
             <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
-                  {`PIN State`}
+                  {`Current State`}
                   <HelpPopover>
                     {helpTextPINState}
                   </HelpPopover>
@@ -298,7 +419,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <Select size="small" value={pinAction.get()} onChange={(e) => HandleChangeValue(pinAction, e)} >
-                  <MenuItem value={`enable`}>{`enable`}</MenuItem>
+                  <MenuItem value={`enable`}>{`Enable`}</MenuItem>
                   <MenuItem value={`disable`}>{`Disable`}</MenuItem>
                   <MenuItem value={`change`}>{`Change`}</MenuItem>
                 </Select>
@@ -375,7 +496,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl md={{ paddingLeft: "9px" }} xs={{ paddingLeft: "0px" }}>
-                  <RadioGroup row name="row-radio-buttons-group" value={apnMode.get()} onChange={(e) => HandleChangeValue(apnMode, e)}>
+                  <RadioGroup row value={apnMode.get()} onChange={(e) => HandleChangeValue(apnMode, e)}>
                     <FormControlLabel value="auto" control={<Radio />} label="Auto" />
                     <FormControlLabel value="maunal" control={<Radio />} label="Maunal" />
                   </RadioGroup>
@@ -413,8 +534,8 @@ export default function SetSIM() {
             </Grid>
             <Grid xs={12} md={6}>
               <Item>
-                <TextFieldSelf disabled={apnMode.get() === `auto`} value={current.get()} onChange={(e) => HandleChangeValue(current, e)} />
-                </Item>
+                <TextFieldSelf disabled={apnMode.get() === `auto`} value={apnName.get()} onChange={(e) => HandleChangeValue(apnName, e)} />
+              </Item>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -431,7 +552,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <FormControl disabled={apnMode.get() === `auto`} sx={{ paddingLeft: "9px", flexDirection: "row", }}>
-                  <RadioGroup row name="row-radio-buttons-group" value={authType.get()} onChange={(e) => HandleChangeValue(authType, e)}>
+                  <RadioGroup row value={authType.get()} onChange={(e) => HandleChangeValue(authType, e)}>
                     <FormControlLabel value="0" control={<Radio />} label="PAP" />
                     <FormControlLabel value="1" control={<Radio />} label="CHAP" />
                     <FormControlLabel value="2" control={<Radio />} label="PAP/CHAP" />
@@ -452,7 +573,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <TextFieldSelf disabled={apnMode.get() === `auto`} value={username.get()} onChange={(e) => HandleChangeValue(username, e)} maxLength="30" />
-                </Item>
+              </Item>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -466,7 +587,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <TextFieldSelf disabled={apnMode.get() === `auto`} value={password.get()} onChange={(e) => HandleChangeValue(password, e)} maxLength="30" />
-                </Item>
+              </Item>
             </Grid>
           </Grid>
 
