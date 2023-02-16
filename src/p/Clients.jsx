@@ -11,7 +11,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import HeaderBar from './c/HeaderBar';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder, dBmToQuality, intToColor } from './utils';
+import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder, dBmToQuality, intToColor, webcmd } from './utils';
 
 
 export default () => {
@@ -70,23 +70,31 @@ export default () => {
         const rai0_clients = await fetching(null, 'wifi', `/sta_info/rai0`)
         const ra0_clients = await fetching(null, 'wifi', `/sta_info/ra0`)
         const clients = [...rai0_clients, ...ra0_clients]
-        const traffics_str = await fetching(null, 'usage')
 
-        const traffics = eval(
-          traffics_str.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
-        console.log(traffics)
+        // const traffics_str = await fetching(null, 'usage')
+        // const traffics = eval(
+        //   traffics_str.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
+        // console.log(traffics)
+
+        const traffics = await webcmd(`clients.list.get`).then(v => v.data)
 
         return (await fetching_conntrack_list())?.map((v, i) => {
           const recent = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
+          let rx, tx, rx_s, tx_s = 0
+          for (let client of traffics) {
+            if (typeof client[v.macaddr.toLowerCase()] !== 'undefined') {
+              rx = client[v.macaddr.toLowerCase()]?.rx ?? 0
+              tx = client[v.macaddr.toLowerCase()]?.tx ?? 0
+            }
+          }
+          tx_s = recent ? parseInt((tx - recent.tx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
+          rx_s = recent ? parseInt((rx - recent.rx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
 
-          const rx = traffics.reduce((_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ? _t + _v[3] : _t, 0)
-          const rx_s = recent ? parseInt((rx - recent.rx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
+          // const rx = traffics.reduce((_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ? _t + _v[3] : _t, 0)
+          // const rx_s = recent ? parseInt((rx - recent.rx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
 
-          const tx = traffics.reduce((_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ? _t + _v[4] : _t, 0)
-          const tx_s = recent ? parseInt((tx - recent.tx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
-
-          // const tx = item_traffic ? item_traffic[4] : 0
-          // const tx_s = recent_value?.tx && item_traffic ? (tx - recent_value.tx) / 2 : 0
+          // const tx = traffics.reduce((_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ? _t + _v[4] : _t, 0)
+          // const tx_s = recent ? parseInt((tx - recent.tx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
 
           return {
             ...v,
@@ -116,6 +124,8 @@ export default () => {
     return await fetching(FormBuilder({
       "command": `ubus call luci-rpc getDHCPLeases`,
       "sessionid": sessionStorage.getItem('sid'),
+      "cmd": `ubus call luci-rpc getDHCPLeases`,
+      "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => {
       return res.dhcp_leases
