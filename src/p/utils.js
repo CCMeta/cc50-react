@@ -144,15 +144,13 @@ export async function webcmd(action, data = ``) {
 
   // This replace is for char slash and char quote.
   // To replace single char and the result will be `hello xxx.xxx "{\"key\":\"value\"}"`
-  const data_json = data ?
-    // `"${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}"` : ``
-    // `${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}` : ``
-    `${JSON.stringify(data)}` : ``
+  const data_json = data && typeof GO_HELL === 'undefined'
+    ? `"${JSON.stringify(data).replaceAll(`\\`, `\\\\`).replaceAll(`"`, `\\\"`)}"`
+    : data && typeof GO_HELL !== 'undefined' ? `${JSON.stringify(data)}` : ``
 
   const body = FormBuilder({
     "sessionid": sessionStorage.getItem('sid'),
     "command": `hellapi ${action} ${data_json}`,
-    // "command": `/usr/sbin/iptables --line-numbers -w -nvxL -t nat`,
     "cmd": `hellapi ${action} ${data_json}`,
     "token": sessionStorage.getItem('sid'),
   })
