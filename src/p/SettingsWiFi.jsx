@@ -471,7 +471,7 @@ export default function SetWiFi() {
               <MenuItem value={20}>20M</MenuItem>
               <MenuItem value={40}>40M</MenuItem>
               <MenuItem value={80}>80M</MenuItem>
-              <MenuItem value={160}>160M</MenuItem>
+              {/* <MenuItem value={160}>160M</MenuItem> */}
             </Select>
           </Item>
           <Item>
@@ -664,7 +664,7 @@ export default function SetWiFi() {
               <MenuItem value={20}>20M</MenuItem>
               <MenuItem value={40}>40M</MenuItem>
               <MenuItem value={80}>80M</MenuItem>
-              <MenuItem value={160}>160M</MenuItem>
+              {/* <MenuItem value={160}>160M</MenuItem> */}
             </Select>
           </FormControl>
         </ListItem>
