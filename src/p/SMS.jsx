@@ -14,6 +14,7 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
 import { Define } from './utils';
 import { display } from '@mui/system';
+import pdu from './c/pdu.js'
 
 
 export default () => {
@@ -54,20 +55,28 @@ export default () => {
   const selectedSMS = Define([])
 
   /*********createEffect**********/
-  var timer
+  var intervalFlag
   createEffect(async () => {
 
-    // setInterval api below 
+    // SetInterval api below 
+    const intervalDuration = 3000
     const interval_apis = async () => {
-
-      // data_get_sms_list.set((await fetching_conntrack_list()) || [])
+      // data_latency
+      // const fuck = data_get_sms_list.get().concat()
+      // fuck.push({ id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" })
+      // data_get_sms_list.set([])
+      // data_get_sms_list.set(fuck)
+      const fuck = pdu.parse(`0891683110302605F06405A00110F0000822606061813323880500032B0904682156ED003051436BCF670800320030004756FD51856D4191CF002D003500304E2A6708000D000A00205957991051856D4191CF00280030004D0029000D000A00205DF275280030002E00300030004D00426D596C5F002D00305143682156ED6C836D3E6821533A6D4191CF653E5FC37528002D003500304E2A6708000D000A0020`)
+      console.info(fuck)
+      console.log(data_get_sms_list.get().length)
 
       return interval_apis
     }
-    timer = setInterval(await interval_apis(), 2000);
 
+    // await interval_apis() //first initial
+    intervalFlag = setInterval(await interval_apis(), intervalDuration);
   })
-  onCleanup(() => clearInterval(timer))
+  onCleanup(() => clearInterval(intervalFlag))
 
   /*********functions**********/
   const onCreateSMS = () => {
