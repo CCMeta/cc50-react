@@ -99,9 +99,17 @@ export default () => {
   onCleanup(() => clearInterval(intervalFlag))
 
   /*********functions**********/
-  const onCreateSMS = () => {
+  const onCreateSMS = async () => {
     onCreateSMSLoading.set(true)
-    alert(createContent.get())
+    const content = []
+    pdu.generateSubmit(createNumber.get(), createContent.get()).forEach(async element => {
+      content.push(element.hex)
+    });
+    const form = { content }
+    const result = await webcmd(`sms.create.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
     onCreateSMSLoading.set(false)
     dialogCreateSMS.set(false)
   }
