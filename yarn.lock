@@ -6948,6 +6948,11 @@ node-releases@^2.0.6:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.6.tgz#8a7088c63a55e493845683ebf3c828d8c51c5503"
   integrity sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==
 
+node-sms-pdu@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/node-sms-pdu/-/node-sms-pdu-0.3.0.tgz#88255b65efabb18ab391b285f88232469e79b434"
+  integrity sha512-DJgQIyZ+Wba83s0AmGyWGpaMQ861Zxc9fCoSttfFZFuc7Bg8iAGB5z5y0TfOkQfeqwq38fAZ+vWyxKpnQf7UWA==
+
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"

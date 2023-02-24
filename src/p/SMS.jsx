@@ -12,17 +12,19 @@ import { LoadingButton } from '@mui/lab';
 import { AppSettingsAltRounded, ChatBubbleOutlineRounded, ChatBubbleRounded, CheckCircle, DeleteOutlineRounded as DeleteSMSIcon, NoteAddOutlined as NewSMSIcon, RefreshRounded as RefreshSMSIcon } from '@mui/icons-material';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
-import { Define } from './utils';
+import { Define, webcmd } from './utils';
 import { display } from '@mui/system';
-import pdu from './c/pdu.js'
-
+// import pdu from './c/pdu.js'
+import { Buffer } from "buffer";
+window.Buffer = Buffer;
+const pdu = require('node-sms-pdu');
 
 export default () => {
   /*********constants**********/
   const columns = [
     { field: 'id', type: 'number', headerName: 'ID', width: 60, },
     { field: 'date', headerName: 'Date', width: 200, },
-    { field: 'number', headerName: 'Number', width: 150, },
+    { field: 'number', headerName: 'Number', width: 300, },
     {
       field: 'unread', headerName: 'Unread', type: 'number', width: 80, renderCell: (p) =>
         <Typography color={p.value > 0 ? `warning.main` : `text.secondary`}>
@@ -58,6 +60,24 @@ export default () => {
   var intervalFlag
   createEffect(async () => {
 
+    await webcmd(`sms.list.get`).then(v => {
+      // console.info(v)
+      const msgs = []
+      for (const msg_pdu of v.data) {
+        const msg = pdu.parse(msg_pdu.content)
+        console.warn(msg);
+        msgs.push({
+          id: msg_pdu.id,
+          date: msg.timestamp,
+          number: `${msg.origination}/${msg.smsc}`,
+          total: 66,
+          unread: 2,
+          content: msg.text,
+        })
+      }
+      data_get_sms_list.set(msgs)
+    })
+
     // SetInterval api below 
     const intervalDuration = 3000
     const interval_apis = async () => {
@@ -67,8 +87,8 @@ export default () => {
       // data_get_sms_list.set([])
       // data_get_sms_list.set(fuck)
       const fuck = pdu.parse(`0891683110302605F06405A00110F0000822606061813323880500032B0904682156ED003051436BCF670800320030004756FD51856D4191CF002D003500304E2A6708000D000A00205957991051856D4191CF00280030004D0029000D000A00205DF275280030002E00300030004D00426D596C5F002D00305143682156ED6C836D3E6821533A6D4191CF653E5FC37528002D003500304E2A6708000D000A0020`)
-      console.info(fuck)
-      console.log(data_get_sms_list.get().length)
+      // console.info(fuck)
+      // console.log(data_get_sms_list.get().length)
 
       return interval_apis
     }
