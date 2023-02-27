@@ -80,6 +80,9 @@ export default props => {
   /*********styles**********/
   const sx_bottom = {
     display: { md: "none" },
+    "& .MuiBottomNavigation-root": {
+      height: "4rem",
+    },
     "& .MuiBottomNavigationAction-root": {
       minWidth: "auto",
     },

@@ -22,7 +22,7 @@ const pdu = require('node-sms-pdu');
 export default () => {
   /*********constants**********/
   const columns = [
-    { field: 'id', type: 'number', headerName: 'ID', width: 60, },
+    // { field: 'id', type: 'number', headerName: 'ID', width: 60, },
     { field: 'date', headerName: 'Date', width: 200, },
     { field: 'number', headerName: 'Number', width: 300, },
     {
@@ -33,18 +33,18 @@ export default () => {
     },
     { field: 'total', type: 'number', headerName: 'Total', width: 80, },
     {
-      field: 'content', headerName: 'Content (Click content to read)', flex: 1, renderCell: (p) =>
+      field: 'content', headerName: 'Content (Click content to read)', minWidth: 300, flex: 1, renderCell: (p) =>
         <Typography onClick={() => onReadSMS(p.row)} variant="body2" color="text.secondary" sx={{ cursor: "pointer" }}>
           {p.value}
         </Typography>
     },
   ]
   const data_get_sms_list = Define([
-    { id: "1", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
-    { id: "2", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
-    { id: "3", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
-    { id: "4", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
-    { id: "5", date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    // { id: 1, date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    // { id: 2, date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    // { id: 3, date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    // { id: 4, date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
+    // { id: 5, date: "2023-02-10 17:07:05", number: "+8613555555555", total: 66, unread: 2, content: "谁是爸爸 我是爸爸" },
   ])
   const QoS_PopoverOpen = Define(null)
   const dialogCreateSMS = Define(false)
@@ -56,19 +56,56 @@ export default () => {
   const onCreateSMSLoading = Define(false)
   const selectedSMS = Define([])
 
-  /*********createEffect**********/
-  var intervalFlag
-  createEffect(async () => {
+  /*********functions**********/
+  const onCreateSMS = async () => {
+    onCreateSMSLoading.set(true)
+    const content = []
+    pdu.generateSubmit(createNumber.get(), createContent.get()).forEach(async element => {
+      content.push(element.hex)
+    });
+    const form = { content }
+    const result = await webcmd(`sms.create.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    }
+    onCreateSMSLoading.set(false)
+    dialogCreateSMS.set(false)
+  }
+  const onDeleteSMS = async () => {
+    if (selectedSMS.get().length < 1)
+      return false
+    if (window.confirm(`If you continue to click OK, you will delete ${selectedSMS.get().length} text messages, click Cancel to cancel`)) {
+      const form = { id: selectedSMS.get() }
+      // return console.info(form)
+      const result = await webcmd(`sms.del.set`, form)
+      if (result.code === 200) {
+        alert(result.msg)
+      }
+    }
+  }
+  const onRefreshSMS = async () => {
+    await bad_motherfucker();
+  }
+  const onSettingSMS = () => {
+    alert(`onSettingSMS`)
+  }
+  const onReadSMS = (sms) => {
+    console.log(sms)
+    readNumber.set(sms.number)
+    readContent.set(sms.content)
+    dialogReadSMS.set(true)
+  }
 
+  const bad_motherfucker = async () => {
     await webcmd(`sms.list.get`).then(v => {
       // console.info(v)
       const msgs = []
       for (const msg_pdu of v.data) {
-        const msg = pdu.parse(msg_pdu.content)
-        console.warn(msg);
+        const msg = pdu.parse(msg_pdu.content);
+        // console.warn(msg);
         msgs.push({
           id: msg_pdu.id,
-          date: msg.timestamp,
+          date: new Date(msg.timestamp).toLocaleString(),
           number: `${msg.origination}/${msg.smsc}`,
           total: 66,
           unread: 2,
@@ -77,6 +114,13 @@ export default () => {
       }
       data_get_sms_list.set(msgs)
     })
+  }
+
+  /*********createEffect**********/
+  var intervalFlag
+  createEffect(async () => {
+
+    await bad_motherfucker();
 
     // SetInterval api below 
     const intervalDuration = 3000
@@ -95,39 +139,10 @@ export default () => {
 
     // await interval_apis() //first initial
     intervalFlag = setInterval(await interval_apis(), intervalDuration);
+
+
   })
   onCleanup(() => clearInterval(intervalFlag))
-
-  /*********functions**********/
-  const onCreateSMS = async () => {
-    onCreateSMSLoading.set(true)
-    const content = []
-    pdu.generateSubmit(createNumber.get(), createContent.get()).forEach(async element => {
-      content.push(element.hex)
-    });
-    const form = { content }
-    const result = await webcmd(`sms.create.set`, form)
-    if (result.code === 200) {
-      alert(result.msg)
-    }
-    onCreateSMSLoading.set(false)
-    dialogCreateSMS.set(false)
-  }
-  const onDeleteSMS = () => {
-    alert(`onDeleteSMS${selectedSMS.get()} length = ${selectedSMS.get().length}`)
-  }
-  const onRefreshSMS = () => {
-    alert(`onRefreshSMS`)
-  }
-  const onSettingSMS = () => {
-    alert(`onSettingSMS`)
-  }
-  const onReadSMS = (sms) => {
-    console.log(sms)
-    readNumber.set(sms.number)
-    readContent.set(sms.content)
-    dialogReadSMS.set(true)
-  }
 
   /*********styles**********/
 
@@ -138,7 +153,7 @@ export default () => {
     <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start" divider={<Divider orientation="vertical" flexItem />}>
 
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
-      <Stack className='styled-scrollbars' height={`95vh`} sx={{ flexBasis: 0, flexGrow: 4 }}>
+      <Stack className='styled-scrollbars' height={{ xs: `calc(95vh - 4rem)`, md: `95vh` }} sx={{ flexBasis: 0, flexGrow: 4 }}>
 
         {/* MOBILE BUTTONS */}
         <Paper elevation={0} variant="outlined" sx={{ width: 'fit-content', m: `1rem`, display: { xs: "flex", md: "none" } }}>
@@ -183,6 +198,7 @@ export default () => {
         }} rows={data_get_sms_list.get()} columns={columns} />
       </Stack>
 
+      {/* dialogCreateSMS */}
       <Dialog fullWidth maxWidth="md" scroll="paper" open={dialogCreateSMS.get()} onClose={() => dialogCreateSMS.set(false)}>
         <DialogTitle>
           <Stack direction="row" alignItems="center">
@@ -205,6 +221,7 @@ export default () => {
         </DialogActions>
       </Dialog>
 
+      {/* dialogReadSMS */}
       <Dialog fullWidth maxWidth="md" scroll="paper" open={dialogReadSMS.get()} onClose={() => dialogReadSMS.set(false)}>
         <DialogTitle>
           <Stack direction="row" alignItems="center">

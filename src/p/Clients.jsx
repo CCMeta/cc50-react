@@ -141,7 +141,7 @@ export default () => {
     <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start" divider={<Divider orientation="vertical" flexItem />}>
 
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
-      <Stack className='styled-scrollbars' height={`95vh`} sx={{ flexBasis: 0, flexGrow: 4 }}>
+      <Stack className='styled-scrollbars' height={{ xs: `calc(95vh - 4rem)`, md: `95vh` }} sx={{ flexBasis: 0, flexGrow: 4 }}>
         <Stack sx={{ m: 2 }}>
           <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="outlined" sx={{ width: `20rem` }}>
             Set Global QoS
