@@ -153,7 +153,7 @@ export default () => {
     <Stack sx={{ flexGrow: 1 }} className="MainStack" direction="row" justifyContent="space-between" alignItems="flex-start" divider={<Divider orientation="vertical" flexItem />}>
 
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
-      <Stack className='styled-scrollbars' height={{ xs: `calc(95vh - 4rem)`, md: `95vh` }} sx={{ flexBasis: 0, flexGrow: 4 }}>
+      <Stack className='styled-scrollbars' height={{ xs: `calc(95dvh - 4rem)`, md: `95dvh` }} sx={{ flexBasis: 0, flexGrow: 4 }}>
 
         {/* MOBILE BUTTONS */}
         <Paper elevation={0} variant="outlined" sx={{ width: 'fit-content', m: `1rem`, display: { xs: "flex", md: "none" } }}>
