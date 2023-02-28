@@ -43,7 +43,7 @@ export default function SetSIM() {
   const enable = Define(false), roaming = Define(false), dataMode = Define(0);
   const apnMode = Define("auto"), pdpType = Define(2), apnName = Define("");
   const authType = Define("0"), username = Define(""), password = Define(""), current = Define("undefined");
-  const pinState = Define(`disable`), pinAction = Define(`disable`), pinCurrentCode = Define(``), pinNewCode = Define(``);
+  const pinState = Define(`disable`), pinAction = Define(`disable`), pinCurrentCode = Define(``), pinNewCode = Define(``), pinRemain = Define(0)
   const HandleChangeBoolean = (dom, event) => {
     dom.set(event.target.checked); //滑动按钮、勾选框等
   };
@@ -75,6 +75,24 @@ export default function SetSIM() {
       dataMode.set(res["dataMode"])
     })
 
+    await webcmd(`sim.setting.pin.get`).then(v => {
+      const res = v.data
+      pinState.set(res.pinState)
+      pinRemain.set(res.pinRemain)
+    })
+
+    await webcmd(`sim.setting.apn.get`).then(v => {
+      const res = v.data
+      current.set(res.current)
+      apnMode.set(res.selectMode)
+      pdpType.set(res.pdp)
+      apnName.set(res.apnName)
+      authType.set(res.authType)
+      username.set(res.username)
+      password.set(res.password)
+    })
+
+
   })
 
   /*********functions**********/
@@ -85,7 +103,7 @@ export default function SetSIM() {
       roaming: boolToInt(roaming.get()),
       dataMode: dataMode.get(),
     }
-    return console.log(form)
+    // return console.log(form)
     const result = await webcmd(`internet.setting.sim.set`, form)
     if (result.code === 200) {
       alert(result.msg)
@@ -99,8 +117,8 @@ export default function SetSIM() {
       pinCurrentCode: pinCurrentCode.get(),
       pinNewCode: pinNewCode.get(),
     }
-    return console.log(form)
-    const result = await webcmd(`internet.setting.sim.set`, form)
+    // return console.log(form)
+    const result = await webcmd(`sim.setting.pin.set`, form)
     if (result.code === 200) {
       alert(result.msg)
     }
@@ -116,8 +134,8 @@ export default function SetSIM() {
       username: username.get(),
       password: password.get(),
     }
-    return console.log(form)
-    const result = await webcmd(`internet.setting.sim.set`, form)
+    // return console.log(form)
+    const result = await webcmd(`sim.setting.apn.set`, form)
     if (result.code === 200) {
       alert(result.msg)
     }
@@ -203,6 +221,11 @@ export default function SetSIM() {
                 </HelpPopover>
               </ListItemText>
             </ListItem>
+            <ListItem secondaryAction={pinRemain.get()}>
+              <ListItemText>
+                {`Remain Time`}
+              </ListItemText>
+            </ListItem>
             <ListItem>
               <FormControl fullWidth>
                 <InputLabel id="select-label-PIN-Action">
@@ -212,6 +235,7 @@ export default function SetSIM() {
                   </HelpPopover>
                 </InputLabel>
                 <Select sx={{ '& fieldset > legend': { pr: `1rem` } }} labelId="select-label-PIN-Action" label={`Action`} variant="outlined" size="small" value={pinAction.get()} onChange={(e) => HandleChangeValue(pinAction, e)}>
+                  <MenuItem value={`verify`}>{`Verify`}</MenuItem>
                   <MenuItem value={`enable`}>{`Enable`}</MenuItem>
                   <MenuItem value={`disable`}>{`Disable`}</MenuItem>
                   <MenuItem value={`change`}>{`Change`}</MenuItem>
@@ -409,6 +433,22 @@ export default function SetSIM() {
             <Grid xs={0} md={3}>
               <Item>
                 <Typography variant="subtitle1" color='text.secondary'>
+                  {`Remain Time`}
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <Item>
+                <Typography variant="subtitle1" >
+                  {pinRemain.get()}
+                </Typography>
+              </Item>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid xs={0} md={3}>
+              <Item>
+                <Typography variant="subtitle1" color='text.secondary'>
                   {`Action`}
                   <HelpPopover>
                     {helpTextPINAction}
@@ -419,6 +459,7 @@ export default function SetSIM() {
             <Grid xs={12} md={6}>
               <Item>
                 <Select size="small" value={pinAction.get()} onChange={(e) => HandleChangeValue(pinAction, e)} >
+                  <MenuItem value={`verify`}>{`Verify`}</MenuItem>
                   <MenuItem value={`enable`}>{`Enable`}</MenuItem>
                   <MenuItem value={`disable`}>{`Disable`}</MenuItem>
                   <MenuItem value={`change`}>{`Change`}</MenuItem>
