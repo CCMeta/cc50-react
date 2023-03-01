@@ -85,6 +85,8 @@ export default function SetNetwork() {
     const result = await webcmd(`network.dhcp.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     submitLoading.set(false)
   }
@@ -98,7 +100,7 @@ export default function SetNetwork() {
       {/* Mobile DHCP Configuration Settings */}
       <Box display={{ md: "none" }}>
 
-        <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px", borderColor: "#198fcfaa",borderStyle:"solid" }}>
+        <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px", borderColor: "#198fcfaa", borderStyle: "solid" }}>
           <List>
             <ListSubheader>
               <Typography align="left" variant="caption" component="div">

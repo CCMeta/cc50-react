@@ -107,6 +107,8 @@ export default function SetSIM() {
     const result = await webcmd(`internet.setting.sim.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     onSubmitNetworkLoading.set(false)
   }
@@ -121,6 +123,8 @@ export default function SetSIM() {
     const result = await webcmd(`sim.setting.pin.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     onSubmitPINLoading.set(false)
   }
@@ -138,6 +142,8 @@ export default function SetSIM() {
     const result = await webcmd(`sim.setting.apn.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     onSubmitAPNLoading.set(false)
   }

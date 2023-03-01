@@ -359,6 +359,8 @@ export default () => {
     const result = await webcmd(`traffic.project.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     submitLoading.set(false)
   }
@@ -371,6 +373,8 @@ export default () => {
     const result = await webcmd(`internet.sim.enable.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     data_device_operation_info.set((await webcmd(`system.info.get`))?.data)
   }
@@ -383,6 +387,8 @@ export default () => {
     const result = await webcmd(`wifi.enable.24g.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     data_iwinfo_24G.set((await webcmd(`wifi.status.24g.get`))?.data)
   }
@@ -395,6 +401,8 @@ export default () => {
     const result = await webcmd(`wifi.enable.5g.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     data_iwinfo_5G.set((await webcmd(`wifi.status.5g.get`))?.data)
   }

@@ -67,9 +67,12 @@ export default () => {
     const result = await webcmd(`sms.create.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     onCreateSMSLoading.set(false)
     dialogCreateSMS.set(false)
+    await getSMSList()
   }
   const onDeleteSMS = async () => {
     if (selectedSMS.get().length < 1)
@@ -80,11 +83,14 @@ export default () => {
       const result = await webcmd(`sms.del.set`, form)
       if (result.code === 200) {
         alert(result.msg)
+      } else {
+        alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
       }
+      await getSMSList()
     }
   }
   const onRefreshSMS = async () => {
-    await bad_motherfucker();
+    await getSMSList();
   }
   const onSettingSMS = () => {
     alert(`onSettingSMS`)
@@ -96,7 +102,7 @@ export default () => {
     dialogReadSMS.set(true)
   }
 
-  const bad_motherfucker = async () => {
+  const getSMSList = async () => {
     await webcmd(`sms.list.get`).then(v => {
       // console.info(v)
       const msgs = []
@@ -120,7 +126,7 @@ export default () => {
   var intervalFlag
   createEffect(async () => {
 
-    await bad_motherfucker();
+    await getSMSList();
 
     // SetInterval api below 
     const intervalDuration = 3000

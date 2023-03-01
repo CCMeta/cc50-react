@@ -200,6 +200,8 @@ export default function SetWiFi() {
     const result = await webcmd(`wifi.setting.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
     submitLoading.set(false)
   }

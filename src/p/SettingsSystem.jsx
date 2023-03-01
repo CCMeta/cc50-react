@@ -62,6 +62,8 @@ export default function SetSystem() {
     if (result.code === 200) {
       alert(result.msg)
       dialogReboot.set(false)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
   }
   const onReset = async () => {
@@ -73,6 +75,8 @@ export default function SetSystem() {
     if (result.code === 200) {
       alert(result.msg)
       dialogReset.set(false)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
   }
 
