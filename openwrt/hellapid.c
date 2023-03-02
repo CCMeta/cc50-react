@@ -1,5 +1,5 @@
 
-int showSpeed()
+int show_speed()
 {
   static struct hwnat_mib_all_ip_mac_args_total argsSpeed; // define clients speed array
   if (ql_pop_lan_devices_packets_total(&argsSpeed) == 0)
@@ -37,7 +37,7 @@ int main()
     sleep(interval); // while loop duration
 
     //counter of speed_monitor 
-    showSpeed();
+    show_speed();
   }
   return 0;
 }
