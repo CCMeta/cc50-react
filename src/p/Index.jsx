@@ -324,18 +324,18 @@ export default () => {
         return result
       }
       const fuck = []
-      for (const shit of res.interfaces) {
+      for (const item of res.interfaces) {
         // console.warn(shit)
-        if (shit.id.indexOf('ccmni') === -1)
+        if (item.id.indexOf('ccmni') === -1)
           continue
 
         // every day
-        let this_shit_last7Days = shit.traffic.days.slice(0, 7).reverse()
+        let this_shit_last7Days = item.traffic.days.slice(0, 7).reverse()
         this_shit_last7Days.map(v => {
-          const index = fuck.findIndex(n => n.time === new Date(v.date.year, v.date.month, v.date.day))
+          const index = fuck.findIndex(n => n.time === new Date(v.date.year, v.date.month, v.date.day).getTime())
           if (index === -1) {
             // no this object, to join in 
-            fuck.push({ time: new Date(v.date.year, v.date.month, v.date.day), ...v })
+            fuck.push({ ...v, time: new Date(v.date.year, v.date.month, v.date.day).getTime() })
           } else {
             // this object is exist , to add 
             fuck[index].rx += v.rx
@@ -344,18 +344,18 @@ export default () => {
         })
 
         // month 
-        result.months[0].rx += shit.traffic.months[0].rx
-        result.months[0].tx += shit.traffic.months[0].tx
+        result.months[0].rx += item.traffic.months[0].rx
+        result.months[0].tx += item.traffic.months[0].tx
         //total
-        result.total.rx += shit.traffic.total.rx
-        result.total.tx += shit.traffic.total.tx
+        result.total.rx += item.traffic.total.rx
+        result.total.tx += item.traffic.total.tx
 
       }
       // calc speed
       if (typeof data_traffic_modem.get().total !== 'undefined') {
         result.speed.rx = parseInt((result.total.rx - data_traffic_modem.get().total.rx) / intervalDuration)
         result.speed.tx = parseInt((result.total.tx - data_traffic_modem.get().total.tx) / intervalDuration)
-        console.info(result.speed)
+        // console.info(result.speed)
       }
 
 
