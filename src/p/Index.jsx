@@ -79,7 +79,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 const normalise = (value, MAX = 100, MIN = 0) => ((value - MIN) * 100) / (MAX - MIN);
 const current_time = () => `${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`
-const bytesToMbit = (bytes) => Math.round(100 * bytes / 125000) / 100
+const KilobytesToMiB = (bytes) => Math.round(100 * bytes / Math.pow(1024, 1)) / 100
 const bytesToMiB = (bytes) => Math.round(100 * bytes / Math.pow(1024, 2)) / 100
 // const bytesToGiB = (bytes) => (bytes / Math.pow(1024, 3)).toFixed(2)
 
@@ -200,6 +200,8 @@ export default () => {
   }
 
   /*********createEffect**********/
+  // SetInterval api below 
+  const intervalDuration = 3 // seconds
   var intervalFlag
   createEffect(async () => {
 
@@ -232,8 +234,7 @@ export default () => {
       data_plan_start.set(data?.start)
     })
 
-    // SetInterval api below 
-    const intervalDuration = 3000
+
     const interval_apis = async () => {
       // data_latency
       const StartTimeStamp = Date.now()
@@ -261,18 +262,18 @@ export default () => {
       data_traffic_modem.set(await fetching_traffic_modem())
 
       //concat speed
-      data_lan_speed_now.set(await fetching_realtime_traffic())
+      data_lan_speed_now.set(data_traffic_modem.get()?.speed)
       data_lan_speed_chart.set([{
         id: "rx",
         data: [
           ...(data_lan_speed_chart.get()[0]?.data.slice(-20)),
-          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.rx || 0) }
+          { x: current_time(), y: KilobytesToMiB(data_traffic_modem.get()?.speed?.rx || 0) }
         ]
       }, {
         id: "tx",
         data: [
           ...(data_lan_speed_chart.get()[1]?.data.slice(-20)),
-          { x: current_time(), y: bytesToMbit(data_lan_speed_now.get()?.tx || 0) }
+          { x: current_time(), y: KilobytesToMiB(data_traffic_modem.get()?.speed?.tx || 0) }
         ]
       }])
 
@@ -280,7 +281,7 @@ export default () => {
     }
 
     // await interval_apis() //first initial
-    intervalFlag = setInterval(await interval_apis(), intervalDuration);
+    intervalFlag = setInterval(await interval_apis(), intervalDuration * 1000);
   })
   onCleanup(() => clearInterval(intervalFlag))
 
@@ -298,49 +299,99 @@ export default () => {
 
   const fetching_traffic_modem = async () => {
     return await fetching(FormBuilder({
-      "command": `vnstat -i ccmni1 -u`,
+      "command": `vnstat -u`,
       "sessionid": sessionStorage.getItem('sid'),
-      "cmd": `vnstat -i ccmni1 -u`,
+      "cmd": `vnstat -u`,
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(async _ => {
       return await fetching(FormBuilder({
-        "command": `vnstat -i ccmni1 --json`,
+        "command": `vnstat --json`,
         "sessionid": sessionStorage.getItem('sid'),
-        "cmd": `vnstat -i ccmni1 --json`,
+        "cmd": `vnstat --json`,
         "token": sessionStorage.getItem('sid'),
       }), 'webcmd'
       )
     }).then(res => {
-      if (typeof res.interfaces === "undefined")
-        return {}
-      const last7Days = res.interfaces[0].traffic.days.slice(0, 7).reverse()
+      const result = {
+        days: [{ rx: 0, tx: 0 }],
+        weeks: [{ rx: 0, tx: 0 }],
+        months: [{ rx: 0, tx: 0 }],
+        total: { rx: 0, tx: 0 },
+        speed: { rx: 0, tx: 0 },
+      }
+      if (typeof res.interfaces === "undefined") {
+        return result
+      }
+      const fuck = []
+      for (const shit of res.interfaces) {
+        // console.warn(shit)
+        if (shit.id.indexOf('ccmni') === -1)
+          continue
+
+        // every day
+        let this_shit_last7Days = shit.traffic.days.slice(0, 7).reverse()
+        this_shit_last7Days.map(v => {
+          const index = fuck.findIndex(n => n.time === new Date(v.date.year, v.date.month, v.date.day))
+          if (index === -1) {
+            // no this object, to join in 
+            fuck.push({ time: new Date(v.date.year, v.date.month, v.date.day), ...v })
+          } else {
+            // this object is exist , to add 
+            fuck[index].rx += v.rx
+            fuck[index].tx += v.tx
+          }
+        })
+
+        // month 
+        result.months[0].rx += shit.traffic.months[0].rx
+        result.months[0].tx += shit.traffic.months[0].tx
+        //total
+        result.total.rx += shit.traffic.total.rx
+        result.total.tx += shit.traffic.total.tx
+
+      }
+      // calc speed
+      if (typeof data_traffic_modem.get().total !== 'undefined') {
+        result.speed.rx = parseInt((result.total.rx - data_traffic_modem.get().total.rx) / intervalDuration)
+        result.speed.tx = parseInt((result.total.tx - data_traffic_modem.get().total.tx) / intervalDuration)
+        console.info(result.speed)
+      }
+
+
+      result.days = fuck.sort((a, b) => b.time - a.time).slice(0, 7)
+      // console.info(fuck.sort(function (a, b) { return b.time - a.time }).slice(0, 7))
+
+      const total_last7Days = result.days.toReversed()
       data_for_week_chart.set(
-        data_for_week_chart.get().slice(0, data_for_week_chart.get().length - last7Days.length)
-          .concat(last7Days.map(v => {
+        data_for_week_chart.get().slice(0, data_for_week_chart.get().length - total_last7Days.length)
+          .concat(total_last7Days.map((v, i) => {
             return {
               ...v,
+              id: `${v.date.month}-${v.date.day}`,
               tx: bytesToMiB(v.tx * 1024),
               rx: bytesToMiB(v.rx * 1024),
             }
           }))
       )
+      // console.warn(data_for_week_chart.get());
 
       let weeks = [{ rx: 0, tx: 0 }]
-      last7Days.map((v, i) => {
+      total_last7Days.map((v, i) => {
         weeks[0].rx += v.rx
         weeks[0].tx += v.tx
       })
-      res.interfaces[0].traffic.weeks = weeks
-      return res.interfaces[0].traffic
+      result.weeks = weeks
+
+      return result
     })
   }
 
   const fetching_realtime_traffic = async () => {
     return await fetching(FormBuilder({
-      "command": `vnstat -i ccmni1 -tr 3 --json`,
+      "command": `vnstat -tr 3 --json`,
       "sessionid": sessionStorage.getItem('sid'),
-      "cmd": `vnstat -i ccmni1 -tr 3 --json`,
+      "cmd": `vnstat -tr 3 --json`,
       "token": sessionStorage.getItem('sid'),
     }), 'webcmd'
     ).then(res => ({
@@ -1724,13 +1775,13 @@ export default () => {
               <Stack direction={'row'}>
                 <DownloadIcon color={'info'} fontSize={'small'} />
                 <Typography variant={'body2'} color={'info.main'}>
-                  {`${bytesToMbit(data_lan_speed_now.get()?.rx || 0)} Mbit/S`}
+                  {`${KilobytesToMiB(data_traffic_modem.get()?.speed?.rx || 0)} MiB/S`}
                 </Typography>
               </Stack>
               <Stack direction={'row'}>
                 <UploadIcon color={'success'} fontSize={'small'} />
                 <Typography variant={'body2'} color={'success.main'}>
-                  {`${bytesToMbit(data_lan_speed_now.get()?.tx || 0)} Mbit/S`}
+                  {`${KilobytesToMiB(data_traffic_modem.get()?.speed?.tx || 0)} MiB/S`}
                 </Typography>
               </Stack>
               <IconButton disabled variant="outlined" color='info' size="small">
