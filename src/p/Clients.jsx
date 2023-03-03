@@ -76,7 +76,20 @@ export default () => {
         //   traffics_str.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
         // console.log(traffics)
 
-        const traffics = await webcmd(`clients.list.get`).then(v => v.data)
+        // const traffics_old = await webcmd(`clients.list.get`).then(v => v.data)
+        const traffics = await webcmd(`> /dev/null && uci get hellapi.clients.speed`).then(v => {
+          const clients = []
+          const clients_strs = v.split(` `)
+          for (const clients_str of clients_strs) {
+            const mac = clients_str.split(`_`)[0]
+            const tx = parseInt(clients_str.split(`_`)[1])
+            const rx = parseInt(clients_str.split(`_`)[2])
+            const client_obj = {}
+            client_obj[mac] = { tx, rx }
+            clients.push(client_obj)
+          }
+          return clients
+        })
 
         return (await fetching_conntrack_list())?.map((v, i) => {
           const recent = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
