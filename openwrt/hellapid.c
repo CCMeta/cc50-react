@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 
 int show_speed()
 {
@@ -13,10 +15,19 @@ int show_speed()
           argsSpeed->entries[i].packets_total.packets.tx_bytes,
           argsSpeed->entries[i].packets_total.packets.rx_bytes
     */
+    system("uci set hellapi.clients=clients");
+    system("uci delete hellapi.clients.speed");
 
-    uci set hellapi.speed.data = argsSpeed // save new value to uci 
-    uci set hellapi.speed.timestamp = now // save now timestamp value to uci 
-    uci commit //
+    char fuck[1024] = {0};
+    for (int i = 0; i < argsSpeed->total_num; i++)
+    {
+      sprintf(fuck, "uci add_list hellapi.clients.speed=\"%02X:%02X:%02X:%02X:%02X:%02X_%ld_%ld\"",
+              NMACQUAD(argsSpeed->entries[i].packets_total.mac_addr),
+              argsSpeed->entries[i].packets_total.packets.tx_bytes,
+              argsSpeed->entries[i].packets_total.packets.rx_bytes);
+      system(fuck);
+    }
+    system("uci commit");
   }
   else
   {
