@@ -1,5 +1,30 @@
 #include <stdlib.h>
 #include <stdio.h>
+
+int qos_init()
+{
+	// open hnat_qos
+	system("echo 0 1 > /proc/hnat/hnat_qos");
+
+	// setting the rules by default
+	system("echo rate 49 0 0 0 1 1 3 > /proc/mtketh/qos");
+	system("echo rate 50 0 0 0 1 3 3 > /proc/mtketh/qos");
+	system("echo rate 51 0 0 0 1 5 3 > /proc/mtketh/qos");
+	system("echo rate 52 0 0 0 1 7 3 > /proc/mtketh/qos");
+	system("echo rate 53 0 0 0 1 9 3 > /proc/mtketh/qos");
+	system("echo rate 54 0 0 0 1 1 4 > /proc/mtketh/qos");
+	system("echo rate 55 0 0 0 1 3 4 > /proc/mtketh/qos");
+	system("echo rate 56 0 0 0 1 5 4 > /proc/mtketh/qos");
+	system("echo rate 57 0 0 0 1 7 4 > /proc/mtketh/qos");
+	system("echo rate 58 0 0 0 1 9 4 > /proc/mtketh/qos");
+	system("echo rate 59 0 0 0 1 1 5 > /proc/mtketh/qos");
+	system("echo rate 60 0 0 0 1 3 5 > /proc/mtketh/qos");
+	system("echo rate 61 0 0 0 1 5 5 > /proc/mtketh/qos");
+	system("echo rate 62 0 0 0 1 7 5 > /proc/mtketh/qos");
+	system("echo rate 63 0 0 0 1 9 5 > /proc/mtketh/qos");
+	return 0;
+}
+
 // cause MTK modem policy, when modem is down the ccmni interface order number may change as random
 // e.g: ccmni1 => ccmni11
 int seek_current_modem()
@@ -63,6 +88,12 @@ int main()
 	if (wifi_reload() != 0)
 	{
 		printf("wifi_reload fucked!");
+		return -1;
+	}
+
+	if (qos_init() != 0)
+	{
+		printf("qos_init fucked!");
 		return -1;
 	}
 
