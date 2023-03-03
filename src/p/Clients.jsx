@@ -77,7 +77,7 @@ export default () => {
         // console.log(traffics)
 
         // const traffics_old = await webcmd(`clients.list.get`).then(v => v.data)
-        const traffics = await webcmd(`> /dev/null && uci get hellapi.clients.speed`).then(v => {
+        const traffics = await webcmd(`> /dev/null && uci get hellapi.traffic_log.clients`).then(v => {
           const clients = []
           const clients_strs = v.split(` `)
           for (const clients_str of clients_strs) {

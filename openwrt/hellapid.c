@@ -15,13 +15,13 @@ int show_speed()
           argsSpeed->entries[i].packets_total.packets.tx_bytes,
           argsSpeed->entries[i].packets_total.packets.rx_bytes
     */
-    system("uci set hellapi.clients=clients");
-    system("uci delete hellapi.clients.speed");
+    system("uci set hellapi.traffic_log=traffic_log");
+    system("uci delete hellapi.traffic_log.clients");
 
     char fuck[1024] = {0};
     for (int i = 0; i < argsSpeed->total_num; i++)
     {
-      sprintf(fuck, "uci add_list hellapi.clients.speed=\"%02X:%02X:%02X:%02X:%02X:%02X_%ld_%ld\"",
+      sprintf(fuck, "uci add_list hellapi.traffic_log.clients=\"%02X:%02X:%02X:%02X:%02X:%02X_%ld_%ld\"",
               NMACQUAD(argsSpeed->entries[i].packets_total.mac_addr),
               argsSpeed->entries[i].packets_total.packets.tx_bytes,
               argsSpeed->entries[i].packets_total.packets.rx_bytes);

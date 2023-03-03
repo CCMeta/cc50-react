@@ -13,6 +13,12 @@ int set_qos(char *mac, int queue)
   sprintf(cmd_table, "ebtables -A OUTPUT -d %s -j mark --set-mark %d", mac, queue);
   system(cmd_table);
 
+  // uci save this rule, cause host can reboot or crash
+  sprintf(cmd_table, "uci set hellapi.qos=qos");
+  system(cmd_table);
+  sprintf(cmd_table, "uci add_list hellapi.qos.clients=%s_%d", mac, queue);
+  system(cmd_table);
+
   return 0;
 }
 

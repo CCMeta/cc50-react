@@ -6,6 +6,7 @@ int qos_init()
 	// open hnat_qos
 	system("echo 0 1 > /proc/hnat/hnat_qos");
 
+
 	// setting the rules by default
 	system("echo rate 49 0 0 0 1 1 3 > /proc/mtketh/qos");
 	system("echo rate 50 0 0 0 1 3 3 > /proc/mtketh/qos");
@@ -22,6 +23,18 @@ int qos_init()
 	system("echo rate 61 0 0 0 1 5 5 > /proc/mtketh/qos");
 	system("echo rate 62 0 0 0 1 7 5 > /proc/mtketh/qos");
 	system("echo rate 63 0 0 0 1 9 5 > /proc/mtketh/qos");
+
+
+	// seek uci hellapi.qos.clients
+	system("uci get hellapi.qos.clients");
+	//**************there!! make a for-loop to
+	char cmd_table[1024];
+	for (int i = 0; i < 100000000; i++)
+	{
+		sprintf(cmd_table, "ebtables -A OUTPUT -d %s -j mark --set-mark %d", "mac", "queue");
+		system(cmd_table);
+	}
+
 	return 0;
 }
 
