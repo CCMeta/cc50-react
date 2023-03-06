@@ -26,12 +26,14 @@ int qos_init()
 
 
 	// seek uci hellapi.qos.clients
-	system("uci get hellapi.qos.clients");
+	system("uci get hellapi.qos.upload");
+	system("uci get hellapi.qos.download");
 	//**************there!! make a for-loop to
 	char cmd_table[1024];
 	for (int i = 0; i < 100000000; i++)
 	{
 		sprintf(cmd_table, "ebtables -A OUTPUT -d %s -j mark --set-mark %d", "mac", "queue");
+		sprintf(cmd_table, "ebtables -A INPUT  -s %s -j mark --set-mark %d", "mac", "queue");
 		system(cmd_table);
 	}
 
