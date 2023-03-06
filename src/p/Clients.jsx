@@ -1,7 +1,4 @@
-import {
-  Button, Divider, InputAdornment, List,
-  ListItem, Popover, Stack, TextField, Typography
-} from '@mui/material';
+import { Avatar, Button, Divider, FormControl, InputLabel, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, MenuItem, Popover, Select, Stack, Typography } from '@mui/material';
 import { createEffect, onCleanup, useObserver } from 'react-solid-state';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,8 +7,9 @@ import PublicIcon from '@mui/icons-material/Public';
 
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import 'animate.css';
-import HeaderBar from './c/HeaderBar';
-import { bytesToHuman, Define, fetching, rpc as $rpc, secondsToWatch, FormBuilder, dBmToQuality, intToColor, webcmd } from './utils';
+import { QOS_OPTIONS } from './constants';
+import { bytesToHuman, dBmToQuality, Define, fetching, FormBuilder, intToColor, secondsToWatch, webcmd } from './utils';
+import { Laptop, LaptopRounded } from '@mui/icons-material';
 
 
 export default () => {
@@ -52,21 +50,57 @@ export default () => {
       headerName: 'Action',
       getActions: (params) => [
         <GridActionsCellItem disabled icon={<LockIcon color="Aqua_Blue" />} label="Lock" />,
-        <GridActionsCellItem onClick={e => QoS_PopoverOpen.set(e.currentTarget)} icon={<EditIcon color="Aqua_Blue" />} label="QoS" />,
+        <GridActionsCellItem onClick={e => {
+          QoS_dataClientMAC.set(params.row.macaddr)
+          QoS_dataClientHost.set(params.row.hostname)
+          return QoS_PopoverOpen.set(e.currentTarget)
+        }} icon={<EditIcon color="Aqua_Blue" />} label="QoS" />,
       ]
     },
     // { field: 'CONNECT', headerName: 'CONNECT' },
   ]
-  const luci_rpc_getDHCPLeases = Define([])
+  const getDHCPLeases = Define([])
   const QoS_PopoverOpen = Define(null)
+  const QoS_dataClientMAC = Define("")
+  const QoS_dataClientHost = Define("")
+  const QoS_dataUL = Define("")
+  const QoS_dataDL = Define("")
+
+  /*********functions**********/
+  const onQoSSubmit = async () => {
+    const form = {
+      client: QoS_dataClientMAC.get(),
+      tx: QoS_dataUL.get(),
+      rx: QoS_dataDL.get()
+    }
+    return console.warn(form)
+    const result = await webcmd(`clients.qos.set`, form)
+    if (result.code === 200) {
+      alert(result.msg)
+    } else {
+      alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
+    }
+  }
+  const fetching_conntrack_list = async () => {
+    return await fetching(FormBuilder({
+      "command": `ubus call luci-rpc getDHCPLeases`,
+      "sessionid": sessionStorage.getItem('sid'),
+      "cmd": `ubus call luci-rpc getDHCPLeases`,
+      "token": sessionStorage.getItem('sid'),
+    }), 'webcmd'
+    ).then(res => {
+      return res.dhcp_leases
+    })
+  }
 
   /*********createEffect**********/
-  var timer
+  const intervalDuration = 3 // seconds
+  var intervalFlag
   createEffect(async () => {
 
     // setInterval api below 
     const interval_apis = async () => {
-      luci_rpc_getDHCPLeases.set(await (async () => {
+      getDHCPLeases.set(await (async () => {
         const rai0_clients = await fetching(null, 'wifi', `/sta_info/rai0`)
         const ra0_clients = await fetching(null, 'wifi', `/sta_info/ra0`)
         const clients = [...rai0_clients, ...ra0_clients]
@@ -92,7 +126,7 @@ export default () => {
         })
 
         return (await fetching_conntrack_list())?.map((v, i) => {
-          const recent = luci_rpc_getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
+          const recent = getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
           let rx, tx, rx_s, tx_s = 0
           for (let client of traffics) {
             if (typeof client[v.macaddr.toLowerCase()] !== 'undefined') {
@@ -127,23 +161,12 @@ export default () => {
 
       return interval_apis
     }
-    timer = setInterval(await interval_apis(), 2000);
+    intervalFlag = setInterval(await interval_apis(), intervalDuration * 1000);
 
   })
-  onCleanup(() => clearInterval(timer))
+  onCleanup(() => clearInterval(intervalFlag))
 
-  /*********functions**********/
-  const fetching_conntrack_list = async () => {
-    return await fetching(FormBuilder({
-      "command": `ubus call luci-rpc getDHCPLeases`,
-      "sessionid": sessionStorage.getItem('sid'),
-      "cmd": `ubus call luci-rpc getDHCPLeases`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(res => {
-      return res.dhcp_leases
-    })
-  }
+
 
   /*********styles**********/
 
@@ -168,22 +191,42 @@ export default () => {
             transformOrigin={{ vertical: 'top', horizontal: 'center', }}>
             <List sx={{ width: `20rem` }} dense>
               <ListItem>
-                <TextField color="info" size='small' fullWidth label="Down Rate per Client" InputProps={{
-                  endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,
-                }} />
+                <ListItemAvatar>
+                  <Avatar>
+                    <LaptopRounded />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText secondary={QoS_dataClientHost.get()}>
+                  {QoS_dataClientMAC.get()}
+                </ListItemText>
               </ListItem>
               <ListItem>
-                <TextField color="success" size='small' fullWidth label="Up Rate per Client" InputProps={{
-                  endAdornment: <InputAdornment position="start">Mbit</InputAdornment>,
-                }} />
+                <FormControl fullWidth>
+                  <InputLabel size="small" id="select-label-Client-qos-download">Down Rate</InputLabel>
+                  <Select labelId="select-label-Client-qos-download" label="Down Rate" variant="outlined" size="small" value={QoS_dataDL.get()} onChange={(e) => QoS_dataDL.set(e.target.value)}>
+                    {QOS_OPTIONS.map((i) => (
+                      <MenuItem value={i.value}>{i.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </ListItem>
               <ListItem>
-                <Button disabled fullWidth variant="contained">Save</Button>
+                <FormControl fullWidth>
+                  <InputLabel size="small" id="select-label-Client-qos-upload">Up Rate</InputLabel>
+                  <Select labelId="select-label-Client-qos-upload" label="Up Rate" variant="outlined" size="small" value={QoS_dataUL.get()} onChange={(e) => QoS_dataUL.set(e.target.value)}>
+                    {QOS_OPTIONS.map((i) => (
+                      <MenuItem value={i.value}>{i.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </ListItem>
+              <ListItem>
+                <Button fullWidth variant="contained" onClick={onQoSSubmit}>Save</Button>
               </ListItem>
             </List>
           </Popover>
         </Stack>
-        <DataGrid disableSelectionOnClick rows={luci_rpc_getDHCPLeases.get()} columns={columns} />
+        <DataGrid disableSelectionOnClick rows={getDHCPLeases.get()} columns={columns} />
       </Stack>
 
     </Stack>

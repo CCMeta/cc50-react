@@ -123,13 +123,12 @@ export default () => {
   }
 
   /*********createEffect**********/
+  const intervalDuration = 3 // seconds
   var intervalFlag
   createEffect(async () => {
 
     await getSMSList();
 
-    // SetInterval api below 
-    const intervalDuration = 3000
     const interval_apis = async () => {
       // data_latency
       // const fuck = data_get_sms_list.get().concat()
@@ -144,7 +143,7 @@ export default () => {
     }
 
     // await interval_apis() //first initial
-    intervalFlag = setInterval(await interval_apis(), intervalDuration);
+    intervalFlag = setInterval(await interval_apis(), intervalDuration * 1000);
 
 
   })

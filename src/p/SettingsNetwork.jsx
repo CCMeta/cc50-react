@@ -30,7 +30,7 @@ function TextFieldProto(props) {
 
 export default function SetNetwork() {
   /*********constants**********/
-  const leaseTimeOptions = [
+  const LEASE_TIME_OPTIONS = [
     { value: `1h`, name: "1 Hour" },
     { value: `6h`, name: "6 Hours" },
     { value: `12h`, name: "12 Hours" },
@@ -129,7 +129,7 @@ export default function SetNetwork() {
               <FormControl fullWidth>
                 <InputLabel id="select-label-Wireless-DHCP-Lease-Time">DHCP Lease Time</InputLabel>
                 <Select labelId="select-label-Wireless-DHCP-Lease-Time" label="DHCP Lease Time" variant="outlined" size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
-                  {leaseTimeOptions.map((i) => (
+                  {LEASE_TIME_OPTIONS.map((i) => (
                     <MenuItem value={i.value}>{i.name}</MenuItem>
                   ))}
                 </Select>
@@ -222,7 +222,7 @@ export default function SetNetwork() {
             <Grid xs={12} md={6}>
               <Item>
                 <Select size="small" value={expire.get()} onChange={(e) => HandleChangeValue(expire, e)}>
-                  {leaseTimeOptions.map((i) => (
+                  {LEASE_TIME_OPTIONS.map((i) => (
                     <MenuItem value={i.value}>{i.name}</MenuItem>
                   ))}
                 </Select>

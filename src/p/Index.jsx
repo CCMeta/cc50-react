@@ -262,7 +262,8 @@ export default () => {
       data_traffic_modem.set(await fetching_traffic_modem())
 
       //concat speed
-      data_lan_speed_now.set(data_traffic_modem.get()?.speed)
+      // data_lan_speed_now.set(data_traffic_modem.get()?.speed)
+      console.warn(data_traffic_modem.get());
       data_lan_speed_chart.set([{
         id: "rx",
         data: [
@@ -691,13 +692,13 @@ export default () => {
                 <Stack direction={'row'}>
                   <DownloadIcon color={'info'} fontSize={'small'} />
                   <Typography variant={'body2'}>
-                    {bytesToHuman(data_traffic_modem.get()?.days?.[0].rx, `KiB`)}
+                    {bytesToHuman(data_traffic_modem.get()?.days?.[0]?.rx, `KiB`)}
                   </Typography>
                 </Stack>
                 <Stack direction={'row'}>
                   <UploadIcon color={'success'} fontSize={'small'} />
                   <Typography variant={'body2'}>
-                    {bytesToHuman(data_traffic_modem.get()?.days?.[0].tx, `KiB`)}
+                    {bytesToHuman(data_traffic_modem.get()?.days?.[0]?.tx, `KiB`)}
                   </Typography>
                 </Stack>
                 <IconButton disabled variant="outlined" color='info' size="small">
@@ -1226,13 +1227,13 @@ export default () => {
                 <Stack direction={'row'}>
                   <DownloadIcon color={'info'} fontSize={'small'} />
                   <Typography variant={'body2'}>
-                    {bytesToHuman(data_traffic_modem.get()?.days?.[0].rx, `KiB`)}
+                    {bytesToHuman(data_traffic_modem.get()?.days?.[0]?.rx, `KiB`)}
                   </Typography>
                 </Stack>
                 <Stack direction={'row'}>
                   <UploadIcon color={'success'} fontSize={'small'} />
                   <Typography variant={'body2'}>
-                    {bytesToHuman(data_traffic_modem.get()?.days?.[0].tx, `KiB`)}
+                    {bytesToHuman(data_traffic_modem.get()?.days?.[0]?.tx, `KiB`)}
                   </Typography>
                 </Stack>
                 <IconButton disabled variant="outlined" color='info' size="small">
