@@ -3,8 +3,8 @@
 
 enum DIRECTION
 {
-  UPLOAD = 1,
-  DOWNLOAD = 2
+  QOS_UPLOAD = 1,
+  QOS_DOWNLOAD = 2
 };
 
 int set_qos(char mac[], int queue, enum DIRECTION direction)
@@ -13,7 +13,7 @@ int set_qos(char mac[], int queue, enum DIRECTION direction)
 
   switch (direction)
   {
-  case UPLOAD:
+  case QOS_UPLOAD:
     // direction = 1 means set upload limit
 
     // set iptable or ebtables
@@ -33,7 +33,7 @@ int set_qos(char mac[], int queue, enum DIRECTION direction)
     system("uci commit");
     break;
 
-  case DOWNLOAD:
+  case QOS_DOWNLOAD:
   default:
     // direction = 2 means set download limit
 
@@ -71,14 +71,14 @@ int main(int argc, const char **argv)
     {
     case 'u':
       // upload limit setting
-      set_qos(mac, *queue, UPLOAD);
+      set_qos(mac, *queue, QOS_UPLOAD);
 
       break;
 
     case 'd':
     default:
       // download limit setting
-      set_qos(mac, *queue, DOWNLOAD);
+      set_qos(mac, *queue, QOS_DOWNLOAD);
 
       break;
     }

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int qos_init()
 {
@@ -26,17 +27,47 @@ int qos_init()
 
 
 	// seek uci hellapi.qos.clients
-	system("uci get hellapi.qos.upload");
-	system("uci get hellapi.qos.download");
-	//**************there!! make a for-loop to
-	char cmd_table[1024];
-	for (int i = 0; i < 100000000; i++)
+	char cmd_result[2048] = {0};
+	char *rx_item;
+	char mac[20] = {0};
+	int queue = 0;
+	const char *shit;
 	{
-		sprintf(cmd_table, "ebtables -A OUTPUT -d %s -j mark --set-mark %d", "mac", "queue");
-		sprintf(cmd_table, "ebtables -A INPUT  -s %s -j mark --set-mark %d", "mac", "queue");
-		system(cmd_table);
+		execute_cmd("uci -d '|' get hellapi.qos.download", cmd_result);
+		rx_item = strtok(cmd_result, "|");
+		while (rx_item != NULL)
+		{
+			shit = strchr(rx_item, '_');
+			if (shit != NULL)
+			{
+				int length = shit - rx_item;
+				strncpy(mac, rx_item, length);
+				queue = atoi(rx_item + length + 1);
+				printf("mac = %s\n", mac);
+				printf("number = %s\n", rx_item + length + 1);
+				run_set_qos(mac, queue, QOS_DOWNLOAD);
+			}
+			rx_item = strtok(NULL, "|");
+		}
 	}
-
+	{
+		execute_cmd("uci -d '|' get hellapi.qos.upload", cmd_result);
+		rx_item = strtok(cmd_result, "|");
+		while (rx_item != NULL)
+		{
+			shit = strchr(rx_item, '_');
+			if (shit != NULL)
+			{
+				int length = shit - rx_item;
+				strncpy(mac, rx_item, length);
+				queue = atoi(rx_item + length + 1);
+				printf("mac = %s\n", mac);
+				printf("number = %s\n", rx_item + length + 1);
+				run_set_qos(mac, queue, QOS_UPLOAD);
+			}
+			rx_item = strtok(NULL, "|");
+		}
+	}
 	return 0;
 }
 
@@ -61,7 +92,7 @@ int seek_current_modem()
 }
 
 // To fix wifi initial quectel fuck MTK policy issue.
-int wifi_reload()
+int wifi_init()
 {
 	// random wifi name both 24g & 5g
 	// cat /sys/class/net/eth0/address | cut -c 16-18  get mac_address last 2 bytes.
@@ -100,7 +131,7 @@ int main()
 		return -1;
 	}
 
-	if (wifi_reload() != 0)
+	if (wifi_init() != 0)
 	{
 		printf("wifi_reload fucked!");
 		return -1;
