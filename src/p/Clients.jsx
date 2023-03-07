@@ -63,8 +63,8 @@ export default () => {
   const QoS_PopoverOpen = Define(null)
   const QoS_dataClientMAC = Define("")
   const QoS_dataClientHost = Define("")
-  const QoS_dataUL = Define("")
-  const QoS_dataDL = Define("")
+  const QoS_dataUL = Define(48)
+  const QoS_dataDL = Define(48)
 
   /*********functions**********/
   const onQoSSubmit = async () => {
@@ -73,7 +73,7 @@ export default () => {
       tx: QoS_dataUL.get(),
       rx: QoS_dataDL.get()
     }
-    return console.warn(form)
+    // return console.warn(form)
     const result = await webcmd(`clients.qos.set`, form)
     if (result.code === 200) {
       alert(result.msg)
@@ -202,8 +202,8 @@ export default () => {
               </ListItem>
               <ListItem>
                 <FormControl fullWidth>
-                  <InputLabel size="small" id="select-label-Client-qos-download">Down Rate</InputLabel>
-                  <Select labelId="select-label-Client-qos-download" label="Down Rate" variant="outlined" size="small" value={QoS_dataDL.get()} onChange={(e) => QoS_dataDL.set(e.target.value)}>
+                  <InputLabel size="small" id="select-label-Client-qos-download">Down Limit Rate</InputLabel>
+                  <Select labelId="select-label-Client-qos-download" label="Down Limit Rate" variant="outlined" size="small" value={QoS_dataDL.get()} onChange={(e) => QoS_dataDL.set(e.target.value)}>
                     {QOS_OPTIONS.map((i) => (
                       <MenuItem value={i.value}>{i.name}</MenuItem>
                     ))}
@@ -212,8 +212,8 @@ export default () => {
               </ListItem>
               <ListItem>
                 <FormControl fullWidth>
-                  <InputLabel size="small" id="select-label-Client-qos-upload">Up Rate</InputLabel>
-                  <Select labelId="select-label-Client-qos-upload" label="Up Rate" variant="outlined" size="small" value={QoS_dataUL.get()} onChange={(e) => QoS_dataUL.set(e.target.value)}>
+                  <InputLabel size="small" id="select-label-Client-qos-upload">Up Limit Rate</InputLabel>
+                  <Select labelId="select-label-Client-qos-upload" label="Up Limit Rate" variant="outlined" size="small" value={QoS_dataUL.get()} onChange={(e) => QoS_dataUL.set(e.target.value)}>
                     {QOS_OPTIONS.map((i) => (
                       <MenuItem value={i.value}>{i.name}</MenuItem>
                     ))}

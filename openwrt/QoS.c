@@ -18,11 +18,11 @@ int set_qos(char mac[], int queue, enum DIRECTION direction)
 
     // set iptable or ebtables
     // first check of have rule of this mac, delete him.
-    sprintf(cmd, "ebtables -D INPUT $(ebtables -L INPUT | grep -i %s)", mac);
+    sprintf(cmd, "ebtables -D INPUT $(ebtables -L INPUT | grep -i %s) > /dev/null 2>&1", mac);
     system(cmd);
 
     // now add the new rule to ebtables
-    sprintf(cmd, "ebtables -A INPUT -s %s -j mark --set-mark %d", mac, queue);
+    sprintf(cmd, "ebtables -A INPUT -s %s -j mark --set-mark %d > /dev/null 2>&1", mac, queue);
     system(cmd);
 
     // uci save this rule, cause host can reboot or crash
@@ -30,6 +30,7 @@ int set_qos(char mac[], int queue, enum DIRECTION direction)
     system(cmd);
     sprintf(cmd, "uci add_list hellapi.qos.upload=%s_%d", mac, queue);
     system(cmd);
+    system("uci commit");
     break;
 
   case DOWNLOAD:
@@ -38,11 +39,11 @@ int set_qos(char mac[], int queue, enum DIRECTION direction)
 
     // set iptable or ebtables
     // first check of have rule of this mac, delete him.
-    sprintf(cmd, "ebtables -D OUTPUT $(ebtables -L OUTPUT | grep -i %s)", mac);
+    sprintf(cmd, "ebtables -D OUTPUT $(ebtables -L OUTPUT | grep -i %s) > /dev/null 2>&1", mac);
     system(cmd);
 
     // now add the new rule to ebtables
-    sprintf(cmd, "ebtables -A OUTPUT -d %s -j mark --set-mark %d", mac, queue);
+    sprintf(cmd, "ebtables -A OUTPUT -d %s -j mark --set-mark %d > /dev/null 2>&1", mac, queue);
     system(cmd);
 
     // uci save this rule, cause host can reboot or crash
@@ -50,6 +51,7 @@ int set_qos(char mac[], int queue, enum DIRECTION direction)
     system(cmd);
     sprintf(cmd, "uci add_list hellapi.qos.download=%s_%d", mac, queue);
     system(cmd);
+    system("uci commit");
     break;
   }
 
