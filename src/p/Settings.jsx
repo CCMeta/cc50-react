@@ -100,9 +100,6 @@ export default props => {
           <TabPanel value={props.store[0].tabValue} index="sim">
             <SettingsSIM />
           </TabPanel>
-          <TabPanel value={props.store[0].tabValue} index="security">
-            <SettingsSIM />
-          </TabPanel>
           <TabPanel value={props.store[0].tabValue} index="system">
             <SettingsSystem />
           </TabPanel>
