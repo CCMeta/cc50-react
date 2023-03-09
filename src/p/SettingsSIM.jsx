@@ -67,7 +67,6 @@ export default function SetSIM() {
 
   /*********createEffect**********/
   createEffect(async () => {
-    console.info("fuck you!")
     await webcmd(`internet.setting.sim.get`).then(v => {
       const res = v.data
       enable.set(boolToInt(res["enable"]))
