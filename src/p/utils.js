@@ -2,7 +2,7 @@
 import { createSignal, createStore } from 'react-solid-state'
 export { rpc } from './rpc'
 
-// const GO_HELL = true
+const GO_HELL = true
 
 
 export function Define(value = '') {

@@ -102,6 +102,7 @@ int wifi_init()
 	return 0;
 }
 
+// To fix initial all modem interface cause no sure when MTK random which, data will be split
 int vnstat_init()
 {
 	char cmd[256];
