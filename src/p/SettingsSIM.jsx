@@ -260,7 +260,7 @@ export default function SetSIM() {
         </List>
       </Paper>
       {/* APN */}
-      <Paper variant="outlined" elevation={0} sx={{ my: '1rem', borderRadius: "10px", border: "2px solid rgb(255 171 145 / 50%)", }}>
+      <Paper variant="outlined" elevation={0} sx={{ display: "none", my: '1rem', borderRadius: "10px", border: "2px solid rgb(255 171 145 / 50%)", }}>
         <List>
           <ListSubheader>
             <Typography align="left" variant="caption" component="div">
@@ -508,7 +508,7 @@ export default function SetSIM() {
     </Box>
 
     {/* PC APN Settings */}
-    <Box display={{ xs: "none", md: "block" }}>
+    <Box display={{ xs: "none", md: "none" }}>
       <Divider textAlign="left" sx={{ my: { xs: '1.5rem', md: '3rem' } }}>
         <Typography variant="h6" color='text.secondary'>
           <b>APN Configuration</b>
