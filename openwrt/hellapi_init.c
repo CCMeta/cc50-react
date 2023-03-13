@@ -109,12 +109,13 @@ int vnstat_init()
 	// ccmni0 => ccmni20
 	for (int i = 0; i < 21; i++)
 	{
-		sprintf(cmd, "vnstat --create -i ccmni%d", i);
+
+		sprintf(cmd, "uci add_list vnstat.@vnstat[0].interface=ccmni%d", i);
 		if (system(cmd) != 0)
 			return -1;
 	}
 	// system("vnstat --create -i $(uci get hellapi.settings.currentModem)");
-	system("vnstat -u");
+	system("uci commit");
 	return 0;
 }
 
