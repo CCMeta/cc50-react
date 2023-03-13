@@ -36,10 +36,8 @@ export async function fetching(body, type = `login`, subpath = ``) {
       path = `/cgi-bin/luci`
       break;
     case 'webcmd':
-      if (typeof GO_HELL === 'undefined') {
-        headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
-      }
-      path = typeof GO_HELL === 'undefined' ? `/cgi-bin/luci/admin/mtk/webcmd` : `/cgi-bin/cgi-exec`
+      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+      path = `/cgi-bin/luci/admin/mtk/webcmd`
       break;
     case 'wifi':
       path = `/cgi-bin/luci/admin/mtk/wifi${subpath}`
