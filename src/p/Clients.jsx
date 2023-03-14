@@ -77,6 +77,9 @@ export default () => {
     const result = await webcmd(`clients.qos.set`, form)
     if (result.code === 200) {
       alert(result.msg)
+      QoS_dataUL.set(48)
+      QoS_dataDL.set(48)
+      QoS_PopoverOpen.set(null)
     } else {
       alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
     }
@@ -179,7 +182,7 @@ export default () => {
       {/* <Stack sx={{ flexBasis: 0, flexGrow: 1 }}></Stack> */}
       <Stack className='styled-scrollbars' height={{ xs: `calc(95dvh - 4rem)`, md: `95dvh` }} sx={{ flexBasis: 0, flexGrow: 4 }}>
         <Stack sx={{ m: 2 }}>
-          <Button color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="outlined" sx={{ width: `20rem` }}>
+          <Button disabled color="info" onClick={e => QoS_PopoverOpen.set(e.currentTarget)} startIcon={<PublicIcon />} size='small' variant="outlined" sx={{ width: `20rem` }}>
             Set Global QoS
           </Button>
 

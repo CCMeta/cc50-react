@@ -263,7 +263,7 @@ export default () => {
 
       //concat speed
       // data_lan_speed_now.set(data_traffic_modem.get()?.speed)
-      console.warn(data_traffic_modem.get());
+      // console.warn(data_traffic_modem.get());
       data_lan_speed_chart.set([{
         id: "rx",
         data: [
@@ -299,21 +299,8 @@ export default () => {
   }
 
   const fetching_traffic_modem = async () => {
-    return await fetching(FormBuilder({
-      "command": `vnstat -u`,
-      "sessionid": sessionStorage.getItem('sid'),
-      "cmd": `vnstat -u`,
-      "token": sessionStorage.getItem('sid'),
-    }), 'webcmd'
-    ).then(async _ => {
-      return await fetching(FormBuilder({
-        "command": `vnstat --json`,
-        "sessionid": sessionStorage.getItem('sid'),
-        "cmd": `vnstat --json`,
-        "token": sessionStorage.getItem('sid'),
-      }), 'webcmd'
-      )
-    }).then(res => {
+    return await webcmd(`traffic.stat.modem.get`).then(v => {
+      const raw_data = v.data
       const result = {
         days: [{ rx: 0, tx: 0 }],
         weeks: [{ rx: 0, tx: 0 }],
@@ -321,11 +308,11 @@ export default () => {
         total: { rx: 0, tx: 0 },
         speed: { rx: 0, tx: 0 },
       }
-      if (typeof res.interfaces === "undefined") {
+      if (typeof raw_data.interfaces === "undefined") {
         return result
       }
       const fuck = []
-      for (const item of res.interfaces) {
+      for (const item of raw_data.interfaces) {
         // console.warn(shit)
         if (item.id.indexOf('ccmni') === -1)
           continue
