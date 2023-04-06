@@ -53,6 +53,8 @@ export default () => {
         <GridActionsCellItem onClick={e => {
           QoS_dataClientMAC.set(params.row.macaddr)
           QoS_dataClientHost.set(params.row.hostname)
+          params.row?.rx_l && QoS_dataDL.set(params.row?.rx_l)
+          params.row?.tx_l && QoS_dataUL.set(params.row?.tx_l)
           return QoS_PopoverOpen.set(e.currentTarget)
         }} icon={<EditIcon color="Aqua_Blue" />} label="QoS" />,
       ]
