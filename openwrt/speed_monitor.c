@@ -31,27 +31,27 @@ void dump_data(void *arg_in)
   argsSpeed = (struct hwnat_mib_all_ip_mac_args_total *)arg_in;
   printf("dump_data \n");
   // ccmeta 20230403
-  system("uci set vnstat.clients=clients");
-  printf("uci set vnstat.clients=clients \n");
-  system("uci delete vnstat.clients.client");
-  printf("uci delete vnstat.clients.client \n");
+  system("uci set hellapi.traffic=traffic");
+  printf("uci set hellapi.traffic=traffic \n");
+  system("uci delete hellapi.traffic.clients");
+  printf("uci delete hellapi.traffic.clients \n");
 
   char fuck[1024]={0};
   printf("\r\n==================entry_num===================================\r\n");
   printf("MAC            tx/bps          rx/bps            tx                rx\n");
   for(i=0; i<argsSpeed->total_num; i++) {
-      sprintf(fuck, "uci add_list vnstat.clients.client=\"%02X:%02X:%02X:%02X:%02X:%02X_%ld_%ld\"",
-              NMACQUAD(argsSpeed->entries[i].packets_total.mac_addr),
-              argsSpeed->entries[i].packets_total.packets.tx_bytes,
-              argsSpeed->entries[i].packets_total.packets.rx_bytes);
-      printf("sprintf OK =  %s \n",fuck);
-      system(fuck);
-        printf("%02X:%02X:%02X:%02X:%02X:%02X   %12ld %12ld        %16ld  %16ld \n",
-          NMACQUAD(argsSpeed->entries[i].packets_total.mac_addr),
-          argsSpeed->entries[i].packets_currect.packets.tx_bytes*8,
-          argsSpeed->entries[i].packets_currect.packets.rx_bytes*8,
-          argsSpeed->entries[i].packets_total.packets.tx_bytes*8,
-          argsSpeed->entries[i].packets_total.packets.rx_bytes*8);
+    sprintf(fuck, "uci add_list hellapi.traffic.clients=\"%02X:%02X:%02X:%02X:%02X:%02X_%ld_%ld\"",
+            NMACQUAD(argsSpeed->entries[i].packets_total.mac_addr),
+            argsSpeed->entries[i].packets_total.packets.tx_bytes,
+            argsSpeed->entries[i].packets_total.packets.rx_bytes);
+    printf("sprintf OK =  %s \n", fuck);
+    system(fuck);
+    printf("%02X:%02X:%02X:%02X:%02X:%02X   %12ld %12ld        %16ld  %16ld \n",
+           NMACQUAD(argsSpeed->entries[i].packets_total.mac_addr),
+           argsSpeed->entries[i].packets_currect.packets.tx_bytes * 8,
+           argsSpeed->entries[i].packets_currect.packets.rx_bytes * 8,
+           argsSpeed->entries[i].packets_total.packets.tx_bytes * 8,
+           argsSpeed->entries[i].packets_total.packets.rx_bytes * 8);
   }
   system("uci commit");
   printf("uci commit \n");

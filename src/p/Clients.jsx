@@ -29,20 +29,28 @@ export default () => {
         </Typography>
     },
     {
-      field: 'rx_s', type: 'number', headerName: 'DL Speed', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+      field: 'rx_s', type: 'number', headerName: 'DL Speed', width: 120, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#1677ff"}>{p.value}</Typography>
     },
     {
-      field: 'rx', type: 'number', headerName: 'DL Total', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+      field: 'rx', type: 'number', headerName: 'DL Total', width: 120, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#0958d9"}>{p.value}</Typography>
     },
     {
-      field: 'tx_s', type: 'number', headerName: 'UL Speed', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+      field: 'tx_s', type: 'number', headerName: 'UL Speed', width: 120, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#52c41a"}>{p.value}</Typography>
     },
     {
-      field: 'tx', type: 'number', headerName: 'UL Total', width: 150, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
+      field: 'tx', type: 'number', headerName: 'UL Total', width: 120, valueGetter: ({ value }) => value && bytesToHuman(value), renderCell: p =>
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#389e0d"}>{p.value}</Typography>
+    },
+    {
+      field: 'rx_l', headerName: 'DL_LMT', width: 50, renderCell: p =>
+        <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#0097a7"}>{p.value}</Typography>
+    },
+    {
+      field: 'tx_l', headerName: 'UL_LMT', width: 50, renderCell: p =>
+        <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#0097a7"}>{p.value}</Typography>
     },
     {
       field: 'actions',
@@ -53,8 +61,8 @@ export default () => {
         <GridActionsCellItem onClick={e => {
           QoS_dataClientMAC.set(params.row.macaddr)
           QoS_dataClientHost.set(params.row.hostname)
-          params.row?.rx_l && QoS_dataDL.set(params.row?.rx_l)
-          params.row?.tx_l && QoS_dataUL.set(params.row?.tx_l)
+          QoS_dataDL.set(params.row?.rx_l || 48)
+          QoS_dataUL.set(params.row?.tx_l || 48)
           return QoS_PopoverOpen.set(e.currentTarget)
         }} icon={<EditIcon color="Aqua_Blue" />} label="QoS" />,
       ]
@@ -79,8 +87,6 @@ export default () => {
     const result = await webcmd(`clients.qos.set`, form)
     if (result.code === 200) {
       alert(result.msg)
-      QoS_dataUL.set(48)
-      QoS_dataDL.set(48)
       QoS_PopoverOpen.set(null)
     } else {
       alert(`result.code = ${result.code}; result.msg = ${result.msg}`)
@@ -115,16 +121,23 @@ export default () => {
         //   traffics_str.match(/(var values = new Array[^;]*;)/)[0].replace(`var values = `, ``))
         // console.log(traffics)
 
-        // const traffics_old = await webcmd(`clients.list.get`).then(v => v.data)
-        const traffics = await webcmd(`> /dev/null && uci get hellapi.traffic_log.clients`).then(v => {
+        const traffics = await webcmd(`clients.list.get`).then(v => {
+          const clients_strs = v.data
           const clients = []
-          const clients_strs = v.split(` `)
-          for (const clients_str of clients_strs) {
-            const mac = clients_str.split(`_`)[0]
-            const tx = parseInt(clients_str.split(`_`)[1])
-            const rx = parseInt(clients_str.split(`_`)[2])
+          for (const mac in clients_strs) {
+
+            const traffic_temp = clients_strs[mac]["traffic"].split(`_`)
+            const rx = parseInt(traffic_temp[1])
+            const tx = parseInt(traffic_temp[2])
             const client_obj = {}
-            client_obj[mac] = { tx, rx }
+            client_obj[mac.toLowerCase()] = { tx, rx }
+
+            const qos_temp = clients_strs[mac]["qos"].split(`_`)
+            if (qos_temp.length === 3) {
+              const rx_l = parseInt(qos_temp[1])
+              const tx_l = parseInt(qos_temp[2])
+              client_obj[mac.toLowerCase()] = { tx_l, rx_l, ...client_obj[mac.toLowerCase()] }
+            }
             clients.push(client_obj)
           }
           return clients
@@ -132,11 +145,13 @@ export default () => {
 
         return (await fetching_conntrack_list())?.map((v, i) => {
           const recent = getDHCPLeases.get().find(client => client.macaddr === v.macaddr)
-          let rx, tx, rx_s, tx_s = 0
+          let rx, tx, rx_s, tx_s, rx_l, tx_l = 0
           for (let client of traffics) {
             if (typeof client[v.macaddr.toLowerCase()] !== 'undefined') {
               rx = client[v.macaddr.toLowerCase()]?.rx ?? 0
               tx = client[v.macaddr.toLowerCase()]?.tx ?? 0
+              rx_l = client[v.macaddr.toLowerCase()]?.rx_l ?? 0
+              tx_l = client[v.macaddr.toLowerCase()]?.tx_l ?? 0
             }
           }
           tx_s = recent ? parseInt((tx - recent.tx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
@@ -156,6 +171,8 @@ export default () => {
             rx_s: rx_s || 0,
             tx: tx || 0,
             tx_s: tx_s || 0,
+            tx_l: tx_l || 0,
+            rx_l: rx_l || 0,
             id: i,
             online: !(rx_s + tx_s === 0),
             expires: secondsToWatch(v.expires),

@@ -7,7 +7,6 @@ int qos_init()
 	// open hnat_qos
 	system("echo 0 1 > /proc/hnat/hnat_qos");
 
-
 	// setting the rules by default
 	system("echo rate 49 0 0 0 1 1 3 > /proc/mtketh/qos");
 	system("echo rate 50 0 0 0 1 3 3 > /proc/mtketh/qos");
@@ -25,47 +24,34 @@ int qos_init()
 	system("echo rate 62 0 0 0 1 7 5 > /proc/mtketh/qos");
 	system("echo rate 63 0 0 0 1 9 5 > /proc/mtketh/qos");
 
-
 	// seek uci hellapi.qos.clients
 	char cmd_result[2048] = {0};
-	char *rx_item;
+	char *item;
 	char mac[20] = {0};
-	int queue = 0;
-	const char *shit;
+	char queue_rx[2];
+	char queue_tx[2];
+	const char *mark;
 	{
-		execute_cmd("uci -d '|' get hellapi.qos.download", cmd_result);
-		rx_item = strtok(cmd_result, "|");
-		while (rx_item != NULL)
+		execute_cmd("uci -d '|' get hellapi.qos.clients", cmd_result);
+		item = strtok(cmd_result, "|");
+		while (item != NULL)
 		{
-			shit = strchr(rx_item, '_');
-			if (shit != NULL)
+			mark = strchr(item, '_');
+			split_tx = strrchr(item, '_');
+			if (mark != NULL)
 			{
-				int length = shit - rx_item;
-				strncpy(mac, rx_item, length);
-				queue = atoi(rx_item + length + 1);
+				int length = mark - item;
+				strncpy(mac, item, length);
+				strncpy(queue_rx, item + length + 1, 2);
+				strncpy(queue_tx, item + length + 3, 2);
+
+				printf("queue_rx = %s\n", queue_rx);
+				printf("queue_tx = %s\n", queue_tx);
 				printf("mac = %s\n", mac);
-				printf("number = %s\n", rx_item + length + 1);
-				run_set_qos(mac, queue, QOS_DOWNLOAD);
+
+				run_set_qos(mac, queue_rx, queue_tx);
 			}
-			rx_item = strtok(NULL, "|");
-		}
-	}
-	{
-		execute_cmd("uci -d '|' get hellapi.qos.upload", cmd_result);
-		rx_item = strtok(cmd_result, "|");
-		while (rx_item != NULL)
-		{
-			shit = strchr(rx_item, '_');
-			if (shit != NULL)
-			{
-				int length = shit - rx_item;
-				strncpy(mac, rx_item, length);
-				queue = atoi(rx_item + length + 1);
-				printf("mac = %s\n", mac);
-				printf("number = %s\n", rx_item + length + 1);
-				run_set_qos(mac, queue, QOS_UPLOAD);
-			}
-			rx_item = strtok(NULL, "|");
+			item = strtok(NULL, "|");
 		}
 	}
 	return 0;
