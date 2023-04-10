@@ -45,11 +45,11 @@ export default () => {
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#389e0d"}>{p.value}</Typography>
     },
     {
-      field: 'rx_l', headerName: 'DL_LMT', width: 50, renderCell: p =>
+      field: 'rx_l', headerName: 'DL_LMT', width: 80, valueGetter: ({ value }) => value && QOS_OPTIONS.find(i => i.value === value).name, renderCell: p =>
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#0097a7"}>{p.value}</Typography>
     },
     {
-      field: 'tx_l', headerName: 'UL_LMT', width: 50, renderCell: p =>
+      field: 'tx_l', headerName: 'UL_LMT', width: 80, valueGetter: ({ value }) => value && QOS_OPTIONS.find(i => i.value === value).name, renderCell: p =>
         <Typography variant="body2" color={p.value === 0 ? "text.secondary" : "#0097a7"}>{p.value}</Typography>
     },
     {
@@ -124,13 +124,17 @@ export default () => {
         const traffics = await webcmd(`clients.list.get`).then(v => {
           const clients_strs = v.data
           const clients = []
+
           for (const mac in clients_strs) {
+            const client_obj = {}
+            client_obj[mac.toLowerCase()] = {}
 
             const traffic_temp = clients_strs[mac]["traffic"].split(`_`)
-            const rx = parseInt(traffic_temp[1])
-            const tx = parseInt(traffic_temp[2])
-            const client_obj = {}
-            client_obj[mac.toLowerCase()] = { tx, rx }
+            if (traffic_temp.length === 3) {
+              const rx = parseInt(traffic_temp[1])
+              const tx = parseInt(traffic_temp[2])
+              client_obj[mac.toLowerCase()] = { tx, rx, ...client_obj[mac.toLowerCase()] }
+            }
 
             const qos_temp = clients_strs[mac]["qos"].split(`_`)
             if (qos_temp.length === 3) {
@@ -138,6 +142,7 @@ export default () => {
               const tx_l = parseInt(qos_temp[2])
               client_obj[mac.toLowerCase()] = { tx_l, rx_l, ...client_obj[mac.toLowerCase()] }
             }
+
             clients.push(client_obj)
           }
           return clients

@@ -8,7 +8,7 @@ export const DATA_MODES = [
 ]
 
 export const QOS_OPTIONS = [
-  { value: 48, name: `Disable` },
+  { value: 48, name: `Unlimited` },
   { value: 49, name: `1 Mbit` },
   { value: 50, name: `3 Mbit` },
   { value: 51, name: `5 Mbit` },
