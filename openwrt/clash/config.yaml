@@ -1,0 +1,93 @@
+# !!!!!!! Before run clash, need to import these iptables rules first.
+# 
+# iptables -t nat -N CLASH &&
+# iptables -t nat -A CLASH -d 192.168.0.0/16 -j RETURN &&
+# iptables -t nat -A CLASH -d 192.168.10.0/24 -j RETURN &&
+# iptables -t nat -A CLASH -p tcp -s 192.168.10.0/24 -j REDIRECT --to-ports 7892 &&
+# iptables -t nat -A CLASH -p udp -s 192.168.10.0/24 -j REDIRECT --to-ports 7892 &&
+# iptables -t nat -A PREROUTING -j CLASH 
+# 
+
+# the config.yaml will be at path /root/.config/config.yaml , and file Country.mmdb too.
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+ipv6: true
+allow-lan: true
+mode: Rule
+log-level: info
+external-controller: '0.0.0.0:9090'
+external-ui: ui
+secret: ''
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - tcp://8.8.8.8:53
+    - udp://8.8.8.8:53
+dns:
+  enable: true
+  ipv6: true
+  listen: 0.0.0.0:53
+  enhanced-mode: fake-ip
+  default-nameserver:
+    - 114.114.114.114
+    - 8.8.8.8
+  nameserver:
+    - 114.114.114.114
+    - 8.8.8.8
+    - tls://8.8.8.8:853
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback:
+    - tls://8.8.8.8:853
+    - https://1.1.1.1/dns-query # DNS over HTTPS
+    - https://8.8.8.8/dns-query # DNS over HTTPS
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+
+# 两个代理服务器
+proxies:
+  - name: "ss1"
+    type: ss
+    server: "jp.ccmeta.com"
+    port: 443
+    cipher: chacha20-ietf-poly1305
+    password: "8888"
+    plugin: v2ray-plugin
+    plugin-opts:
+      mode: websocket # no QUIC now
+      tls: true # wss
+      skip-cert-verify: true
+      host: "jp.ccmeta.com"
+      path: "/cyber"
+      mux: true
+      # headers:
+      #   custom: value
+
+proxy-groups:
+  # relay chains the proxies. proxies shall not contain a relay. No UDP support.
+  # Traffic: clash <-> http <-> vmess <-> ss1 <-> ss2 <-> Internet
+  - name: "relay"
+    type: relay
+    proxies:
+      - ss1
+
+  # url-test select which proxy will be used by benchmarking speed to a URL.
+  - name: "auto"
+    type: url-test
+    proxies:
+      - ss1
+    # tolerance: 150
+    # lazy: true
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    
+rules:
+# 最终规则（除了中国区的IP之外的，全部翻墙）
+  - GEOIP,CN,DIRECT
+  - MATCH,auto
