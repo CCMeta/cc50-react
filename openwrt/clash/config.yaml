@@ -1,11 +1,6 @@
 # !!!!!!! Before run clash, need to import these iptables rules first.
 # 
-# iptables -t nat -N CLASH &&
-# iptables -t nat -A CLASH -d 192.168.0.0/16 -j RETURN &&
-# iptables -t nat -A CLASH -d 192.168.10.0/24 -j RETURN &&
-# iptables -t nat -A CLASH -p tcp -s 192.168.10.0/24 -j REDIRECT --to-ports 7892 &&
-# iptables -t nat -A CLASH -p udp -s 192.168.10.0/24 -j REDIRECT --to-ports 7892 &&
-# iptables -t nat -A PREROUTING -j CLASH 
+# iptables -t nat -N CLASH iptables -t nat -A CLASH -d 192.168.0.0/16 -j RETURN iptables -t nat -A CLASH -d 192.168.10.0/24 -j RETURN iptables -t nat -A CLASH -p tcp -s 192.168.10.0/24 -j REDIRECT --to-ports 7892 iptables -t nat -A CLASH -p udp -s 192.168.10.0/24 -j REDIRECT --to-ports 7892 iptables -t nat -A PREROUTING -j CLASH 
 # 
 
 # the config.yaml will be at path /root/.config/config.yaml , and file Country.mmdb too.
@@ -17,8 +12,6 @@ ipv6: true
 allow-lan: true
 mode: Rule
 log-level: info
-external-controller: '0.0.0.0:9090'
-external-ui: ui
 secret: ''
 tun:
   enable: true
@@ -32,15 +25,20 @@ dns:
   listen: 0.0.0.0:53
   enhanced-mode: fake-ip
   default-nameserver:
-    - 114.114.114.114
     - 8.8.8.8
+    - 8.8.4.4
+    - 114.114.114.114
   nameserver:
-    - 114.114.114.114
     - 8.8.8.8
+    - 8.8.4.4
+    - 114.114.114.114
     - tls://8.8.8.8:853
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
   fallback:
+    - tls://1.1.1.1:853
+    - tls://1.0.0.1:853
+    - 101.6.6.6:5353
     - tls://8.8.8.8:853
     - https://1.1.1.1/dns-query # DNS over HTTPS
     - https://8.8.8.8/dns-query # DNS over HTTPS
