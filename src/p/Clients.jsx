@@ -157,10 +157,13 @@ export default () => {
               tx = client[v.macaddr.toLowerCase()]?.tx ?? 0
               rx_l = client[v.macaddr.toLowerCase()]?.rx_l ?? 0
               tx_l = client[v.macaddr.toLowerCase()]?.tx_l ?? 0
+              if (recent && recent.uptime > 0) {
+                const duration = (0.001 * ((new Date()).getTime() - recent.uptime))
+                tx_s = recent ? parseInt((tx - recent.tx || 0) / duration) : 0
+                rx_s = recent ? parseInt((rx - recent.rx || 0) / duration) : 0
+              }
             }
           }
-          tx_s = recent ? parseInt((tx - recent.tx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
-          rx_s = recent ? parseInt((rx - recent.rx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
 
           // const rx = traffics.reduce((_t, _v) => _v.length === 8 && _v[1].toLowerCase() === v.macaddr.toLowerCase() ? _t + _v[3] : _t, 0)
           // const rx_s = recent ? parseInt((rx - recent.rx) / (0.001 * ((new Date()).getTime() - recent.uptime))) : 0
@@ -173,8 +176,8 @@ export default () => {
             PhyMode: `Wire`,
             ...clients.find(client => client.MacAddr === v.macaddr),
             rx: rx || 0,
-            rx_s: rx_s || 0,
             tx: tx || 0,
+            rx_s: rx_s || 0,
             tx_s: tx_s || 0,
             tx_l: tx_l || 0,
             rx_l: rx_l || 0,
