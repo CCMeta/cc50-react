@@ -250,15 +250,16 @@ export default () => {
   const getSMSList = async () => {
     await webcmd(`sms.list.get`).then(v => {
       // console.info(v)
+
+      // v.data = test_msgs_pdu // just for test
+
       const msgs = []
       const combined_msgs = []
-
       //decode all pdu to text object
-      // for (const msg_pdu of v.data) {
-      for (const msg_pdu of test_msgs_pdu) {
+      for (const msg_pdu of v.data) {
         msgs.push({ id: [msg_pdu.id], ...pdu.parse(msg_pdu.content) })
       }
-      console.info(msgs)
+      // console.info(msgs)
 
       // check long SMS and concat 
       const sub_brothers = []
@@ -277,7 +278,7 @@ export default () => {
         }
       })
 
-      console.info(sub_brothers)
+      // console.info(sub_brothers)
       // verse sub msg and delete from tail to head
       sub_brothers.toReversed().toSorted((a, b) => b - a).forEach(index => {
         // console.info(`DELETE ${index}`)
