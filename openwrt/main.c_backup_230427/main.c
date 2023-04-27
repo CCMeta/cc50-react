@@ -1323,9 +1323,10 @@ struct json_object *sr_util_json_object_object_get(struct json_object *obj, cons
 
 char *execute_cmd(const char *cmd) {
     char buffer[_EXE_BUFFER_LEN] = {0};
-    char *result = (char *) malloc(10);
-    memset(result,'\0',10);
+    char *result = (char *) calloc(1, sizeof(char));
+//    memset(result,'\0',10);
 //    printf("result = %s\n", result);
+//    exit(0);
     FILE *fp = popen(cmd, "r");
     size_t buffer_len;
     int i = 1;
@@ -1342,6 +1343,10 @@ char *execute_cmd(const char *cmd) {
         strcat(result, buffer);
     }
     pclose(fp);
+    
+    if (result[strlen(result) - 1] == '\n')
+        result[strlen(result) - 1] = '\0';
+
 //    printf("result = %s\n", result);
 //    printf("result strlen(result) = %d\n", strlen(result));
     return result;
