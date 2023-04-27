@@ -22,7 +22,7 @@ export default () => {
   createEffect(async () => {
 
     //this part is fucked   to be defined
-    if (sessionStorage.getItem('sid') === null)
+    if (sessionStorage.getItem('sid') == null)
       sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth)
 
     //If no need login, close login modal
@@ -44,6 +44,7 @@ export default () => {
     await fetching(FormBuilder(form), 'login')
       .then(_ => sessionStorage.setItem('sid', cookie.parse(document.cookie).sysauth))
       .then(_ => {
+        // Access to command denied by ACL????????????????
         window.location.reload()
         // modalOpen.set(false)
         // navigate('/')
