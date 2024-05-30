@@ -11,3 +11,5 @@ The project is already run eject to extend.
 - t : test
 - c : component
   
+  BUILD: `npm build`
+  
